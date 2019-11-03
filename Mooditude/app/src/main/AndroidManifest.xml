@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SelfActivity"></activity>
+        <activity android:name=".DisplayFollow"></activity>
+        <activity android:name=".SelfActivity" />
         <activity android:name=".NotificationActivity" />
         <activity android:name=".AddActivity" />
         <activity android:name=".SearchActivity" />
