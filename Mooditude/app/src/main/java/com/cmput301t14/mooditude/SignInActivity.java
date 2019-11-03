@@ -59,12 +59,9 @@ public class SignInActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(),"Please Login Failed!",Toast.LENGTH_SHORT).show();
                                     }
                                     else {
-//                                        Intent intentHomeActivity = new Intent(getApplicationContext(),HomeActivity.class);
-//                                        startActivity(intentHomeActivity);
-//                                        FirebaseUser user = mFirebaseAuth.getCurrentUser();
-//                                        if(user !=null) {
-                                            Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
-//                                        }
+                                        Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
+                                        Intent intentHomeActivity = new Intent(getApplicationContext(),HomeActivity.class);
+                                        startActivity(intentHomeActivity);
                                     }
                                 }
                             });
