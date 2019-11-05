@@ -12,20 +12,64 @@ public class MoodEvent {
     private String textComment;
 //    photoComment: Bitmap
 
-    private static final int LENGTH_COMMENT=20;
 
-
-    public MoodEvent(Integer author) {
+    public MoodEvent(Integer author, Mood mood, Location location, SocialSituation socialSituation, String textComment) {
         this.author = author;
-        this.datetime= LocalDateTime.now();
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+
+        this.datetime=LocalDateTime.now();
+    }
+
+    public MoodEvent(Integer author, Mood mood, Location location, SocialSituation socialSituation) {
+        this.author = author;
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+
+        this.datetime=LocalDateTime.now();
+    }
+
+    public Integer getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Integer author) {
+        this.author = author;
+    }
+
+    public Mood getMood() {
+        return this.mood;
+    }
+
+    public void setMood(Mood mood) {
+        this.mood = mood;
+    }
+
+    public LocalDateTime getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(LocalDateTime datetime) {
+        this.datetime = datetime;
     }
 
     public Location getLocation() {
-        return this.location;
+        return location;
     }
 
-    public void setLocation(Double latitude, Double longtitude) {
-        this.location = new Location(latitude,longtitude);
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public SocialSituation getSocialSituation() {
+        return socialSituation;
+    }
+
+    public void setSocialSituation(SocialSituation socialSituation) {
+        this.socialSituation = socialSituation;
     }
 
     public String getTextComment() {
@@ -33,14 +77,6 @@ public class MoodEvent {
     }
 
     public void setTextComment(String textComment) {
-
-        if(textComment<=LENGTH_COMMENT){
-            this.textComment = textComment;
-        }
-
-        this.textComment=textComment.substring(0,LENGTH_COMMENT);
-
-
-
+        this.textComment = textComment;
     }
 }
