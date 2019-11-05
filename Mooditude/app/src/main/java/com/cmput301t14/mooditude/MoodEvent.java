@@ -36,6 +36,7 @@ public class MoodEvent {
 
         if(textComment<=LENGTH_COMMENT){
             this.textComment = textComment;
+            test
         }
 
         this.textComment=textComment.substring(0,LENGTH_COMMENT);
