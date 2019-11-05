@@ -5,7 +5,7 @@ import android.graphics.Color;
 import java.util.HashMap;
 
 public class Mood {
-    enum MoodEnum {HAPPY, SAD, ANGRY, EXCITED};
+    private enum MoodEnum {HAPPY, SAD, ANGRY, EXCITED};
 
     private HashMap<MoodEnum, Integer> colorMap;
     private HashMap<MoodEnum, String> emoticonMap;
