@@ -12,6 +12,10 @@ public class Mood {
 
     private MoodEnum moodEnum;
 
+    /**
+     * Constructor
+     * @param moodString
+     */
     public Mood(String moodString){
         this.moodEnum = MoodEnum.valueOf(moodString);
 
