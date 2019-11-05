@@ -11,19 +11,34 @@ import android.content.Intent;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AddActivity extends AppCompatActivity {
 
+    ImageButton submitButton;
+    Spinner moodSpinner;
+    Spinner socialSituationSpinner;
+    EditText commentEditText;
+    TextView locationTextView;
+    TextView photoTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
-        TextView title = (TextView) findViewById(R.id.activityTitle2);
-        title.setText("Add Activity");
+        submitButton = findViewById(R.id.submit_button);
+        moodSpinner = findViewById(R.id.mood_spinner);
+        socialSituationSpinner = findViewById(R.id.social_situation_spinner);
+        commentEditText = findViewById(R.id.comment_edittext);
+        locationTextView = findViewById(R.id.location_textview);
+        photoTextView = findViewById(R.id.photo_textview);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
         Menu menu = bottomNavigationView.getMenu();
