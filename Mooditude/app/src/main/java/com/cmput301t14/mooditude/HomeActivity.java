@@ -50,16 +50,19 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.navigation_search:
                         Intent intent1 = new Intent(HomeActivity.this, SearchActivity.class);
+                        intent1.putExtra(EXTRA_MESSAGE_Email, messageEmail);
                         intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent1);
                         break;
                     case R.id.navigation_add:
                         Intent intent2 = new Intent(HomeActivity.this, AddActivity.class);
+                        intent2.putExtra(EXTRA_MESSAGE_Email, messageEmail);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent2);
                         break;
                     case R.id.navigation_notification:
                         Intent intent3 = new Intent(HomeActivity.this, NotificationActivity.class);
+                        intent3.putExtra(EXTRA_MESSAGE_Email, messageEmail);
                         intent3.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent3);
                         break;
