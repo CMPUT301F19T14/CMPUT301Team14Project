@@ -1,40 +1,31 @@
 package com.cmput301t14.mooditude;
 
+import com.google.firebase.firestore.GeoPoint;
+
 public class Location {
     private Double latitude=0.0;
     private Double longtitude=0.0;
 
     private String address ="";
 
+    GeoPoint geopoint;
+
     public Location(Double latitude, Double longtitude) {
         this.latitude = latitude;
         this.longtitude = longtitude;
+
+        geopoint= new GeoPoint(latitude,longtitude);
     }
 
     public Location(Double latitude, Double longtitude, String addres) {
         this.latitude = latitude;
         this.longtitude = longtitude;
         this.address = addres;
+        geopoint= new GeoPoint(latitude,longtitude);
     }
 
-    public Location(String addres) {
-        this.address = addres;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongtitude() {
-        return longtitude;
-    }
-
-    public void setLongtitude(Double longtitude) {
-        this.longtitude = longtitude;
+    public GeoPoint getGeopoint() {
+        return geopoint;
     }
 
     public String getAddress() {
@@ -44,4 +35,6 @@ public class Location {
     public void setAddress(String address) {
         this.address = address;
     }
+
+
 }
