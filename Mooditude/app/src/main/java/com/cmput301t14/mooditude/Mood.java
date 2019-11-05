@@ -13,7 +13,7 @@ public class Mood {
     private MoodEnum moodEnum;
 
     /**
-     * Constructor
+     * Mood Constructor
      * @param moodString
      */
     public Mood(String moodString){
@@ -32,18 +32,34 @@ public class Mood {
         emoticonMap.put(MoodEnum.EXCITED, "\uD83D\uDE0E");
     }
 
+    /**
+     * get Mood as a string
+     * @return
+     */
     public String getMood(){
         return this.moodEnum.toString();
     }
 
+    /**
+     * Set mood with a string
+     * @param moodString - a string represents one of the defined mood
+     */
     public void setMood(String moodString){
         this.moodEnum = MoodEnum.valueOf(moodString);
     }
 
+    /**
+     * get the Color for the mood
+     * @return
+     */
     public int getColor(){
         return this.colorMap.get(moodEnum);
     }
 
+    /**
+     * get the Emoticon for the mood
+     * @return
+     */
     public String getEmoticon(){
         return this.emoticonMap.get(moodEnum);
     }
