@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
+
 public class HomeActivity extends AppCompatActivity {
 
     @Override
@@ -30,6 +32,9 @@ public class HomeActivity extends AppCompatActivity {
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
+// Get the Intent that started this activity and extract the string
+        Intent thisIntent = getIntent();
+        final String messageEmail = thisIntent.getStringExtra(EXTRA_MESSAGE_Email);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -61,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.navigation_self:
                         Intent intent4 = new Intent(HomeActivity.this, SelfActivity.class);
                         intent4.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent4.putExtra(EXTRA_MESSAGE_Email, messageEmail);
                         startActivity(intent4);
                         break;
                 }

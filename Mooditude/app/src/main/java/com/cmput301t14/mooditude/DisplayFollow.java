@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,7 +36,7 @@ public class DisplayFollow extends AppCompatActivity {
     ListView followList;
     ArrayAdapter<String> followAdapter;
     ArrayList<String> followDataList;
-    String myID = "wanye@gmail.com";
+    String myID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,19 +58,19 @@ public class DisplayFollow extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        // Get the Intent that started this activity and extract the string
+        Intent intent = getIntent();
+
+        String messageMode = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Mode);
+
+        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
+        myID = messageEmail;
+
         final CollectionReference collectionReference = db.collection("Users");
 
         final DocumentReference documentReference = collectionReference.document(myID);
 
-        // Get the Intent that started this activity and extract the string
-        Intent intent = getIntent();
-
-        String message = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE);
-
-        followDataList.add(message);
-        followAdapter.notifyDataSetChanged();
-
-        if (message.compareTo("Follower") == 0){
+        if (messageMode.compareTo("Follower") == 0){
 
             final TextView followMode = findViewById(R.id.followMode);
             followMode.setText("Follwer List");
@@ -98,18 +99,19 @@ public class DisplayFollow extends AppCompatActivity {
                     }
                 }
             })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                        }
-                    });
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
+                }
+            });
 
 
 
 
         }
 
-        else if(message.compareTo("Following") == 0){
+        else if(messageMode.compareTo("Following") == 0){
 
             final TextView followMode = findViewById(R.id.followMode);
             followMode.setText("Following List");
@@ -120,15 +122,10 @@ public class DisplayFollow extends AppCompatActivity {
                     followDataList.clear();
                     if (task.isSuccessful()) {
                         DocumentSnapshot doc = task.getResult();
-                        ArrayList<String> followerList = (ArrayList<String>) doc.get("following");
+                        ArrayList<String> followingList = (ArrayList<String>) doc.get("following");
 
-                        for (String f : followerList) {
-                            //userEmail = doc.getId();
-//                        Log.d(TAG, String.valueOf(doc.getData().get("Follower")));
-//
-//
-//                        String followerUser = (String) doc.getData().get("Follower");
-                            //the follower list for the userEmail:
+                        for (String f : followingList) {
+
                             followDataList.add(f);
 
                         }
@@ -139,6 +136,7 @@ public class DisplayFollow extends AppCompatActivity {
             .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
                 }
             });
 

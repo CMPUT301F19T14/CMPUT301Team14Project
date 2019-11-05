@@ -22,7 +22,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 public class SelfActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "com.cmput301t14.mooditude.MESSAGE";
+    public static final String EXTRA_MESSAGE_Email = "com.cmput301t14.mooditude.email";
+    public static final String EXTRA_MESSAGE_Mode = "com.cmput301t14.mooditude.mode";
 
     ListView followList;
     ArrayAdapter<String> followAdapter;
@@ -37,6 +38,9 @@ public class SelfActivity extends AppCompatActivity {
 
 //        TextView title = (TextView) findViewById(R.id.activityTitle4);
 //        title.setText("Self Activity");
+
+        Intent intent = getIntent();
+        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -101,7 +105,8 @@ public class SelfActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String require = "Follower";
                 Intent intent = new Intent(SelfActivity.this, DisplayFollow.class);
-                intent.putExtra(EXTRA_MESSAGE, require);
+                intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
+                intent.putExtra(EXTRA_MESSAGE_Mode, require);
                 startActivity(intent);
 
             }
@@ -111,7 +116,8 @@ public class SelfActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String require = "Following";
                 Intent intent = new Intent(SelfActivity.this, DisplayFollow.class);
-                intent.putExtra(EXTRA_MESSAGE, require);
+                intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
+                intent.putExtra(EXTRA_MESSAGE_Mode, require);
                 startActivity(intent);
 
             }
