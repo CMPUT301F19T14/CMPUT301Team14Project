@@ -23,6 +23,8 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 public class AddActivity extends AppCompatActivity {
 
     ImageButton submitButton;
@@ -121,8 +123,15 @@ public class AddActivity extends AppCompatActivity {
                     Log.i("TAG","Add User");
                     user.pushMoodEvent(moodEvent);
 
+                    ArrayList<MoodEvent> temp=new ArrayList<>();
+                    temp=user.getSelfMoodEvents(temp);
 //                    Log.d("121","Data addition successful");
-                    Log.i("TAG","After add user");
+//                    user.getUserName();
+//                    user.getUserName();
+                    if(temp!=null){
+                        Log.i("LOGGER","MoodEvents: "+temp);
+                    }
+
 
 //                    System.out.println("Testing");
                     // TODO: submit the mood Event
