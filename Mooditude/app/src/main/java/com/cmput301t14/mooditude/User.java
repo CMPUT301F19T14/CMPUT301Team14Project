@@ -55,16 +55,33 @@ public class User{
         CollectionReference moodHistory = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
 
-        DocumentReference moodEntry=moodHistory.document(moodEvent.getDatetime().toString());
+        final DocumentReference moodEntry=moodHistory.document(moodEvent.getDatetime().toString());
 
-        HashMap<String,Object> moodHash = new HashMap<>();
+        final HashMap<String,Object> moodHash = new HashMap<>();
         moodHash.put("Location",location.getGeopoint());
         moodHash.put("Mood",mood.getMood());
         moodHash.put("Comment",textComment);
         moodHash.put("DateTime",localDateTime.toString());
         moodHash.put("SocialSituation",socialSituation.getSocialSituation());
 
-        moodEntry.set(moodHash);
+//        moodEntry.set(moodHash);
+        moodEntry.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("TAG", "Document exists!");
+                        moodEntry.update(moodHash);
+                    } else {
+                        Log.d("TAG", "Document does not exist!");
+                        moodEntry.set(moodHash);
+                    }
+                } else {
+                    Log.d("TAG", "Failed with: ", task.getException());
+                }
+            }
+        });
     }
 
     public void deleteMoodEvent(MoodEvent selectedMoodEvent){
