@@ -21,9 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -118,23 +115,11 @@ public class AddActivity extends AppCompatActivity {
                             new Location(0.0,0.0),
                             socialSituation, commentString);
 
-//                    FirebaseFirestore db;
+
+                    // push the MoodEvent to database
                     User user=  new User();
                     Log.i("TAG","Add User");
                     user.pushMoodEvent(moodEvent);
-
-                    ArrayList<MoodEvent> temp=new ArrayList<>();
-                    temp=user.getSelfMoodEvents(temp);
-//                    Log.d("121","Data addition successful");
-//                    user.getUserName();
-//                    user.getUserName();
-                    if(temp!=null){
-                        Log.i("LOGGER","MoodEvents: "+temp);
-                    }
-
-
-//                    System.out.println("Testing");
-                    // TODO: submit the mood Event
 
                     // go to selfActivity
                     Intent intent = new Intent(AddActivity.this, SelfActivity.class);
