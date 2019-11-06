@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,19 +25,14 @@ import java.util.ArrayList;
 public class SelfActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.cmput301t14.mooditude.MESSAGE";
 
-    ListView followList;
-    ArrayAdapter<String> followAdapter;
-    ArrayList<String> followDataList;
-
-    CustomList customList;
+    ListView selfMoodEventList;
+    ArrayAdapter<MoodEvent> selfMoodEventAdapter;
+    ArrayList<MoodEvent> selfMoodEventDataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_self);
-
-//        TextView title = (TextView) findViewById(R.id.activityTitle4);
-//        title.setText("Self Activity");
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -116,5 +112,34 @@ public class SelfActivity extends AppCompatActivity {
 
             }
         });
+
+        selfMoodEventList = findViewById(R.id.self_mood_event_list);
+        selfMoodEventDataList = new ArrayList<>();
+
+        selfMoodEventAdapter = new SelfMoodEventAdapter(this, selfMoodEventDataList);
+
+        selfMoodEventList.setAdapter(selfMoodEventAdapter);
+
+        // TODO: actually populate seftMoodEventDataList
+        for (int i=0; i < 5; i++){
+            selfMoodEventDataList.add(new MoodEvent(1, new Mood("HAPPY"),
+                    new Location(0.0,0.0),
+                    new SocialSituation("ALONE"), "fake_comment"));
+        }
+        // TODO: actually populate seftMoodEventDataList
+
+        // click to view moodEvent
+        selfMoodEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            // TODO: go to view moodEvent Activity
+            }
+        });
+    }
+
+    /** When delete is confirmed, remove the moodEvent from the list
+     */
+    public void onConfirmPressed(MoodEvent selectedMoodEvent) {
+        selfMoodEventAdapter.remove(selectedMoodEvent);
+        selfMoodEventAdapter.notifyDataSetChanged();
     }
 }
