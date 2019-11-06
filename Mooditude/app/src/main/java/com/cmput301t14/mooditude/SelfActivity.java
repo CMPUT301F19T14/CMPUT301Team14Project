@@ -1,14 +1,11 @@
 package com.cmput301t14.mooditude;
 
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
@@ -17,6 +14,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -120,13 +119,9 @@ public class SelfActivity extends AppCompatActivity {
 
         selfMoodEventList.setAdapter(selfMoodEventAdapter);
 
-        // TODO: actually populate seftMoodEventDataList
-        for (int i=0; i < 5; i++){
-            selfMoodEventDataList.add(new MoodEvent(1, new Mood("HAPPY"),
-                    new Location(0.0,0.0),
-                    new SocialSituation("ALONE"), "fake_comment"));
-        }
-        // TODO: actually populate seftMoodEventDataList
+        // listen to selfMoodEventDataList sync with database
+        User user = new User();
+        user.listenSelfMoodEvents(selfMoodEventDataList, selfMoodEventAdapter);
 
         // click to view moodEvent
         selfMoodEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -136,10 +131,13 @@ public class SelfActivity extends AppCompatActivity {
         });
     }
 
-    /** When delete is confirmed, remove the moodEvent from the list
+    /** Called by SelfMoodEventAdapter,
+     *  When delete is confirmed, remove the moodEvent from the list
      */
     public void onConfirmPressed(MoodEvent selectedMoodEvent) {
-        selfMoodEventAdapter.remove(selectedMoodEvent);
-        selfMoodEventAdapter.notifyDataSetChanged();
+        //        selfMoodEventAdapter.remove(selectedMoodEvent);
+        //        selfMoodEventAdapter.notifyDataSetChanged();
+        User user = new User();
+        user.deleteMoodEvent(selectedMoodEvent);
     }
 }
