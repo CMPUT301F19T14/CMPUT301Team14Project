@@ -87,4 +87,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/following" />
 
+    <ListView
+        android:id="@+id/self_mood_event_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/border_lines"
+        app:layout_constraintBottom_toTopOf="@+id/navigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number_of_following" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
