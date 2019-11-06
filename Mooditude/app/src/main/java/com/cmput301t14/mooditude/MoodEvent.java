@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class MoodEvent {
 
-    private  Integer author;
+    private Integer author;
     private Mood mood;
     private LocalDateTime datetime;
     private Location location;
@@ -23,13 +23,14 @@ public class MoodEvent {
         this.datetime=LocalDateTime.now();
     }
 
-    public MoodEvent(Integer author, Mood mood, Location location, SocialSituation socialSituation) {
+    public MoodEvent(Integer author, Mood mood, Location location, SocialSituation socialSituation, String textComment, LocalDateTime datetime) {
         this.author = author;
         this.mood = mood;
         this.location = location;
         this.socialSituation = socialSituation;
+        this.textComment = textComment;
 
-        this.datetime=LocalDateTime.now();
+        this.datetime=datetime;
     }
 
     public Integer getAuthor() {
