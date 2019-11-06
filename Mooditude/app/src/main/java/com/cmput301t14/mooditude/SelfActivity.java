@@ -1,8 +1,5 @@
 package com.cmput301t14.mooditude;
 
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,23 +25,22 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * This is a class for user's profile purpose and one part of Main Interface after login.
+ * It contains the following functions:
+ * 1. show the number of mood event and with clicking item to show the summary list of mood events
+ * 2. show the number of user's follower and following, and with clicking item to show the summary list of follower/following
+ */
 public class SelfActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE_Email = "com.cmput301t14.mooditude.email";
     public static final String EXTRA_MESSAGE_Mode = "com.cmput301t14.mooditude.mode";
 
-//    ListView followList;
-//    ArrayAdapter<String> followAdapter;
-//    ArrayList<String> followDataList;
-//
-//    CustomList customList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_self);
 
-//        TextView title = (TextView) findViewById(R.id.activityTitle4);
-//        title.setText("Self Activity");
 
         Intent intent = getIntent();
         final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
@@ -53,6 +49,8 @@ public class SelfActivity extends AppCompatActivity {
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(4);
         menuItem.setChecked(true);
+
+        //listener user want to jump to another parts of Main Interface and jump to the required activity
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -90,14 +88,12 @@ public class SelfActivity extends AppCompatActivity {
             }
         });
 
+
         final String TAG = "Sample";
-
-
         final TextView FollowerTV;
         final TextView FollowingTV;
         final TextView numFollowerTV;
         final TextView numFollowingTV;
-
 
 
         FirebaseFirestore db;
@@ -108,18 +104,19 @@ public class SelfActivity extends AppCompatActivity {
         final DocumentReference documentReference = collectionReference.document(messageEmail);
 
 
-
         FollowerTV = findViewById(R.id.follower);
         numFollowerTV = findViewById(R.id.number_of_follower);
         numFollowingTV = findViewById(R.id.number_of_following);
         FollowingTV = findViewById(R.id.following);
 
+        //get the total number of followers/following
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task< DocumentSnapshot > task) {
 
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
+
                     ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
                     numFollowerTV.setText(String.valueOf(followerList.size()));
                     ArrayList<String> followingList = (ArrayList<String>) doc.get("following");
@@ -135,8 +132,7 @@ public class SelfActivity extends AppCompatActivity {
             }
         });
 
-
-
+        //if click on item, go to DisplayFollow activity to show the summary list
         FollowerTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

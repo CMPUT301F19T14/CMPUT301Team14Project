@@ -31,6 +31,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * This is a class used to display a list of emails of follower or following for the current user
+ */
 public class DisplayFollow extends AppCompatActivity {
 
     ListView followList;
@@ -44,11 +47,6 @@ public class DisplayFollow extends AppCompatActivity {
         setContentView(R.layout.activity_display_follow);
 
         final String TAG = "Sample";
-        String userEmail = "";
-
-
-        FirebaseFirestore db;
-
 
         followList = findViewById(R.id.followList);
         followDataList = new ArrayList<>();
@@ -56,27 +54,25 @@ public class DisplayFollow extends AppCompatActivity {
         followList.setAdapter(followAdapter);
 
 
+        FirebaseFirestore db;
         db = FirebaseFirestore.getInstance();
 
-        // Get the Intent that started this activity and extract the string
+        // Get the Intent that started this activity and extract the string for mode(Follower/Following) and userEmail
         Intent intent = getIntent();
-
         String messageMode = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Mode);
-
         final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
         myID = messageEmail;
 
         final CollectionReference collectionReference = db.collection("Users");
-
         final DocumentReference documentReference = collectionReference.document(myID);
 
+        //according to the require mode, get the required filed from database and show.
         if (messageMode.compareTo("Follower") == 0){
 
             final TextView followMode = findViewById(R.id.followMode);
             followMode.setText("Follwer List");
 
-            //https://dzone.com/articles/cloud-firestore-read-write-update-and-delete
-
+            //Reference: https://dzone.com/articles/cloud-firestore-read-write-update-and-delete
             documentReference.get().addOnCompleteListener(new OnCompleteListener< DocumentSnapshot >() {
                 @Override
                 public void onComplete(@NonNull Task< DocumentSnapshot > task) {
@@ -86,12 +82,7 @@ public class DisplayFollow extends AppCompatActivity {
                         ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
 
                         for (String f : followerList) {
-                            //userEmail = doc.getId();
-//                        Log.d(TAG, String.valueOf(doc.getData().get("Follower")));
-//
-//
-//                        String followerUser = (String) doc.getData().get("Follower");
-                            //the follower list for the userEmail:
+
                             followDataList.add(f);
 
                         }
@@ -106,11 +97,7 @@ public class DisplayFollow extends AppCompatActivity {
                 }
             });
 
-
-
-
         }
-
         else if(messageMode.compareTo("Following") == 0){
 
             final TextView followMode = findViewById(R.id.followMode);
