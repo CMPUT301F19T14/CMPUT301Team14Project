@@ -105,8 +105,8 @@ public class SearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
 
-        TextView title = (TextView) findViewById(R.id.activityTitle1);
-        title.setText("Search Activity");
+//        TextView title = (TextView) findViewById(R.id.activityTitle1);
+//        title.setText("Search Activity");
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
