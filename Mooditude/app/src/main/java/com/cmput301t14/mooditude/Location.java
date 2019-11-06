@@ -24,6 +24,11 @@ public class Location {
         geopoint= new GeoPoint(latitude,longtitude);
     }
 
+    public Location(GeoPoint geopoint ) {
+
+        this.geopoint= geopoint;
+    }
+
     public GeoPoint getGeopoint() {
         return geopoint;
     }
