@@ -1,8 +1,9 @@
 package com.cmput301t14.mooditude;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class MoodEvent {
+public class MoodEvent implements Serializable {
 
     private Integer author;
     private Mood mood;
