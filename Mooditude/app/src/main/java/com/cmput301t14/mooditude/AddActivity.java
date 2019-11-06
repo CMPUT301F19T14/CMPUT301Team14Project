@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import android.content.Intent;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -114,6 +116,15 @@ public class AddActivity extends AppCompatActivity {
                             new Location(0.0,0.0),
                             socialSituation, commentString);
 
+//                    FirebaseFirestore db;
+                    User user=  new User();
+                    Log.i("TAG","Add User");
+                    user.pushMoodEvent(moodEvent);
+
+//                    Log.d("121","Data addition successful");
+                    Log.i("TAG","After add user");
+
+//                    System.out.println("Testing");
                     // TODO: submit the mood Event
 
                     // go to selfActivity
@@ -124,6 +135,8 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
         });
+
+
 
         // set navigation menu bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
