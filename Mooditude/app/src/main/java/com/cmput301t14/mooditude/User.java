@@ -42,29 +42,63 @@ public class User{
         fetchUserName();
     }
 
-    public void pushMoodEvent(MoodEvent moodEvent){
-        Location location  =moodEvent.getLocation();
-        LocalDateTime localDateTime=moodEvent.getDatetime();
-        Integer author= moodEvent.getAuthor();
-
-        Mood mood = moodEvent.getMood();
-        SocialSituation socialSituation= moodEvent.getSocialSituation();
-        String textComment= moodEvent.getTextComment();
-
-
+    public void pushMoodEvent(final MoodEvent moodEvent){
         CollectionReference moodHistory = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
 
-        DocumentReference moodEntry=moodHistory.document(moodEvent.getDatetime().toString());
+        final DocumentReference moodEntry=moodHistory.document(moodEvent.getDatetime().toString());
 
-        HashMap<String,Object> moodHash = new HashMap<>();
-        moodHash.put("Location",location.getGeopoint());
-        moodHash.put("Mood",mood.getMood());
-        moodHash.put("Comment",textComment);
-        moodHash.put("DateTime",localDateTime.toString());
-        moodHash.put("SocialSituation",socialSituation.getSocialSituation());
+        final HashMap<String,Object> moodHash = new HashMap<>();
 
-        moodEntry.set(moodHash);
+        moodEntry.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("TAG", "Document exists!");
+                        Location location  =moodEvent.getLocation();
+                        LocalDateTime localDateTime=moodEvent.getDatetime();
+                        Integer author= moodEvent.getAuthor();
+                        Mood mood = moodEvent.getMood();
+                        SocialSituation socialSituation= moodEvent.getSocialSituation();
+                        String textComment= moodEvent.getTextComment();
+                        if (location.getGeopoint() != document.getGeoPoint("Location")){
+                            moodHash.put("Location",location.getGeopoint());
+                        }
+                        if (mood.getMood() != document.getString("Mood")){
+                            moodHash.put("Mood",mood.getMood());
+                        }
+                        if (textComment != document.getString("Comment")){
+                            moodHash.put("Comment",textComment);
+                        }
+                        if (localDateTime.toString() != document.getString("DateTime")){
+                            moodHash.put("DateTime",localDateTime.toString());
+                        }
+                        if (socialSituation.getSocialSituation() != document.getString("SocialSituation")){
+                            moodHash.put("SocialSituation",socialSituation.getSocialSituation());
+                        }
+                        moodEntry.update(moodHash);
+                    } else {
+                        Log.d("TAG", "Document does not exist!");
+                        Location location  =moodEvent.getLocation();
+                        LocalDateTime localDateTime=moodEvent.getDatetime();
+                        Integer author= moodEvent.getAuthor();
+                        Mood mood = moodEvent.getMood();
+                        SocialSituation socialSituation= moodEvent.getSocialSituation();
+                        String textComment= moodEvent.getTextComment();
+                        moodHash.put("Location",location.getGeopoint());
+                        moodHash.put("Mood",mood.getMood());
+                        moodHash.put("Comment",textComment);
+                        moodHash.put("DateTime",localDateTime.toString());
+                        moodHash.put("SocialSituation",socialSituation.getSocialSituation());
+                        moodEntry.set(moodHash);
+                    }
+                } else {
+                    Log.d("TAG", "Failed with: ", task.getException());
+                }
+            }
+        });
     }
 
     public void deleteMoodEvent(MoodEvent selectedMoodEvent){
