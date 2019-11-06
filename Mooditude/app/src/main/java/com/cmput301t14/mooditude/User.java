@@ -31,7 +31,8 @@ public class User{
     private FirebaseAuth mAuth;
 
 
-    public void User(){
+    public User(){
+//        this.db=db;
         db=FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -41,15 +42,20 @@ public class User{
         Location location  =moodEvent.getLocation();
         LocalDateTime localDateTime=moodEvent.getDatetime();
         Integer author= moodEvent.getAuthor();
+        Log.i("TAG","1");
         Mood mood = moodEvent.getMood();
         SocialSituation socialSituation= moodEvent.getSocialSituation();
         String textComment= moodEvent.getTextComment();
+        Log.i("TAG","2");
+        if(db==null){
+            Log.i("TAG","db null");
+        }
 
-//        final CollectionReference collectionReference = db.collection("Users");
+        final CollectionReference collectionReference = db.collection("Users");
         DocumentReference userFile = db.collection("Users").document(user.getEmail());
         final CollectionReference moodHistory = userFile.collection("MoodHistory");
-
-
+        Log.i("TAG","3");
+//
         DocumentReference moodEntry=moodHistory.document(localDateTime.toString());
         HashMap<String,GeoPoint> geoHash = new HashMap<>();
         moodEntry.set(geoHash);
@@ -59,8 +65,6 @@ public class User{
         stringHash.put("Comment",textComment);
         stringHash.put("DateTime",localDateTime.toString());
 
-
-
         moodEntry.set(stringHash);
     }
 
@@ -69,21 +73,22 @@ public class User{
         DocumentReference docRef = db.collection("User").document(user.getEmail());
         Source source = Source.CACHE;
 
-        final String result;
-        result =String.valueOf(docRef.get(source).getResult().get("user_name:"));
-        docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    // Document found in the offline cache
-                    DocumentSnapshot document = task.getResult();
-                    result=String.valueOf(document.getData().get("user_name"));
-                    Log.d(TAG, "Cached document data: " + document.getData().get("user_name"));
-                } else {
-                    Log.d(TAG, "Cached get failed: ", task.getException());
-                }
-            }
-        });
+        String result = String.valueOf(docRef.get(source).getResult().get("user_name"));
+//        final String result;
+//        result =String.valueOf(docRef.get(source).getResult().get("user_name:"));
+//        docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    // Document found in the offline cache
+//                    DocumentSnapshot document = task.getResult();
+//                    result=String.valueOf(document.getData().get("user_name"));
+//                    Log.d(TAG, "Cached document data: " + document.getData().get("user_name"));
+//                } else {
+//                    Log.d(TAG, "Cached get failed: ", task.getException());
+//                }
+//            }
+//        });
 
         return result;
     }
