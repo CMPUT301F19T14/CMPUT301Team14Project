@@ -31,7 +31,7 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText emaiEditText,userNameEditText, passwordEditText,passwordConfirmEditText;
-    private Button joinNowBtn;
+//    private Button joinNowBtn;
     private FirebaseAuth mFirebaseAuth;
 
     private String email, userName, password, confrimPassword;
@@ -48,7 +48,8 @@ public class RegisterActivity extends AppCompatActivity {
         emaiEditText = findViewById(R.id.register_email);
         passwordEditText = findViewById(R.id.register_password);
         passwordConfirmEditText = findViewById(R.id.register_password_2);
-        joinNowBtn = findViewById(R.id.register_join_now_button);
+
+        Button joinNowBtn = findViewById(R.id.register_join_now_button);
 
         FirebaseFirestore db;
         db = FirebaseFirestore.getInstance();
@@ -73,16 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
                 confrimPassword = passwordConfirmEditText.getText().toString();
                 userNameExist = false;
 
-                collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                    for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
-                        String db_user_name = String.valueOf(doc.getData().get("user_name"));
-                        userNameExist = userName.equals(db_user_name);
-//                        Toast.makeText(getApplicationContext(),"Email ID:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+
 
                 if (email.isEmpty()){
                     emaiEditText.setError("Please enter email!");
@@ -90,10 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else if(userName.isEmpty()){
                     userNameEditText.setError("Please enter username!");
-                    userNameEditText.requestFocus();
-                }
-                else if(userNameExist == true){
-                    userNameEditText.setError("Username already exist!");
                     userNameEditText.requestFocus();
                 }
                 else if (password.isEmpty()){
@@ -108,40 +96,119 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Passwords not equal!",Toast.LENGTH_SHORT).show();
                     passwordEditText.requestFocus();
                 }
-                else if (password.equals(confrimPassword) && !userNameExist){
-                    mFirebaseAuth.createUserWithEmailAndPassword(email,password)
-                            .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (!task.isSuccessful()){
-                                        Toast.makeText(getApplicationContext(),"Sign Up Failed!",Toast.LENGTH_SHORT).show();
-                                    }
-                                    else {
+                else if (password.equals(confrimPassword)){
 
-                                        HashMap<String,String> data  = new HashMap<>();
-                                        data.put("user_name",userName);
-
-                                        collectionReference
-                                                .document(email)
-                                                .set(data)
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                        Toast.makeText(getApplicationContext(),"Sign Up Success!",Toast.LENGTH_SHORT).show();
-                                                        startActivity(new Intent(RegisterActivity.this,SignInActivity.class));
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Toast.makeText(getApplicationContext(),"Sign Up Failure!",Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-
-
-                                    }
+                    collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
+                                String db_user_name = String.valueOf(doc.getData().get("user_name"));
+                                if (userName.equals(db_user_name)){
+                                    userNameExist = userName.equals(db_user_name);
+                                    Toast.makeText(getApplicationContext(),"Email ID:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
                                 }
-                            });
+                            }
+//
+                            if(userNameExist){
+                                userNameEditText.setError("Username already exist!");
+                                userNameEditText.requestFocus();
+                            }
+                            else {
+                                mFirebaseAuth.createUserWithEmailAndPassword(email,password)
+                                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (!task.isSuccessful()){
+                                                    Toast.makeText(getApplicationContext(),"Sign Up Failed!",Toast.LENGTH_SHORT).show();
+                                                }
+                                                else {
+
+                                                    HashMap<String,String> data  = new HashMap<>();
+                                                    data.put("user_name",userName);
+
+                                                    collectionReference
+                                                            .document(email)
+                                                            .set(data)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+                                                                    Toast.makeText(getApplicationContext(),"Sign Up Success!",Toast.LENGTH_SHORT).show();
+                                                                    startActivity(new Intent(RegisterActivity.this,SignInActivity.class));
+                                                                }
+                                                            })
+                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    Toast.makeText(getApplicationContext(),"Sign Up Failure!",Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                }
+                                            }
+                                        });
+                            }
+
+//
+                        }
+                    });
+//                    collectionReference
+//                            .get()
+//                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                    if (task.isSuccessful()) {
+//                                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                                            String db_user_name = String.valueOf(document.getData().get("user_name"));
+//                                            if (userName.equals(db_user_name)){
+//                                                userNameExist = true;
+//                                                Toast.makeText(getApplicationContext(),"Email ID:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
+//                                                break;
+//                                            }
+//                                            Toast.makeText(getApplicationContext(),"Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    } else {
+//                                        Toast.makeText(getApplicationContext(),"Error getting documents",Toast.LENGTH_SHORT).show();
+//                                    }
+//
+//                                }
+//                            });
+
+//                    if(userNameExist){
+//                        userNameEditText.setError("Username already exist!");
+//                        userNameEditText.requestFocus();
+//                    }
+//                    else {
+//                        mFirebaseAuth.createUserWithEmailAndPassword(email,password)
+//                                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                                        if (!task.isSuccessful()){
+//                                            Toast.makeText(getApplicationContext(),"Sign Up Failed!",Toast.LENGTH_SHORT).show();
+//                                        }
+//                                        else {
+//
+//                                            HashMap<String,String> data  = new HashMap<>();
+//                                            data.put("user_name",userName);
+//
+//                                            collectionReference
+//                                                    .document(email)
+//                                                    .set(data)
+//                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                        @Override
+//                                                        public void onSuccess(Void aVoid) {
+//                                                            Toast.makeText(getApplicationContext(),"Sign Up Success!",Toast.LENGTH_SHORT).show();
+//                                                            startActivity(new Intent(RegisterActivity.this,SignInActivity.class));
+//                                                        }
+//                                                    })
+//                                                    .addOnFailureListener(new OnFailureListener() {
+//                                                        @Override
+//                                                        public void onFailure(@NonNull Exception e) {
+//                                                            Toast.makeText(getApplicationContext(),"Sign Up Failure!",Toast.LENGTH_SHORT).show();
+//                                                        }
+//                                                    });
+//                                        }
+//                                    }
+//                                });
+//                    }
                 }
                 else {
                     Toast.makeText(getApplicationContext(),"Error Occured!",Toast.LENGTH_SHORT).show();
