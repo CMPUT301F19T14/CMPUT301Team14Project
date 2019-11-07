@@ -3,11 +3,14 @@ package com.cmput301t14.mooditude;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -126,7 +129,38 @@ public class SelfActivity extends AppCompatActivity {
         // click to view moodEvent
         selfMoodEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // TODO: go to view moodEvent Activity
+                // TODO: go to view moodEvent Activity
+                MoodEvent selectedMoodEvent = (MoodEvent) parent.getItemAtPosition(position);
+                Log.i("TAG","clicked on moodevent!");
+                ViewEditMoodEventFragment.newInstance(selectedMoodEvent).show(getSupportFragmentManager(), "DETAIL_DELETE_RIDE");
+//                ViewEditMoodEventFragment viewEditMoodEventFragment = ViewEditMoodEventFragment.newInstance(selectedMoodEvent);
+//                viewEditMoodEventFragment.show(getSupportFragmentManager(),"MOODEVENT");
+            }
+        });
+
+        // long click to delete
+        selfMoodEventList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final MoodEvent selectedMoodEvent = (MoodEvent) parent.getItemAtPosition(position);
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                onConfirmPressed(selectedMoodEvent);
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder alert = new AlertDialog.Builder(SelfActivity.this);
+                alert.setMessage("Are you sure that you want to delete?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener)
+                .show();
+                return true;
             }
         });
     }
@@ -135,8 +169,6 @@ public class SelfActivity extends AppCompatActivity {
      *  When delete is confirmed, remove the moodEvent from the list
      */
     public void onConfirmPressed(MoodEvent selectedMoodEvent) {
-        //        selfMoodEventAdapter.remove(selectedMoodEvent);
-        //        selfMoodEventAdapter.notifyDataSetChanged();
         User user = new User();
         user.deleteMoodEvent(selectedMoodEvent);
     }
