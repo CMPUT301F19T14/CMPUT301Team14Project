@@ -37,11 +37,9 @@ public class SelfActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE_Email = "com.cmput301t14.mooditude.email";
     public static final String EXTRA_MESSAGE_Mode = "com.cmput301t14.mooditude.mode";
 
-
     ListView selfMoodEventList;
     ArrayAdapter<MoodEvent> selfMoodEventAdapter;
     ArrayList<MoodEvent> selfMoodEventDataList;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +49,9 @@ public class SelfActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
         MenuBar menuBar = new MenuBar(SelfActivity.this, messageEmail, 4);
+
+        setUpMoodEventList();
+        setUpDeleteMoodEvent();
 
         final String TAG = "Sample";
         final TextView FollowerTV;
@@ -129,7 +130,9 @@ public class SelfActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void setUpMoodEventList(){
         selfMoodEventList = findViewById(R.id.self_mood_event_list);
         selfMoodEventDataList = new ArrayList<>();
 
@@ -149,7 +152,9 @@ public class SelfActivity extends AppCompatActivity {
                 ViewEditMoodEventFragment.newInstance(selectedMoodEvent).show(getSupportFragmentManager(), "MoodEvent");
             }
         });
+    }
 
+    private void setUpDeleteMoodEvent(){
         // long click to delete
         selfMoodEventList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -169,9 +174,9 @@ public class SelfActivity extends AppCompatActivity {
                 };
                 AlertDialog.Builder alert = new AlertDialog.Builder(SelfActivity.this);
                 alert.setMessage("Are you sure that you want to delete?")
-                .setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener)
-                .show();
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .show();
                 return true;
             }
         });
