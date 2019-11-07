@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,17 +50,29 @@ public class SelfActivity extends AppCompatActivity {
     ListView selfMoodEventList;
     ArrayAdapter<MoodEvent> selfMoodEventAdapter;
     ArrayList<MoodEvent> selfMoodEventDataList;
-
+    private FirebaseUser user;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private String messageEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_self);
 
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
 
 
         Intent intent = getIntent();
-        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
+        messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
+        if(messageEmail == null){
+            messageEmail = String.valueOf(user.getEmail());
+        }
+        if(messageEmail.compareTo(String.valueOf(user.getEmail())) != 0){
+            messageEmail = String.valueOf(user.getEmail());
+        }
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -113,7 +127,7 @@ public class SelfActivity extends AppCompatActivity {
         final TextView numMoodEvent;
 
 
-        FirebaseFirestore db;
+
         db = FirebaseFirestore.getInstance();
 
         final CollectionReference collectionReference = db.collection("Users");
