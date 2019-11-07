@@ -22,6 +22,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -98,58 +99,93 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else if (password.equals(confrimPassword)){
 
-                    collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                            for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
-                                String db_user_name = String.valueOf(doc.getData().get("user_name"));
-                                if (userName.equals(db_user_name)){
-                                    userNameExist = userName.equals(db_user_name);
-                                    Toast.makeText(getApplicationContext(),"Email ID:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
+                    collectionReference
+//                            .orderBy("user_name")
+                            .whereEqualTo("user_name",userName)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            userNameExist = true;
+                                            String dbUserName = String.valueOf(document.get("user_name"));
+                                            Toast.makeText(getApplicationContext(),"User Name:"+dbUserName +", Exist: "+ userNameExist +" Success",Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                    userNameExist = false;
+                                    Toast.makeText(getApplicationContext(),"User Name:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
+                            });
+//                            .addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    userNameExist = false;
+//                                    Toast.makeText(getApplicationContext(),"User Name:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
+//                                }
+//                            })
+//                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+////                                @Override
+////                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+////                                    userNameExist = true;
+////                                    Toast.makeText(getApplicationContext(),"User Name:"+userName +", Exist: "+ userNameExist + " Success",Toast.LENGTH_SHORT).show();
+////                                }
+////                            });
+
+//                    collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//                            for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
+//                                String db_user_name = String.valueOf(doc.getData().get("user_name"));
+//                                if (userName.equals(db_user_name)){
+//                                    userNameExist = userName.equals(db_user_name);
+//                                    Toast.makeText(getApplicationContext(),"Email ID:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+////
+//                            if(userNameExist){
+//                                userNameEditText.setError("Username already exist!");
+//                                userNameEditText.requestFocus();
+//                            }
+//                            else {
+//                                mFirebaseAuth.createUserWithEmailAndPassword(email,password)
+//                                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<AuthResult> task) {
+//                                                if (!task.isSuccessful()){
+//                                                    Toast.makeText(getApplicationContext(),"Sign Up Failed!",Toast.LENGTH_SHORT).show();
+//                                                }
+//                                                else {
 //
-                            if(userNameExist){
-                                userNameEditText.setError("Username already exist!");
-                                userNameEditText.requestFocus();
-                            }
-                            else {
-                                mFirebaseAuth.createUserWithEmailAndPassword(email,password)
-                                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                                if (!task.isSuccessful()){
-                                                    Toast.makeText(getApplicationContext(),"Sign Up Failed!",Toast.LENGTH_SHORT).show();
-                                                }
-                                                else {
-
-                                                    HashMap<String,String> data  = new HashMap<>();
-                                                    data.put("user_name",userName);
-
-                                                    collectionReference
-                                                            .document(email)
-                                                            .set(data)
-                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void aVoid) {
-                                                                    Toast.makeText(getApplicationContext(),"Sign Up Success!",Toast.LENGTH_SHORT).show();
-                                                                    startActivity(new Intent(RegisterActivity.this,SignInActivity.class));
-                                                                }
-                                                            })
-                                                            .addOnFailureListener(new OnFailureListener() {
-                                                                @Override
-                                                                public void onFailure(@NonNull Exception e) {
-                                                                    Toast.makeText(getApplicationContext(),"Sign Up Failure!",Toast.LENGTH_SHORT).show();
-                                                                }
-                                                            });
-                                                }
-                                            }
-                                        });
-                            }
-
+//                                                    HashMap<String,String> data  = new HashMap<>();
+//                                                    data.put("user_name",userName);
 //
-                        }
-                    });
+//                                                    collectionReference
+//                                                            .document(email)
+//                                                            .set(data)
+//                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                                @Override
+//                                                                public void onSuccess(Void aVoid) {
+//                                                                    Toast.makeText(getApplicationContext(),"Sign Up Success!",Toast.LENGTH_SHORT).show();
+//                                                                    startActivity(new Intent(RegisterActivity.this,SignInActivity.class));
+//                                                                }
+//                                                            })
+//                                                            .addOnFailureListener(new OnFailureListener() {
+//                                                                @Override
+//                                                                public void onFailure(@NonNull Exception e) {
+//                                                                    Toast.makeText(getApplicationContext(),"Sign Up Failure!",Toast.LENGTH_SHORT).show();
+//                                                                }
+//                                                            });
+//                                                }
+//                                            }
+//                                        });
+//                            }
+//
+////
+//                        }
+//                    });
+
 //                    collectionReference
 //                            .get()
 //                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
