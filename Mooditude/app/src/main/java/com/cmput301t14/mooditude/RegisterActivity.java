@@ -18,25 +18,28 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText emaiEditText,userNameEditText, passwordEditText,passwordConfirmEditText;
-    private Button joinNowBtn;
     private FirebaseAuth mFirebaseAuth;
 
     private String email, userName, password, confrimPassword;
     boolean userNameExist;
-//    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,21 +51,13 @@ public class RegisterActivity extends AppCompatActivity {
         emaiEditText = findViewById(R.id.register_email);
         passwordEditText = findViewById(R.id.register_password);
         passwordConfirmEditText = findViewById(R.id.register_password_2);
-        joinNowBtn = findViewById(R.id.register_join_now_button);
+
+        Button joinNowBtn = findViewById(R.id.register_join_now_button);
 
         FirebaseFirestore db;
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("Users");
 
-//        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-//                for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
-//                    String userEmail = doc.getId();
-//                    Toast.makeText(getApplicationContext(),"Email ID:"+userEmail,Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
 
         joinNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,16 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
                 confrimPassword = passwordConfirmEditText.getText().toString();
                 userNameExist = false;
 
-                collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                    for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
-                        String db_user_name = String.valueOf(doc.getData().get("user_name"));
-                        userNameExist = userName.equals(db_user_name);
-//                        Toast.makeText(getApplicationContext(),"Email ID:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+
 
                 if (email.isEmpty()){
                     emaiEditText.setError("Please enter email!");
@@ -90,10 +76,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else if(userName.isEmpty()){
                     userNameEditText.setError("Please enter username!");
-                    userNameEditText.requestFocus();
-                }
-                else if(userNameExist == true){
-                    userNameEditText.setError("Username already exist!");
                     userNameEditText.requestFocus();
                 }
                 else if (password.isEmpty()){
@@ -108,37 +90,59 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Passwords not equal!",Toast.LENGTH_SHORT).show();
                     passwordEditText.requestFocus();
                 }
-                else if (password.equals(confrimPassword) && !userNameExist){
-                    mFirebaseAuth.createUserWithEmailAndPassword(email,password)
-                            .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                else if (password.equals(confrimPassword)){
+
+                    collectionReference
+                            .whereEqualTo("user_name",userName)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (!task.isSuccessful()){
-                                        Toast.makeText(getApplicationContext(),"Sign Up Failed!",Toast.LENGTH_SHORT).show();
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            userNameExist = true;
+                                            String dbUserName = String.valueOf(document.get("user_name"));
+                                            Toast.makeText(getApplicationContext(),"User Name:"+dbUserName +", Exist: "+ userNameExist +" Success",Toast.LENGTH_SHORT).show();
+                                        }
+                                        if (!userNameExist){
+                                            mFirebaseAuth.createUserWithEmailAndPassword(email,password)
+                                                    .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                                            if (!task.isSuccessful()){
+                                                                Toast.makeText(getApplicationContext(),"Sign Up Failed!",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                            else {
+
+                                                                HashMap<String,Object> data  = new HashMap<>();
+                                                                List<String> empty = new ArrayList<>();
+                                                                data.put("user_name",userName);
+                                                                data.put("followers",empty);
+                                                                data.put("following",empty);
+
+                                                                collectionReference
+                                                                        .document(email)
+                                                                        .set(data)
+                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void aVoid) {
+                                                                                Toast.makeText(getApplicationContext(),"Sign Up Success!",Toast.LENGTH_SHORT).show();
+                                                                                startActivity(new Intent(RegisterActivity.this,SignInActivity.class));
+                                                                            }
+                                                                        })
+                                                                        .addOnFailureListener(new OnFailureListener() {
+                                                                            @Override
+                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                Toast.makeText(getApplicationContext(),"Sign Up Failure!",Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        });
+                                                            }
+                                                        }
+                                                    });
+                                        }
                                     }
                                     else {
-
-                                        HashMap<String,String> data  = new HashMap<>();
-                                        data.put("user_name",userName);
-
-                                        collectionReference
-                                                .document(email)
-                                                .set(data)
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                        Toast.makeText(getApplicationContext(),"Sign Up Success!",Toast.LENGTH_SHORT).show();
-                                                        startActivity(new Intent(RegisterActivity.this,SignInActivity.class));
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Toast.makeText(getApplicationContext(),"Sign Up Failure!",Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-
-
+                                        Toast.makeText(getApplicationContext(),"Error!"+ userNameExist,Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
