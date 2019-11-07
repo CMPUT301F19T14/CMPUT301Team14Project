@@ -108,6 +108,7 @@ public class SelfActivity extends AppCompatActivity {
         final TextView FollowingTV;
         final TextView numFollowerTV;
         final TextView numFollowingTV;
+        final TextView userNameTV;
 
 
         FirebaseFirestore db;
@@ -122,6 +123,7 @@ public class SelfActivity extends AppCompatActivity {
         numFollowerTV = findViewById(R.id.number_of_follower);
         numFollowingTV = findViewById(R.id.number_of_following);
         FollowingTV = findViewById(R.id.following);
+        userNameTV = findViewById(R.id.userNametextView);
 
         //get the total number of followers/following
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -130,6 +132,7 @@ public class SelfActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
+                    userNameTV.setText(String.valueOf(doc.get("user_name")));
 
                     ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
                     if(followerList==null){
@@ -138,6 +141,7 @@ public class SelfActivity extends AppCompatActivity {
                     else{
                         numFollowerTV.setText(String.valueOf(followerList.size()));
                     }
+
                     ArrayList<String> followingList = (ArrayList<String>) doc.get("following");
                     if(followerList==null){
                         numFollowingTV.setText("0");
