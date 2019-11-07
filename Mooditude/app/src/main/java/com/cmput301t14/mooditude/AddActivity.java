@@ -49,6 +49,12 @@ public class AddActivity extends AppCompatActivity {
         locationTextView = findViewById(R.id.location_textview);
         photoTextView = findViewById(R.id.photo_textview);
 
+        setUpMoodSpinner();
+        setUpSocialSituationSpinner();
+        setUpSubmitButton();
+    }
+
+    private void setUpMoodSpinner(){
         // set dropdown moodSpinner Adapter
         ArrayAdapter<CharSequence> moodArrayAdapter = ArrayAdapter.createFromResource(this,
                 R.array.mood_string_array, android.R.layout.simple_spinner_item);
@@ -66,7 +72,9 @@ public class AddActivity extends AppCompatActivity {
                 // nothing selected
             }
         });
+    }
 
+    private void setUpSocialSituationSpinner(){
         // set dropdown socialSituationSpinner Adapter
         ArrayAdapter<CharSequence> socialSituationArrayAdapter = ArrayAdapter.createFromResource(this,
                 R.array.social_situation_string_array, android.R.layout.simple_spinner_item);
@@ -84,7 +92,9 @@ public class AddActivity extends AppCompatActivity {
                 // nothing selected
             }
         });
+    }
 
+    private void setUpSubmitButton(){
         // set submit button
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +125,6 @@ public class AddActivity extends AppCompatActivity {
                     MoodEvent moodEvent = new MoodEvent(1, mood,
                             new Location(0.0,0.0),
                             socialSituation, commentString);
-
 
                     // push the MoodEvent to database
                     User user=  new User();
