@@ -15,8 +15,10 @@
         <activity android:name=".AddActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".SignInActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".RegisterActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

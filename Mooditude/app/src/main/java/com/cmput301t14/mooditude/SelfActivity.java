@@ -30,6 +30,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -109,6 +110,7 @@ public class SelfActivity extends AppCompatActivity {
         final TextView numFollowerTV;
         final TextView numFollowingTV;
         final TextView userNameTV;
+        final TextView numMoodEvent;
 
 
         FirebaseFirestore db;
@@ -124,6 +126,9 @@ public class SelfActivity extends AppCompatActivity {
         numFollowingTV = findViewById(R.id.number_of_following);
         FollowingTV = findViewById(R.id.following);
         userNameTV = findViewById(R.id.userNametextView);
+        numMoodEvent= findViewById(R.id.number_of_mood_events);
+
+
 
         //get the total number of followers/following
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -132,6 +137,27 @@ public class SelfActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
+
+                    if(!doc.contains("MoodHistory")){
+                        CollectionReference moodHistory = documentReference.collection("MoodHistory");
+                        moodHistory.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("TAG", task.getResult().size() + "");
+                                    numMoodEvent.setText(String.valueOf(task.getResult().size()));
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+
+                    }
+                    else{
+                        numMoodEvent.setText("0");
+
+                    }
+
                     userNameTV.setText(String.valueOf(doc.get("user_name")));
 
                     ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
