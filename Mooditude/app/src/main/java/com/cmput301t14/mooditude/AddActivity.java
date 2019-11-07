@@ -4,14 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-
-
 import android.content.Intent;
 
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,8 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
 
@@ -37,13 +30,16 @@ public class AddActivity extends AppCompatActivity {
     private String moodString;
     private String socialSituationString;
 
+    private String messageEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
         Intent intent = getIntent();
-        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
+        messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
+        MenuBar menuBar = new MenuBar(AddActivity.this, messageEmail,2);
 
         // find the views
         submitButton = findViewById(R.id.submit_button);
@@ -53,6 +49,12 @@ public class AddActivity extends AppCompatActivity {
         locationTextView = findViewById(R.id.location_textview);
         photoTextView = findViewById(R.id.photo_textview);
 
+        setUpMoodSpinner();
+        setUpSocialSituationSpinner();
+        setUpSubmitButton();
+    }
+
+    private void setUpMoodSpinner(){
         // set dropdown moodSpinner Adapter
         ArrayAdapter<CharSequence> moodArrayAdapter = ArrayAdapter.createFromResource(this,
                 R.array.mood_string_array, android.R.layout.simple_spinner_item);
@@ -70,7 +72,9 @@ public class AddActivity extends AppCompatActivity {
                 // nothing selected
             }
         });
+    }
 
+    private void setUpSocialSituationSpinner(){
         // set dropdown socialSituationSpinner Adapter
         ArrayAdapter<CharSequence> socialSituationArrayAdapter = ArrayAdapter.createFromResource(this,
                 R.array.social_situation_string_array, android.R.layout.simple_spinner_item);
@@ -88,7 +92,9 @@ public class AddActivity extends AppCompatActivity {
                 // nothing selected
             }
         });
+    }
 
+    private void setUpSubmitButton(){
         // set submit button
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +126,6 @@ public class AddActivity extends AppCompatActivity {
                             new Location(0.0,0.0),
                             socialSituation, commentString);
 
-
                     // push the MoodEvent to database
                     User user=  new User();
                     Log.i("TAG","Add User");
@@ -136,54 +141,5 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-//         TextView title = (TextView) findViewById(R.id.activityTitle2);
-//         title.setText("Add Activity");
-
-
-        // set navigation menu bar
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
-        Menu menu = bottomNavigationView.getMenu();
-        MenuItem menuItem = menu.getItem(2);
-        menuItem.setChecked(true);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.navigation_home:
-                        Intent intent0 = new Intent(AddActivity.this, HomeActivity.class);
-                        intent0.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent0.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent0);
-                        break;
-                    case R.id.navigation_search:
-                        Intent intent1 = new Intent(AddActivity.this, SearchActivity.class);
-                        intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent1.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        startActivity(intent1);
-                        break;
-                    case R.id.navigation_add:
-
-                        break;
-                    case R.id.navigation_notification:
-                        Intent intent3 = new Intent(AddActivity.this, NotificationActivity.class);
-                        intent3.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent3.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        startActivity(intent3);
-                        break;
-                    case R.id.navigation_self:
-                        Intent intent4 = new Intent(AddActivity.this, SelfActivity.class);
-                        intent4.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent4.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent4);
-                        break;
-                }
-                return false;
-
-            }
-        });
     }
 }

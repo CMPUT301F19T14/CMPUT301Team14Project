@@ -7,10 +7,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -20,12 +16,10 @@ import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -43,65 +37,21 @@ public class SelfActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE_Email = "com.cmput301t14.mooditude.email";
     public static final String EXTRA_MESSAGE_Mode = "com.cmput301t14.mooditude.mode";
 
-
     ListView selfMoodEventList;
     ArrayAdapter<MoodEvent> selfMoodEventAdapter;
     ArrayList<MoodEvent> selfMoodEventDataList;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_self);
 
-
-
         Intent intent = getIntent();
         final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
+        MenuBar menuBar = new MenuBar(SelfActivity.this, messageEmail, 4);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
-        Menu menu = bottomNavigationView.getMenu();
-        MenuItem menuItem = menu.getItem(4);
-        menuItem.setChecked(true);
-
-        //listener user want to jump to another parts of Main Interface and jump to the required activity
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.navigation_home:
-                        Intent intent0 = new Intent(SelfActivity.this, HomeActivity.class);
-                        intent0.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent0.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent0);
-                        break;
-                    case R.id.navigation_search:
-                        Intent intent1 = new Intent(SelfActivity.this, SearchActivity.class);
-                        intent1.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent1);
-                        break;
-                    case R.id.navigation_add:
-                        Intent intent2 = new Intent(SelfActivity.this, AddActivity.class);
-                        intent2.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent2);
-                        break;
-                    case R.id.navigation_notification:
-                        Intent intent3 = new Intent(SelfActivity.this, NotificationActivity.class);
-                        intent3.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent3.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent3);
-                        break;
-                    case R.id.navigation_self:
-
-                        break;
-                }
-                return false;
-
-            }
-        });
-
+        setUpMoodEventList();
+        setUpDeleteMoodEvent();
 
         final String TAG = "Sample";
         final TextView FollowerTV;
@@ -109,7 +59,6 @@ public class SelfActivity extends AppCompatActivity {
         final TextView numFollowerTV;
         final TextView numFollowingTV;
         final TextView userNameTV;
-
 
         FirebaseFirestore db;
         db = FirebaseFirestore.getInstance();
@@ -185,7 +134,9 @@ public class SelfActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void setUpMoodEventList(){
         selfMoodEventList = findViewById(R.id.self_mood_event_list);
         selfMoodEventDataList = new ArrayList<>();
 
@@ -205,7 +156,9 @@ public class SelfActivity extends AppCompatActivity {
                 ViewEditMoodEventFragment.newInstance(selectedMoodEvent).show(getSupportFragmentManager(), "MoodEvent");
             }
         });
+    }
 
+    private void setUpDeleteMoodEvent(){
         // long click to delete
         selfMoodEventList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -225,9 +178,9 @@ public class SelfActivity extends AppCompatActivity {
                 };
                 AlertDialog.Builder alert = new AlertDialog.Builder(SelfActivity.this);
                 alert.setMessage("Are you sure that you want to delete?")
-                .setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener)
-                .show();
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .show();
                 return true;
             }
         });
