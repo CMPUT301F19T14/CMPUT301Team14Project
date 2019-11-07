@@ -66,6 +66,8 @@ public class ViewEditMoodEventFragment extends DialogFragment {
 
         if (selectedMoodEvent != null) {
 
+            moodString = selectedMoodEvent.getMood().getMood();
+            socialSituationString = selectedMoodEvent.getSocialSituation().getSocialSituation();
             commentEditText.setText(selectedMoodEvent.getTextComment());
 
             // set dropdown moodSpinner Adapter
@@ -92,7 +94,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                     R.array.social_situation_string_array, android.R.layout.simple_spinner_item);
             socialSituationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             socialSituationSpinner.setAdapter(socialSituationArrayAdapter);
-            moodSpinner.setSelection(moodArrayAdapter.getPosition(selectedMoodEvent.getSocialSituation().getSocialSituation()),true);
+            socialSituationSpinner.setSelection(socialSituationArrayAdapter.getPosition(selectedMoodEvent.getSocialSituation().getSocialSituation()),true);
             // set socialSituationSpinner on item select
             socialSituationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -128,12 +130,13 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                             Mood mood = MoodEventValidator.checkMood(moodString);
                             if (mood == null) {
                                 valid = false;
+                                Log.i("TAG","INVALID MOOD");
                                 ((TextView) moodSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
                             }
-
                             SocialSituation socialSituation = MoodEventValidator.checkSocialSituation(socialSituationString);
                             if (socialSituation == null) {
                                 valid = false;
+                                Log.i("TAG","INVALID SOCIALSITUATION");
                                 ((TextView) socialSituationSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
                             }
 
