@@ -4,28 +4,22 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.LifecycleOwner;
 
 public class ViewEditMoodEventFragment extends DialogFragment {
-    private ImageButton cancelButton;
-    private ImageButton submitButton;
+
     private Spinner moodSpinner;
     private Spinner socialSituationSpinner;
     private EditText commentEditText;
@@ -50,8 +44,6 @@ public class ViewEditMoodEventFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_edit_mood_event_fragment_layout, null);
-        cancelButton = view.findViewById(R.id.frag_cancel_button);
-        submitButton = view.findViewById(R.id.frag_submit_button);
         moodSpinner = view.findViewById(R.id.frag_mood_spinner);
         socialSituationSpinner = view.findViewById(R.id.frag_social_situation_spinner);
         commentEditText = view.findViewById(R.id.frag_comment_edittext);
@@ -130,13 +122,11 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                             Mood mood = MoodEventValidator.checkMood(moodString);
                             if (mood == null) {
                                 valid = false;
-                                Log.i("TAG","INVALID MOOD");
                                 ((TextView) moodSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
                             }
                             SocialSituation socialSituation = MoodEventValidator.checkSocialSituation(socialSituationString);
                             if (socialSituation == null) {
                                 valid = false;
-                                Log.i("TAG","INVALID SOCIALSITUATION");
                                 ((TextView) socialSituationSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
                             }
 
@@ -155,7 +145,6 @@ public class ViewEditMoodEventFragment extends DialogFragment {
 
                                 // push the MoodEvent to database
                                 User user = new User();
-                                Log.i("TAG", "Add User");
                                 user.pushMoodEvent(moodEvent);
                                 getDialog().dismiss();
                             }

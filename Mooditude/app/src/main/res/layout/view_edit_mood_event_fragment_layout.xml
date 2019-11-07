@@ -25,30 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10dp">
-
-                <ImageButton
-                    android:id="@+id/frag_cancel_button"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:background="#00CA0000"
-                    android:padding="10dp"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/cancel_icon" />
-
-                <ImageButton
-                    android:id="@+id/frag_submit_button"
-                    android:layout_width="289dp"
-                    android:layout_height="65dp"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:background="#00CA0000"
-                    android:padding="10dp"
-                    android:scaleType="fitEnd"
-                    app:srcCompat="@drawable/submit_icon" />
-            </LinearLayout>
+                android:padding="10dp"/>
 
             <View
                 android:layout_width="match_parent"
