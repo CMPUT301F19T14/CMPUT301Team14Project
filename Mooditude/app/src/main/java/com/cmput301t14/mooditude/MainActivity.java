@@ -16,6 +16,10 @@ public class MainActivity extends AppCompatActivity {
         final Button signInBtn = findViewById(R.id.starter_sign_in_button);
         final Button joinNowBtn = findViewById(R.id.stater_join_now_button);
 
+//        Testing Code
+        Intent intentSignIn = new Intent(MainActivity.this, SignInActivity.class);
+        startActivity(intentSignIn);
+//        Testing End
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

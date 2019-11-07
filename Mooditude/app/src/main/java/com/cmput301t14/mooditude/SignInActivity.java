@@ -34,10 +34,35 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+
+
+
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         emaiEditText = findViewById(R.id.signin_email_edit_text);
         passwordEditText = findViewById(R.id.signin_password_edit_text);
         signInBtn = findViewById(R.id.signin_sign_in_button);
+
+
+
+        //
+
+        mFirebaseAuth.signInWithEmailAndPassword("test@test.com","tester")
+
+                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()){
+                            Toast.makeText(getApplicationContext(),"Please Login Failed!",Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
+                            Intent intentHomeActivity = new Intent(getApplicationContext(),HomeActivity.class);
+                            startActivity(intentHomeActivity);
+                        }
+                    }
+                });
+//
 
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override

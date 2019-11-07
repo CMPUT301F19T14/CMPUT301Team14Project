@@ -7,12 +7,14 @@
     tools:context=".AddActivity">
 
     <FrameLayout
-        android:id="@+id/frame_add"
+        android:id="@+id/frag_frame_add"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="10dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,30 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:padding="10dp"
-                    android:text="New Mood Event!"
-                    android:textAlignment="center"
-                    android:textColor="#66CCFF"
-                    android:textSize="36sp" />
-
-                <ImageButton
-                    android:id="@+id/submit_button"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:background="#00CA0000"
-                    android:padding="10dp"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/submit_icon" />
-            </LinearLayout>
+                android:padding="10dp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -77,8 +56,8 @@
                     android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/mood_spinner"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/frag_mood_spinner"
+                        android:layout_width="251dp"
                         android:layout_height="50dp"
                         android:layout_gravity="right"
                         android:layout_weight="1"
@@ -109,10 +88,10 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0"
                     android:background="@drawable/border_lines"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/social_situation_spinner"
+                        android:id="@+id/frag_social_situation_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:layout_gravity="right"
@@ -140,7 +119,7 @@
                     app:srcCompat="@drawable/comment" />
 
                 <EditText
-                    android:id="@+id/comment_edittext"
+                    android:id="@+id/frag_comment_edittext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -170,7 +149,7 @@
                     app:srcCompat="@drawable/location_icon" />
 
                 <TextView
-                    android:id="@+id/location_textview"
+                    android:id="@+id/frag_location_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_gravity="right"
@@ -200,7 +179,7 @@
                     app:srcCompat="@drawable/photo_icon" />
 
                 <TextView
-                    android:id="@+id/photo_textview"
+                    android:id="@+id/frag_photo_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_gravity="right"
@@ -217,16 +196,5 @@
 
     </FrameLayout>
 
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigationView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
-        app:itemBackground="?android:attr/windowBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_navigation_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

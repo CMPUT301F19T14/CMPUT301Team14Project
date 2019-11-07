@@ -1,22 +1,30 @@
 package com.cmput301t14.mooditude;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -36,10 +44,16 @@ public class SelfActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE_Mode = "com.cmput301t14.mooditude.mode";
 
 
+    ListView selfMoodEventList;
+    ArrayAdapter<MoodEvent> selfMoodEventAdapter;
+    ArrayList<MoodEvent> selfMoodEventDataList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_self);
+
 
 
         Intent intent = getIntent();
@@ -167,5 +181,59 @@ public class SelfActivity extends AppCompatActivity {
 
             }
         });
+
+        selfMoodEventList = findViewById(R.id.self_mood_event_list);
+        selfMoodEventDataList = new ArrayList<>();
+
+        selfMoodEventAdapter = new SelfMoodEventAdapter(this, selfMoodEventDataList);
+
+        selfMoodEventList.setAdapter(selfMoodEventAdapter);
+
+        // listen to selfMoodEventDataList sync with database
+        User user = new User();
+        user.listenSelfMoodEvents(selfMoodEventDataList, selfMoodEventAdapter);
+
+        // click to view moodEvent
+        selfMoodEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // go to ViewEditMoodEventFragment
+                MoodEvent selectedMoodEvent = (MoodEvent) parent.getItemAtPosition(position);
+                ViewEditMoodEventFragment.newInstance(selectedMoodEvent).show(getSupportFragmentManager(), "MoodEvent");
+            }
+        });
+
+        // long click to delete
+        selfMoodEventList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final MoodEvent selectedMoodEvent = (MoodEvent) parent.getItemAtPosition(position);
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                onConfirmPressed(selectedMoodEvent);
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder alert = new AlertDialog.Builder(SelfActivity.this);
+                alert.setMessage("Are you sure that you want to delete?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener)
+                .show();
+                return true;
+            }
+        });
+    }
+
+    /** Called by SelfMoodEventAdapter,
+     *  When delete is confirmed, remove the moodEvent from the list
+     */
+    public void onConfirmPressed(MoodEvent selectedMoodEvent) {
+        User user = new User();
+        user.deleteMoodEvent(selectedMoodEvent);
     }
 }
