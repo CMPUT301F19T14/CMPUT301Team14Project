@@ -17,7 +17,7 @@ public class MoodEventUnitTest {
         SocialSituation st= new SocialSituation("ALONE");
 
 
-        MoodEvent me= new MoodEvent( 1, m,l,st);
+        MoodEvent me= new MoodEvent( 1, m,l,st,"");
 
         assertEquals(me.getAuthor(),(Integer)1);
 
