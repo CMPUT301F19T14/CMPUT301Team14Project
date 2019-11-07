@@ -42,6 +42,8 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
+        Intent intent = getIntent();
+        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
 
         // find the views
         submitButton = findViewById(R.id.submit_button);
@@ -126,6 +128,7 @@ public class AddActivity extends AppCompatActivity {
 
                     // go to selfActivity
                     Intent intent = new Intent(AddActivity.this, SelfActivity.class);
+                    intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     finish();
@@ -135,8 +138,7 @@ public class AddActivity extends AppCompatActivity {
 
 
 
-        Intent intent = getIntent();
-        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
+
 
 //         TextView title = (TextView) findViewById(R.id.activityTitle2);
 //         title.setText("Add Activity");
