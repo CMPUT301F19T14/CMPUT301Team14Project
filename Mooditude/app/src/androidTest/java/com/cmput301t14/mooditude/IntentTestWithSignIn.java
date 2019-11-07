@@ -43,14 +43,15 @@ public class IntentTestWithSignIn {
 
         solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
 
-
-
     }
 
     @Test
     public void start() throws Exception{
         Activity activity= rule.getActivity();
     }
+
+    @Test
+    public void 
 
 //    @Test
 
