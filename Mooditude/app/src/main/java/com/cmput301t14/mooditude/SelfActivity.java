@@ -32,6 +32,7 @@ import java.util.ArrayList;
  * It contains the following functions:
  * 1. show the number of mood event and with clicking item to show the summary list of mood events
  * 2. show the number of user's follower and following, and with clicking item to show the summary list of follower/following
+ * 3. show the user's own Mood History as a Custom ListView
  */
 public class SelfActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE_Email = "com.cmput301t14.mooditude.email";
@@ -136,6 +137,10 @@ public class SelfActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * setup the Mood History, MoodEvent ListView and sync the data
+     * and the click to edit functionality
+     */
     private void setUpMoodEventList(){
         selfMoodEventList = findViewById(R.id.self_mood_event_list);
         selfMoodEventDataList = new ArrayList<>();
@@ -158,6 +163,9 @@ public class SelfActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * setup the MoodEvent ListView item long click to delete functionality
+     */
     private void setUpDeleteMoodEvent(){
         // long click to delete
         selfMoodEventList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

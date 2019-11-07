@@ -11,12 +11,22 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
 
+
+/**
+ * A single class for MenuBar shared by many Activities
+ */
 public class MenuBar {
 
     private Activity activity;
     private String messageEmail;
     private int menuBarIndex;
 
+    /**
+     * constructor called by other Activities
+     * @param activity - the caller activity
+     * @param messageEmail - email passed in
+     * @param menuBarIndex - the index of the item in the menubar passed in
+     */
     public MenuBar(Activity activity, String messageEmail, int menuBarIndex){
         this.activity = activity;
         this.messageEmail = messageEmail;
@@ -24,6 +34,9 @@ public class MenuBar {
         setUpMenuBar();
     }
 
+    /**
+     * setup the MenuBar to navigate between Activities
+     */
     private void setUpMenuBar(){
         // set navigation menu bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView) activity.findViewById(R.id.navigationView);
