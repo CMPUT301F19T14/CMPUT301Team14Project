@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,7 +28,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -55,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         FirebaseFirestore db;
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("Users");
+
 
 //        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
 //            @Override
@@ -100,8 +105,8 @@ public class RegisterActivity extends AppCompatActivity {
                 else if (password.equals(confrimPassword)){
 
                     collectionReference
-//                            .orderBy("user_name")
                             .whereEqualTo("user_name",userName)
+//                            .orderBy("user_name")
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
@@ -112,12 +117,52 @@ public class RegisterActivity extends AppCompatActivity {
                                             String dbUserName = String.valueOf(document.get("user_name"));
                                             Toast.makeText(getApplicationContext(),"User Name:"+dbUserName +", Exist: "+ userNameExist +" Success",Toast.LENGTH_SHORT).show();
                                         }
-                                    } else {
-                                    userNameExist = false;
-                                    Toast.makeText(getApplicationContext(),"User Name:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
+                                        if (!userNameExist){
+                                            mFirebaseAuth.createUserWithEmailAndPassword(email,password)
+                                                    .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                                            if (!task.isSuccessful()){
+                                                                Toast.makeText(getApplicationContext(),"Sign Up Failed!",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                            else {
+
+                                                                HashMap<String,String> data  = new HashMap<>();
+                                                                Map<String,String> emtpty  = new HashMap<>();
+                                                                data.put("user_name",userName);
+                                                                data.put("followers","");
+                                                                data.put("following","");
+
+                                                                collectionReference
+                                                                        .document(email)
+                                                                        .set(data)
+                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void aVoid) {
+                                                                                Toast.makeText(getApplicationContext(),"Sign Up Success!",Toast.LENGTH_SHORT).show();
+                                                                                startActivity(new Intent(RegisterActivity.this,SignInActivity.class));
+                                                                            }
+                                                                        })
+                                                                        .addOnFailureListener(new OnFailureListener() {
+                                                                            @Override
+                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                Toast.makeText(getApplicationContext(),"Sign Up Failure!",Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        });
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                    else {
+                                        Toast.makeText(getApplicationContext(),"Error!"+ userNameExist,Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
+                    if(userNameExist){
+                        userNameEditText.setError("Username already exist!");
+                        userNameEditText.requestFocus();
+                    }
 //                            .addOnFailureListener(new OnFailureListener() {
 //                                @Override
 //                                public void onFailure(@NonNull Exception e) {
@@ -126,12 +171,12 @@ public class RegisterActivity extends AppCompatActivity {
 //                                }
 //                            })
 //                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-////                                @Override
-////                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-////                                    userNameExist = true;
-////                                    Toast.makeText(getApplicationContext(),"User Name:"+userName +", Exist: "+ userNameExist + " Success",Toast.LENGTH_SHORT).show();
-////                                }
-////                            });
+//                                @Override
+//                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                                    userNameExist = true;
+//                                    Toast.makeText(getApplicationContext(),"User Name:"+userName +", Exist: "+ userNameExist + " Success",Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
 
 //                    collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
 //                        @Override
