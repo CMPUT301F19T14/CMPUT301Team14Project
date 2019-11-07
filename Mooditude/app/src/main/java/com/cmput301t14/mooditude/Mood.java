@@ -4,6 +4,9 @@ import android.graphics.Color;
 
 import java.util.HashMap;
 
+/**
+ * Model class Mood to store the pre-defined mood and their color, emoticon
+ */
 public class Mood {
     private enum MoodEnum {HAPPY, SAD, ANGRY, EXCITED};
 

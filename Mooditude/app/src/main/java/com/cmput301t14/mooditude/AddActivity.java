@@ -17,6 +17,10 @@ import android.widget.TextView;
 
 import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
 
+
+/**
+ * Activity for the user to add a MoodEvent
+ */
 public class AddActivity extends AppCompatActivity {
 
     ImageButton submitButton;
@@ -54,6 +58,9 @@ public class AddActivity extends AppCompatActivity {
         setUpSubmitButton();
     }
 
+    /**
+     * setup the mood spinner dropdown menu
+     */
     private void setUpMoodSpinner(){
         // set dropdown moodSpinner Adapter
         ArrayAdapter<CharSequence> moodArrayAdapter = ArrayAdapter.createFromResource(this,
@@ -74,6 +81,9 @@ public class AddActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * setup the social situation spinner dropdown menu
+     */
     private void setUpSocialSituationSpinner(){
         // set dropdown socialSituationSpinner Adapter
         ArrayAdapter<CharSequence> socialSituationArrayAdapter = ArrayAdapter.createFromResource(this,
@@ -94,6 +104,10 @@ public class AddActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * setup the submit button for submitting the mood event,
+     * validate and then push the MoodEvent to the database
+     */
     private void setUpSubmitButton(){
         // set submit button
         submitButton.setOnClickListener(new View.OnClickListener() {
