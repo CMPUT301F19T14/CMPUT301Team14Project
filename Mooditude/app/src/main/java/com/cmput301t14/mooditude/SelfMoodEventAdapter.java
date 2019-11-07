@@ -40,6 +40,9 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
 
         timeTextView.setText(moodEvent.getDatetime().toString());
         emoticonTextView.setText(moodEvent.getMood().getEmoticon());
+        LinearLayout moodEventEntry= view.findViewById(R.id.mood_event_entry);
+        moodEventEntry.setBackgroundColor(moodEvent.getMood().getColor());
+        moodEventEntry.getBackground().setAlpha(50);
         return view;
 
     }
