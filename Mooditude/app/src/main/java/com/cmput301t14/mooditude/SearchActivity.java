@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,35 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.widget.EditText;
+
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
+
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-
-import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
 
 
 public class SearchActivity extends AppCompatActivity {
@@ -57,6 +41,11 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        Intent intent = getIntent();
+        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
+        MenuBar menuBar = new MenuBar(SearchActivity.this, messageEmail, 1);
+
         FirebaseFirestore db;
         db = FirebaseFirestore.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -67,7 +56,6 @@ public class SearchActivity extends AppCompatActivity {
         resultList.setHasFixedSize(true);
         resultList.setLayoutManager(new LinearLayoutManager(this));
         resultList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
 
         userEmailList = new ArrayList<>();
         userNameList = new ArrayList<>();
@@ -97,58 +85,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-
-
-//        TextView title = (TextView) findViewById(R.id.activityTitle1);
-//        title.setText("Search Activity");
-
-        Intent intent = getIntent();
-        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
-
-//        TextView title = (TextView) findViewById(R.id.activityTitle1);
-//        title.setText("Search Activity");
-
-
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
-        Menu menu = bottomNavigationView.getMenu();
-        MenuItem menuItem = menu.getItem(1);
-        menuItem.setChecked(true);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.navigation_home:
-                        Intent intent0 = new Intent(SearchActivity.this, HomeActivity.class);
-                        intent0.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent0.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent0);
-                        break;
-                    case R.id.navigation_search:
-
-                        break;
-                    case R.id.navigation_add:
-                        Intent intent2 = new Intent(SearchActivity.this, AddActivity.class);
-                        intent2.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent2);
-                        break;
-                    case R.id.navigation_notification:
-                        Intent intent3 = new Intent(SearchActivity.this, NotificationActivity.class);
-                        intent3.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent3.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent3);
-                        break;
-                    case R.id.navigation_self:
-                        Intent intent4 = new Intent(SearchActivity.this, SelfActivity.class);
-                        intent4.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent4.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent4);
-                        break;
-                }
-                return false;
-
-            }
-        });
     }
 
     private void setAdapter(final String searchedString, CollectionReference collectionReference){

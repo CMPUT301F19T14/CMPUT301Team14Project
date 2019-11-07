@@ -13,10 +13,19 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+
+/**
+ * Adapter Class for the list of MoodEvents in SelfActivity
+ */
 public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
     private ArrayList<MoodEvent> moodEventList;
     private Context context;
 
+    /**
+     * Constructor for the adapter
+     * @param context
+     * @param moodEventList - the data list of moodEvents
+     */
     public SelfMoodEventAdapter(Context context, ArrayList<MoodEvent> moodEventList){
         super(context,0, moodEventList);
         this.moodEventList = moodEventList;
@@ -24,6 +33,13 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
     }
 
 
+    /**
+     * get the view for each item in the list
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
