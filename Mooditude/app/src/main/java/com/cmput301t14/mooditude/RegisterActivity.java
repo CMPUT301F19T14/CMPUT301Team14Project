@@ -36,12 +36,10 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText emaiEditText,userNameEditText, passwordEditText,passwordConfirmEditText;
-//    private Button joinNowBtn;
     private FirebaseAuth mFirebaseAuth;
 
     private String email, userName, password, confrimPassword;
     boolean userNameExist;
-//    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +58,6 @@ public class RegisterActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("Users");
 
-
-//        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-//                for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
-//                    String userEmail = doc.getId();
-//                    Toast.makeText(getApplicationContext(),"Email ID:"+userEmail,Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
 
         joinNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +94,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                     collectionReference
                             .whereEqualTo("user_name",userName)
-//                            .orderBy("user_name")
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
@@ -127,11 +114,11 @@ public class RegisterActivity extends AppCompatActivity {
                                                             }
                                                             else {
 
-                                                                HashMap<String,String> data  = new HashMap<>();
-                                                                Map<String,String> emtpty  = new HashMap<>();
+                                                                HashMap<String,Object> data  = new HashMap<>();
+                                                                List<String> empty = new ArrayList<>();
                                                                 data.put("user_name",userName);
-                                                                data.put("followers","");
-                                                                data.put("following","");
+                                                                data.put("followers",empty);
+                                                                data.put("following",empty);
 
                                                                 collectionReference
                                                                         .document(email)
@@ -159,137 +146,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                    if(userNameExist){
-                        userNameEditText.setError("Username already exist!");
-                        userNameEditText.requestFocus();
-                    }
-//                            .addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    userNameExist = false;
-//                                    Toast.makeText(getApplicationContext(),"User Name:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
-//                                }
-//                            })
-//                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                                    userNameExist = true;
-//                                    Toast.makeText(getApplicationContext(),"User Name:"+userName +", Exist: "+ userNameExist + " Success",Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-
-//                    collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-//                            for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
-//                                String db_user_name = String.valueOf(doc.getData().get("user_name"));
-//                                if (userName.equals(db_user_name)){
-//                                    userNameExist = userName.equals(db_user_name);
-//                                    Toast.makeText(getApplicationContext(),"Email ID:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-////
-//                            if(userNameExist){
-//                                userNameEditText.setError("Username already exist!");
-//                                userNameEditText.requestFocus();
-//                            }
-//                            else {
-//                                mFirebaseAuth.createUserWithEmailAndPassword(email,password)
-//                                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-//                                            @Override
-//                                            public void onComplete(@NonNull Task<AuthResult> task) {
-//                                                if (!task.isSuccessful()){
-//                                                    Toast.makeText(getApplicationContext(),"Sign Up Failed!",Toast.LENGTH_SHORT).show();
-//                                                }
-//                                                else {
-//
-//                                                    HashMap<String,String> data  = new HashMap<>();
-//                                                    data.put("user_name",userName);
-//
-//                                                    collectionReference
-//                                                            .document(email)
-//                                                            .set(data)
-//                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                                                @Override
-//                                                                public void onSuccess(Void aVoid) {
-//                                                                    Toast.makeText(getApplicationContext(),"Sign Up Success!",Toast.LENGTH_SHORT).show();
-//                                                                    startActivity(new Intent(RegisterActivity.this,SignInActivity.class));
-//                                                                }
-//                                                            })
-//                                                            .addOnFailureListener(new OnFailureListener() {
-//                                                                @Override
-//                                                                public void onFailure(@NonNull Exception e) {
-//                                                                    Toast.makeText(getApplicationContext(),"Sign Up Failure!",Toast.LENGTH_SHORT).show();
-//                                                                }
-//                                                            });
-//                                                }
-//                                            }
-//                                        });
-//                            }
-//
-////
-//                        }
-//                    });
-
-//                    collectionReference
-//                            .get()
-//                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                    if (task.isSuccessful()) {
-//                                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                                            String db_user_name = String.valueOf(document.getData().get("user_name"));
-//                                            if (userName.equals(db_user_name)){
-//                                                userNameExist = true;
-//                                                Toast.makeText(getApplicationContext(),"Email ID:"+userName +", Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
-//                                                break;
-//                                            }
-//                                            Toast.makeText(getApplicationContext(),"Exist: "+ userNameExist,Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    } else {
-//                                        Toast.makeText(getApplicationContext(),"Error getting documents",Toast.LENGTH_SHORT).show();
-//                                    }
-//
-//                                }
-//                            });
-
-//                    if(userNameExist){
-//                        userNameEditText.setError("Username already exist!");
-//                        userNameEditText.requestFocus();
-//                    }
-//                    else {
-//                        mFirebaseAuth.createUserWithEmailAndPassword(email,password)
-//                                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                                        if (!task.isSuccessful()){
-//                                            Toast.makeText(getApplicationContext(),"Sign Up Failed!",Toast.LENGTH_SHORT).show();
-//                                        }
-//                                        else {
-//
-//                                            HashMap<String,String> data  = new HashMap<>();
-//                                            data.put("user_name",userName);
-//
-//                                            collectionReference
-//                                                    .document(email)
-//                                                    .set(data)
-//                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                                        @Override
-//                                                        public void onSuccess(Void aVoid) {
-//                                                            Toast.makeText(getApplicationContext(),"Sign Up Success!",Toast.LENGTH_SHORT).show();
-//                                                            startActivity(new Intent(RegisterActivity.this,SignInActivity.class));
-//                                                        }
-//                                                    })
-//                                                    .addOnFailureListener(new OnFailureListener() {
-//                                                        @Override
-//                                                        public void onFailure(@NonNull Exception e) {
-//                                                            Toast.makeText(getApplicationContext(),"Sign Up Failure!",Toast.LENGTH_SHORT).show();
-//                                                        }
-//                                                    });
-//                                        }
-//                                    }
-//                                });
-//                    }
                 }
                 else {
                     Toast.makeText(getApplicationContext(),"Error Occured!",Toast.LENGTH_SHORT).show();

@@ -118,9 +118,19 @@ public class SelfActivity extends AppCompatActivity {
                     DocumentSnapshot doc = task.getResult();
 
                     ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
-                    numFollowerTV.setText(String.valueOf(followerList.size()));
+                    if(followerList==null){
+                        numFollowerTV.setText("0");
+                    }
+                    else{
+                        numFollowerTV.setText(String.valueOf(followerList.size()));
+                    }
                     ArrayList<String> followingList = (ArrayList<String>) doc.get("following");
-                    numFollowingTV.setText(String.valueOf(followingList.size()));
+                    if(followerList==null){
+                        numFollowingTV.setText("0");
+                    }
+                    else{
+                        numFollowingTV.setText(String.valueOf(followingList.size()));
+                    }
 
                 }
             }
