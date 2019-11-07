@@ -18,6 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+
+/**
+ * Fragment Class for Editing and Viewing MoodEvent detail, selected from the Mood History
+ */
 public class ViewEditMoodEventFragment extends DialogFragment {
 
     private Spinner moodSpinner;
@@ -32,12 +36,20 @@ public class ViewEditMoodEventFragment extends DialogFragment {
 
     private MoodEvent selectedMoodEvent;
 
+    /**
+     * onAttach for the Fragment, using the super's method
+     * @param context
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
 
-    /** handle View/Edit of MoodEvent,
+    /**
+     * create the dialog of handle View/Edit of MoodEvent
+     * pull the values from DB and show them
+     * submit the change to DB on click ok
+     * cancel goes back
      */
     @NonNull
     @Override
@@ -156,6 +168,13 @@ public class ViewEditMoodEventFragment extends DialogFragment {
         }
      return null;
     }
+
+
+    /**
+     * Constructor like method, get the parameters passed in as Bundle
+     * @param moodEvent - the MoodEvent selected in Mood History
+     * @return
+     */
 
     static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent) {
         Bundle args = new Bundle();
