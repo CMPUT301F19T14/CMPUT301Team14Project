@@ -4,9 +4,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 public class ViewEditMoodEventFragment extends DialogFragment {
+    private ImageButton cancelButton;
     private ImageButton submitButton;
     private Spinner moodSpinner;
     private Spinner socialSituationSpinner;
@@ -33,37 +37,33 @@ public class ViewEditMoodEventFragment extends DialogFragment {
 
     private MoodEventValidator validator;
 
-    private OnFragmentInteractionListener listener;
     private MoodEvent selectedMoodEvent;
 
-    public interface OnFragmentInteractionListener {
-        void onOkPressed(MoodEvent selectedMoodEvent);
-    }
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        if (context instanceof OnFragmentInteractionListener) {
+//            listener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + "must implement OnFragmentInteractionListener");
+//        }
+//    }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            listener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + "must implement OnFragmentInteractionListener");
-        }
-    }
-
-    /** Dialog to handle View/Edit of MoodEvent,
+    /** handle View/Edit of MoodEvent,
      */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_edit_mood_event_fragment_layout, null);
-        submitButton = view.findViewById(R.id.submit_button);
-        moodSpinner = view.findViewById(R.id.mood_spinner);
-        socialSituationSpinner = view.findViewById(R.id.social_situation_spinner);
-        commentEditText = view.findViewById(R.id.comment_edittext);
-        locationTextView = view.findViewById(R.id.location_textview);
-        photoTextView = view.findViewById(R.id.photo_textview);
+        cancelButton = view.findViewById(R.id.frag_cancel_button);
+        submitButton = view.findViewById(R.id.frag_submit_button);
+        moodSpinner = view.findViewById(R.id.frag_mood_spinner);
+        socialSituationSpinner = view.findViewById(R.id.frag_social_situation_spinner);
+        commentEditText = view.findViewById(R.id.frag_comment_edittext);
+        locationTextView = view.findViewById(R.id.frag_location_textview);
+        photoTextView = view.findViewById(R.id.frag_photo_textview);
 
 
         Bundle args = getArguments();
@@ -80,6 +80,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                     R.array.mood_string_array, android.R.layout.simple_spinner_item);
             moodArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             moodSpinner.setAdapter(moodArrayAdapter);
+            moodSpinner.setSelection(moodArrayAdapter.getPosition(selectedMoodEvent.getMood().toString()));
             // set moodSpinner on item select
             moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -93,36 +94,82 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                 }
             });
 
-        }
+            // set dropdown socialSituationSpinner Adapter
+            ArrayAdapter<CharSequence> socialSituationArrayAdapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.social_situation_string_array, android.R.layout.simple_spinner_item);
+            socialSituationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            socialSituationSpinner.setAdapter(socialSituationArrayAdapter);
+            moodSpinner.setSelection(moodArrayAdapter.getPosition(selectedMoodEvent.getSocialSituation().toString()));
+            // set socialSituationSpinner on item select
+            socialSituationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    socialSituationString = parent.getItemAtPosition(position).toString();
+                }
 
-        validator = new MoodEventValidator();
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // nothing selected
+                }
+            });
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        final AlertDialog d = builder.setView(view)
-                .setTitle("Add/Edit Ride")
-                .setNegativeButton("Cancel", null)
-                .setPositiveButton("OK", null).create();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            final AlertDialog d = builder.setView(view)
+                    .setTitle("MoodEvent")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("OK", null).create();
 
-        /* Use View.OnclickListener to get manual control of Dialog dismiss, only dismiss
-           after all validation passed and value updated , use validator 's
-           onValidationFailed and onValidationSucceeded to handle input requirement validation*/
-        d.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        validator.validate();
-                    }
-                });
-            }
-        });
+            /* Use View.OnclickListener to get manual control of Dialog dismiss, only dismiss
+            after all validation passed and value updated , use validator 's
+            onValidationFailed and onValidationSucceeded to handle input requirement validation*/
+            d.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                    b.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // validate the input fields
+                            boolean valid = true;
 
+                            Mood mood = MoodEventValidator.checkMood(moodString);
+                            if (mood == null) {
+                                valid = false;
+                                ((TextView) moodSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
+                            }
+
+                            SocialSituation socialSituation = MoodEventValidator.checkSocialSituation(socialSituationString);
+                            if (socialSituation == null) {
+                                valid = false;
+                                ((TextView) socialSituationSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
+                            }
+
+                            commentString = commentEditText.getText().toString();
+                            if (!MoodEventValidator.checkComment(commentString)) {
+                                valid = false;
+                                commentEditText.setError(MoodEventValidator.getErrorMessage());
+                            }
+
+                            if (valid) {
+                                // TODO: put actual location and photo
+                                MoodEvent moodEvent = new MoodEvent(1, mood,
+                                        new Location(0.0, 0.0),
+                                        socialSituation, commentString);
+
+
+                                // push the MoodEvent to database
+                                User user = new User();
+                                Log.i("TAG", "Add User");
+                                user.pushMoodEvent(moodEvent);
+                            }
+                        }
+                    });
+                }
+            });
         return d;
-
+        }
+     return null;
     }
-
 
     static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent) {
         Bundle args = new Bundle();
