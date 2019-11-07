@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
+
 public class HomeActivity extends AppCompatActivity {
 
     @Override
@@ -30,6 +32,9 @@ public class HomeActivity extends AppCompatActivity {
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
+// Get the Intent that started this activity and extract the string
+        Intent thisIntent = getIntent();
+        final String messageEmail = thisIntent.getStringExtra(EXTRA_MESSAGE_Email);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -45,22 +50,26 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.navigation_search:
                         Intent intent1 = new Intent(HomeActivity.this, SearchActivity.class);
+                        intent1.putExtra(EXTRA_MESSAGE_Email, messageEmail);
                         intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent1);
                         break;
                     case R.id.navigation_add:
                         Intent intent2 = new Intent(HomeActivity.this, AddActivity.class);
+                        intent2.putExtra(EXTRA_MESSAGE_Email, messageEmail);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent2);
                         break;
                     case R.id.navigation_notification:
                         Intent intent3 = new Intent(HomeActivity.this, NotificationActivity.class);
+                        intent3.putExtra(EXTRA_MESSAGE_Email, messageEmail);
                         intent3.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent3);
                         break;
                     case R.id.navigation_self:
                         Intent intent4 = new Intent(HomeActivity.this, SelfActivity.class);
                         intent4.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent4.putExtra(EXTRA_MESSAGE_Email, messageEmail);
                         startActivity(intent4);
                         break;
                 }

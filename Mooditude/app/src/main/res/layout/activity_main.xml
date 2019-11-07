@@ -60,7 +60,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/sign_in_button"
         android:text="Sign In"
-        android:textColor="#00FFFF"
+        android:textColor="#66CCFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"

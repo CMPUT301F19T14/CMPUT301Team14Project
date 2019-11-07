@@ -19,6 +19,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
+
 public class SignInActivity extends AppCompatActivity {
 
     private EditText emaiEditText,passwordEditText;
@@ -65,7 +67,7 @@ public class SignInActivity extends AppCompatActivity {
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emaiEditText.getText().toString();
+                final String email = emaiEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 if (email.isEmpty()){
                     emaiEditText.setError("Please enter email!");
@@ -86,6 +88,7 @@ public class SignInActivity extends AppCompatActivity {
                                     else {
                                         Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
                                         Intent intentHomeActivity = new Intent(getApplicationContext(),HomeActivity.class);
+                                        intentHomeActivity.putExtra(EXTRA_MESSAGE_Email, email);
                                         startActivity(intentHomeActivity);
                                     }
                                 }

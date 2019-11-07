@@ -6,23 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".SelfActivity">
 
-<!--    <FrameLayout-->
-<!--        android:id="@+id/ok"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior" >-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/activityTitle4"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textAlignment="center"-->
-<!--            android:layout_gravity="center"/>-->
-<!--    </FrameLayout>-->
-
-
-
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationView"
         android:layout_width="0dp"
@@ -37,55 +20,129 @@
         app:menu="@menu/bottom_navigation_menu"/>
 
     <TextView
+        android:id="@+id/moodEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="16dp"
+        android:text="Mood Events:"
+        android:textColor="#666666"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/circle_button"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/number_of_mood_events"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:background="#66CCFF"
+        android:hint="number"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/moodEvents"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/follower"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="165dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="187dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="4dp"
         android:text="follower:"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#666666"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/circle_button"
+        app:layout_constraintTop_toBottomOf="@+id/moodEvents" />
 
     <TextView
         android:id="@+id/number_of_follower"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="165dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="187dp"
-        android:text="0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/follower" />
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="4dp"
+        android:background="#66CCFF"
+        android:hint="number"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toEndOf="@+id/follower"
+        app:layout_constraintTop_toBottomOf="@+id/number_of_mood_events" />
 
     <TextView
         android:id="@+id/following"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="165dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="187dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="4dp"
         android:text="following:"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/number_of_follower" />
+        android:textColor="#666666"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/circle_button"
+        app:layout_constraintTop_toBottomOf="@+id/follower" />
 
     <TextView
         android:id="@+id/number_of_following"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="165dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="187dp"
-        android:text="0"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:background="#66CCFF"
+        android:hint="number"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/following"
+        app:layout_constraintTop_toBottomOf="@+id/number_of_follower" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="24dp"
+        android:background="#00FFFFFF"
+        android:scaleType="centerInside"
+        android:scaleX="2"
+        android:scaleY="2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
+        app:srcCompat="@drawable/mymap" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="24dp"
+        android:background="#00FFFFFF"
+        android:scaleType="centerInside"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back" />
+
+    <Button
+        android:id="@+id/circle_button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/head"
+        android:padding="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/following" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:background="#66CCFF"
+        android:hint="user ID"
+        android:textColor="#00FFFFFF"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/circle_button" />
+
 
     <ListView
         android:id="@+id/self_mood_event_list"
