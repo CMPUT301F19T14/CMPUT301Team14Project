@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.LifecycleOwner;
 
 public class ViewEditMoodEventFragment extends DialogFragment {
     private ImageButton cancelButton;
@@ -35,20 +36,12 @@ public class ViewEditMoodEventFragment extends DialogFragment {
     private String moodString;
     private String socialSituationString;
 
-    private MoodEventValidator validator;
-
     private MoodEvent selectedMoodEvent;
 
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            listener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + "must implement OnFragmentInteractionListener");
-//        }
-//    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
 
     /** handle View/Edit of MoodEvent,
      */
@@ -68,7 +61,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
 
         Bundle args = getArguments();
         if (args != null){
-            selectedMoodEvent = (MoodEvent) args.getSerializable("MoodEvent");
+            selectedMoodEvent = (MoodEvent) args.getSerializable("moodEvent");
         }
 
         if (selectedMoodEvent != null) {
@@ -80,7 +73,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                     R.array.mood_string_array, android.R.layout.simple_spinner_item);
             moodArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             moodSpinner.setAdapter(moodArrayAdapter);
-            moodSpinner.setSelection(moodArrayAdapter.getPosition(selectedMoodEvent.getMood().toString()));
+            moodSpinner.setSelection(moodArrayAdapter.getPosition(selectedMoodEvent.getMood().getMood()),true);
             // set moodSpinner on item select
             moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -99,7 +92,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                     R.array.social_situation_string_array, android.R.layout.simple_spinner_item);
             socialSituationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             socialSituationSpinner.setAdapter(socialSituationArrayAdapter);
-            moodSpinner.setSelection(moodArrayAdapter.getPosition(selectedMoodEvent.getSocialSituation().toString()));
+            moodSpinner.setSelection(moodArrayAdapter.getPosition(selectedMoodEvent.getSocialSituation().getSocialSituation()),true);
             // set socialSituationSpinner on item select
             socialSituationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -154,13 +147,14 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                                 // TODO: put actual location and photo
                                 MoodEvent moodEvent = new MoodEvent(1, mood,
                                         new Location(0.0, 0.0),
-                                        socialSituation, commentString);
+                                        socialSituation, commentString, selectedMoodEvent.getDatetime());
 
 
                                 // push the MoodEvent to database
                                 User user = new User();
                                 Log.i("TAG", "Add User");
                                 user.pushMoodEvent(moodEvent);
+                                getDialog().dismiss();
                             }
                         }
                     });

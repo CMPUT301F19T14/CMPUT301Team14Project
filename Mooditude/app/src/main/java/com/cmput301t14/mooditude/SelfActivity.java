@@ -130,10 +130,11 @@ public class SelfActivity extends AppCompatActivity {
         selfMoodEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // TODO: go to view moodEvent Activity
-                Log.i("TAG","clicked on moodevent!");
                 MoodEvent selectedMoodEvent = (MoodEvent) parent.getItemAtPosition(position);
-                ViewEditMoodEventFragment viewEditMoodEventFragment = ViewEditMoodEventFragment.newInstance(selectedMoodEvent);
-                viewEditMoodEventFragment.show(getSupportFragmentManager(),"MOODEVENT");
+                Log.i("TAG","clicked on moodevent!");
+                ViewEditMoodEventFragment.newInstance(selectedMoodEvent).show(getSupportFragmentManager(), "DETAIL_DELETE_RIDE");
+//                ViewEditMoodEventFragment viewEditMoodEventFragment = ViewEditMoodEventFragment.newInstance(selectedMoodEvent);
+//                viewEditMoodEventFragment.show(getSupportFragmentManager(),"MOODEVENT");
             }
         });
 
@@ -168,8 +169,6 @@ public class SelfActivity extends AppCompatActivity {
      *  When delete is confirmed, remove the moodEvent from the list
      */
     public void onConfirmPressed(MoodEvent selectedMoodEvent) {
-        //        selfMoodEventAdapter.remove(selectedMoodEvent);
-        //        selfMoodEventAdapter.notifyDataSetChanged();
         User user = new User();
         user.deleteMoodEvent(selectedMoodEvent);
     }
