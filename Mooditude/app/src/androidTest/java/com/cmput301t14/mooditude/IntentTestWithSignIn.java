@@ -21,24 +21,24 @@ public class IntentTestWithSignIn {
     private Solo solo;
 
     @Rule
-    public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class,true,true);
+    public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class, true, true);
 
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
         solo.clickOnButton("Sign In");
 
-        solo.waitForText("Mooditude",1,2000);
+        solo.waitForText("Mooditude", 1, 2000);
         solo.assertCurrentActivity("Wrong Activity", SignInActivity.class);
 
 
-        String userName="testc";
-        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text),userName+"@test.com");
-        solo.enterText((EditText) solo.getView(R.id.signin_password_edit_text),"123456");
+        String userName = "testc";
+        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text), userName + "@test.com");
+        solo.enterText((EditText) solo.getView(R.id.signin_password_edit_text), "123456");
 
         solo.clickOnButton("Sign In");
 
@@ -50,8 +50,8 @@ public class IntentTestWithSignIn {
     }
 
     @Test
-    public void start() throws Exception{
-        Activity activity= rule.getActivity();
+    public void start() throws Exception {
+        Activity activity = rule.getActivity();
     }
 
     @Test
@@ -78,14 +78,14 @@ public class IntentTestWithSignIn {
 
         solo.clickOnView(solo.getView(R.id.submit_button));
 
-        solo.waitForActivity(SelfActivity.class);
+        solo.waitForActivity(SelfActivity.class,1000);
 
         solo.clickInList(0);
 
 
 //        Fragment fragment = solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.frag_frame_add);
 
-        solo.waitForFragmentById(R.id.frag_frame_add);
+        solo.waitForFragmentById(R.id.frag_frame_add,1000);
 
         solo.waitForText("SAD");
 
@@ -101,45 +101,16 @@ public class IntentTestWithSignIn {
         solo.clickOnText("CROWD");
 
         solo.clickOnText("OK");
-
-//        solo.clickOnView(solo.getView(Spinner.class, 1));
-//        solo.scrollToTop();
-//        solo.clickOnView(solo.getView(TextView.class, 3));
-
-//        solo.clickOnButton();
-
-
-
-
-
-
-
-//        solo.
-
     }
 
+    @Test
+    public void checkFind() {
 
-//    @Test
+        solo.clickOnView(solo.getView(R.id.navigation_search));
 
-//    public void check(){
-//        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-//
-//        solo.clickOnButton("Join Now");
-//
-//        solo.waitForText("Welcome to Moodtter",1,2000);
-//
-//        solo.assertCurrentActivity("Wrong Activity", RegisterActivity.class);
-//        String userName="testC";
-//        solo.enterText((EditText) solo.getView(R.id.register_email),userName+"@test.com");
-//        solo.enterText((EditText) solo.getView(R.id.register_username),userName);
-//        solo.enterText((EditText) solo.getView(R.id.register_password),"123456");
-//        solo.enterText((EditText) solo.getView(R.id.register_password_2),"123456");
-//        solo.clickOnButton("Join Now");
-//
-//        solo.waitForText("Mooditude",1,2000);
-//        solo.assertCurrentActivity("Wrong Activity", SignInActivity.class);
-//
-//    }
+        solo.enterText((EditText) solo.getView(R.id.search_edit_text), "ye");
 
+        solo.waitForText("wangye");
 
+    }
 }
