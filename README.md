@@ -2,6 +2,11 @@
 
 ### APP Name: Mooditude
 
+### Android Requirement
+
+-  Android API Level 26 (Android 8 :Oreo) Required At Minimum
+-  Google APIs are required for Emulators
+
 ### Register
 
 - For a new user to register, username and emails must be unique
