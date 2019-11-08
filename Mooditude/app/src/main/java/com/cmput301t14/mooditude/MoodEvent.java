@@ -1,5 +1,7 @@
 package com.cmput301t14.mooditude;
 
+import com.google.firebase.Timestamp;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -17,7 +19,7 @@ public class MoodEvent implements Serializable {
 
 //    private Integer author;
     private Mood mood;
-    private LocalDateTime datetime;
+    private Timestamp datetime;
     private Location location;
     private SocialSituation socialSituation;
     private String textComment;
@@ -37,7 +39,9 @@ public class MoodEvent implements Serializable {
         this.socialSituation = socialSituation;
         this.textComment = textComment;
 
-        this.datetime=LocalDateTime.now();
+//        this.datetime=LocalDateTime.now();
+        this.datetime= Timestamp.now();
+
     }
 
     /**
@@ -46,15 +50,14 @@ public class MoodEvent implements Serializable {
      * @param location
      * @param socialSituation
      * @param textComment
-     * @param datetime
+     * @param timestamp
      */
-    public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, LocalDateTime datetime) {
+    public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
         this.mood = mood;
         this.location = location;
         this.socialSituation = socialSituation;
         this.textComment = textComment;
-
-        this.datetime=datetime;
+        this.datetime=timestamp;
     }
 
     /**
@@ -77,7 +80,7 @@ public class MoodEvent implements Serializable {
      * datetime getter
      * @return
      */
-    public LocalDateTime getDatetime() {
+    public Timestamp getDatetime() {
         return datetime;
     }
 
@@ -85,7 +88,7 @@ public class MoodEvent implements Serializable {
      * datetime setter
      * @param datetime
      */
-    public void setDatetime(LocalDateTime datetime) {
+    public void setDatetime(Timestamp datetime) {
         this.datetime = datetime;
     }
 

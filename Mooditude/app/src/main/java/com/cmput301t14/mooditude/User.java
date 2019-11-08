@@ -10,12 +10,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
@@ -66,7 +69,8 @@ public class User{
         CollectionReference moodHistory = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
 
-        final DocumentReference moodEntry=moodHistory.document(moodEvent.getDatetime().toString());
+        String epochTimeString= String.valueOf(moodEvent.getDatetime().getSeconds());
+        final DocumentReference moodEntry=moodHistory.document(epochTimeString);
 
         final HashMap<String,Object> moodHash = new HashMap<>();
 
@@ -78,7 +82,7 @@ public class User{
                     if (document.exists()) {
 //                        Log.d("TAG", "Document exists!");
                         Location location  =moodEvent.getLocation();
-                        LocalDateTime localDateTime=moodEvent.getDatetime();
+                        Timestamp localDateTime=moodEvent.getDatetime();
 //                        Integer author= moodEvent.getAuthor();
                         Mood mood = moodEvent.getMood();
                         SocialSituation socialSituation= moodEvent.getSocialSituation();
@@ -92,17 +96,21 @@ public class User{
                         if (textComment != document.getString("Comment")){
                             moodHash.put("Comment",textComment);
                         }
-                        if (localDateTime.toString() != document.getString("DateTime")){
-                            moodHash.put("DateTime",localDateTime.toString());
-                        }
+//                        if (localDateTime != document.getTimestamp("DateTime")){
+////                            Log.i("TAG1B",document.getTimestamp("DateTime").toString());
+//                            moodHash.put("DateTime",localDateTime);
+////                            Log.i("TAG1",localDateTime.toString());
+////                            Log.i("TAG1B",document.getTimestamp("DateTime").toString());
+//                        }
                         if (socialSituation.getSocialSituation() != document.getString("SocialSituation")){
                             moodHash.put("SocialSituation",socialSituation.getSocialSituation());
                         }
+                        moodHash.put("DateTime",localDateTime);
                         moodEntry.update(moodHash);
                     } else {
                         Log.d("TAG", "Document does not exist!");
                         Location location  =moodEvent.getLocation();
-                        LocalDateTime localDateTime=moodEvent.getDatetime();
+                        Timestamp localDateTime=moodEvent.getDatetime();
 //                        Integer author= moodEvent.getAuthor();
                         Mood mood = moodEvent.getMood();
                         SocialSituation socialSituation= moodEvent.getSocialSituation();
@@ -110,8 +118,10 @@ public class User{
                         moodHash.put("Location",location.getGeopoint());
                         moodHash.put("Mood",mood.getMood());
                         moodHash.put("Comment",textComment);
-                        moodHash.put("DateTime",localDateTime.toString());
+                        moodHash.put("DateTime",localDateTime);
                         moodHash.put("SocialSituation",socialSituation.getSocialSituation());
+//                        moodHash.put("TIMESTAMP", FieldValue.serverTimestamp());
+                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
                         moodEntry.set(moodHash);
                     }
                 } else {
@@ -131,7 +141,8 @@ public class User{
 
         // delete the moodEvent from Firebase if it is selected,
         // Note the SnapshotListener will handle the local update as well
-        moodHistory.document(selectedMoodEvent.getDatetime().toString())
+        String epochTimeString= String.valueOf(selectedMoodEvent.getDatetime().getSeconds());
+        moodHistory.document(epochTimeString)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -166,8 +177,11 @@ public class User{
                     Mood mood= new Mood(doc.getString("Mood"));
                     SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
                     Location location= new Location(doc.getGeoPoint("Location"));
-                    LocalDateTime datetime = LocalDateTime.parse(doc.getString("DateTime"));
+//                    LocalDateTime datetime = LocalDateTime.parse(doc.getString("DateTime"));
+                    Timestamp datetime = doc.getTimestamp("DateTime");
                     MoodEvent moodEvent=new MoodEvent(mood, location,socialSituation,textComment,datetime);
+//                    if(doc.getTimestamp("TIMESTAMP")!=null)
+//                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
                     moodEventDataList.add(moodEvent);
                 }
                 moodEventAdapter.notifyDataSetChanged();

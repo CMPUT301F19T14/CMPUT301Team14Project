@@ -154,7 +154,6 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                                         new Location(0.0, 0.0),
                                         socialSituation, commentString, selectedMoodEvent.getDatetime());
 
-
                                 // push the MoodEvent to database
                                 User user = new User();
                                 user.pushMoodEvent(moodEvent);
