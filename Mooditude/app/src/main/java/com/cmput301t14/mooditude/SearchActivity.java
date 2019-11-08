@@ -28,6 +28,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 
+/**
+ * User can search other users in the Search Activity
+ * by entering others' user names or user e-mails.
+ */
 public class SearchActivity extends AppCompatActivity {
 
     private EditText searchField;
@@ -41,6 +45,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
 
         Intent intent = getIntent();
         final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
@@ -71,12 +76,15 @@ public class SearchActivity extends AppCompatActivity {
 
             }
 
+            /**
+             * check the search text field whether is changed,
+             * and clear the lists after finishing every search.
+             * @param editable
+             */
             @Override
             public void afterTextChanged(Editable editable) {
                 if(!editable.toString().isEmpty()){
                     setAdapter(editable.toString(), collectionReference);
-//                    Toast.makeText(getApplicationContext(),"Email ID:"+userEmailList, Toast.LENGTH_SHORT).show();
-
                 } else {
                     userNameList.clear();
                     userEmailList.clear();
@@ -85,8 +93,17 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
+    /**
+     * Get the user names and user emails from the firestore firebase.
+     * Check those user names or user emails whether contain the
+     * searched string. And the maximum size for the adapter is
+     * 15.
+     * @param searchedString
+     * @param collectionReference
+     */
     private void setAdapter(final String searchedString, CollectionReference collectionReference){
         userNameList.clear();
         userEmailList.clear();

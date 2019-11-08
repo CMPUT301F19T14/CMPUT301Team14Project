@@ -33,6 +33,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The RegisterActivity allows users to sign up
+ * for our app. There are four edit text fields
+ * that require users to enter their e-mail addresses,
+ * user names, and passwords. For security, the second
+ * password input should equal to the first password input.
+ * All of users' information will be uploaded to the
+ * firestore firebase.
+ */
+
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText emaiEditText,userNameEditText, passwordEditText,passwordConfirmEditText;
@@ -59,7 +69,14 @@ public class RegisterActivity extends AppCompatActivity {
         final CollectionReference collectionReference = db.collection("Users");
 
 
+
         joinNowBtn.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Validate the user input information. If information
+             * is matched to the requirement. The user information
+             * will be uploaded to the firestore firebase.
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 email = emaiEditText.getText().toString();
@@ -96,6 +113,11 @@ public class RegisterActivity extends AppCompatActivity {
                             .whereEqualTo("user_name",userName)
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                /**
+                                 * read database successfully, determine whether
+                                 * the user name is unique.
+                                 * @param task
+                                 */
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
@@ -107,6 +129,10 @@ public class RegisterActivity extends AppCompatActivity {
                                         if (!userNameExist){
                                             mFirebaseAuth.createUserWithEmailAndPassword(email,password)
                                                     .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                                                        /**
+                                                         * Register user successfully and add to the database
+                                                         * @param task
+                                                         */
                                                         @Override
                                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                                             if (!task.isSuccessful()){
