@@ -28,6 +28,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * User class is one class to implement all user related fucntions.
+ * Includes:
+ * push Mood Event to database
+ * delete Mood Event
+ * setup database connections
+ */
+
 public class User{
     private FirebaseUser user;
     private FirebaseFirestore db;
@@ -35,12 +43,24 @@ public class User{
 
     private String userName;
 
+    /**
+     * User Constructor
+     * Initialize db
+     * mAuth
+     * user
+     */
+
     public User(){
         db=FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         fetchUserName();
     }
+
+    /**
+     * push Mood Event to database.
+     * @param moodEvent
+     */
 
     public void pushMoodEvent(final MoodEvent moodEvent){
         CollectionReference moodHistory = db.collection("Users")
@@ -101,6 +121,11 @@ public class User{
         });
     }
 
+    /**
+     * delete Mood Event from server.
+     * @param selectedMoodEvent
+     */
+
     public void deleteMoodEvent(MoodEvent selectedMoodEvent){
         CollectionReference moodHistory = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
@@ -122,6 +147,12 @@ public class User{
                     }
                 });
     }
+
+    /**
+     * Connect Array Adapter to database to retrieve online information from database.
+     * @param moodEventDataList
+     * @param moodEventAdapter
+     */
 
     public void listenSelfMoodEvents(final ArrayList<MoodEvent> moodEventDataList, final ArrayAdapter<MoodEvent> moodEventAdapter){
         CollectionReference collectionReference = db.collection("Users")
@@ -146,6 +177,10 @@ public class User{
         });
     }
 
+
+    /**
+     * fetch user name from database.
+     */
     private void fetchUserName(){
         DocumentReference docRef = db.collection("Users").document(user.getEmail());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -165,6 +200,10 @@ public class User{
         });
     }
 
+    /**
+     * return user name to user
+     * @return
+     */
     public String getUserName(){
         return this.userName;
     }
