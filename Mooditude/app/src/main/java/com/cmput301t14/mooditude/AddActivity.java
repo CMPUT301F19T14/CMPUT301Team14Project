@@ -136,7 +136,7 @@ public class AddActivity extends AppCompatActivity {
 
                 if (valid){
                     // TODO: put actual location and photo
-                    MoodEvent moodEvent = new MoodEvent(1, mood,
+                    MoodEvent moodEvent = new MoodEvent(mood,
                             new Location(0.0,0.0),
                             socialSituation, commentString);
 

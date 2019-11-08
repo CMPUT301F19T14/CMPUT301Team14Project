@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  */
 public class MoodEvent implements Serializable {
 
-    private Integer author;
+//    private Integer author;
     private Mood mood;
     private LocalDateTime datetime;
     private Location location;
@@ -25,14 +25,13 @@ public class MoodEvent implements Serializable {
 
     /**
      * MoodEvent constructor
-     * @param author
      * @param mood
      * @param location
      * @param socialSituation
      * @param textComment
      */
-    public MoodEvent(Integer author, Mood mood, Location location, SocialSituation socialSituation, String textComment) {
-        this.author = author;
+    public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment) {
+//        this.author = author;
         this.mood = mood;
         this.location = location;
         this.socialSituation = socialSituation;
@@ -51,29 +50,12 @@ public class MoodEvent implements Serializable {
      * @param datetime
      */
     public MoodEvent(Integer author, Mood mood, Location location, SocialSituation socialSituation, String textComment, LocalDateTime datetime) {
-        this.author = author;
         this.mood = mood;
         this.location = location;
         this.socialSituation = socialSituation;
         this.textComment = textComment;
 
         this.datetime=datetime;
-    }
-
-    /**
-     * Author getter
-     * @return
-     */
-    public Integer getAuthor() {
-        return author;
-    }
-
-    /**
-     * Author setter
-     * @param author
-     */
-    public void setAuthor(Integer author) {
-        this.author = author;
     }
 
     /**

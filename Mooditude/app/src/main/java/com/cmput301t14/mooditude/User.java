@@ -76,10 +76,10 @@ public class User{
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d("TAG", "Document exists!");
+//                        Log.d("TAG", "Document exists!");
                         Location location  =moodEvent.getLocation();
                         LocalDateTime localDateTime=moodEvent.getDatetime();
-                        Integer author= moodEvent.getAuthor();
+//                        Integer author= moodEvent.getAuthor();
                         Mood mood = moodEvent.getMood();
                         SocialSituation socialSituation= moodEvent.getSocialSituation();
                         String textComment= moodEvent.getTextComment();
@@ -103,7 +103,7 @@ public class User{
                         Log.d("TAG", "Document does not exist!");
                         Location location  =moodEvent.getLocation();
                         LocalDateTime localDateTime=moodEvent.getDatetime();
-                        Integer author= moodEvent.getAuthor();
+//                        Integer author= moodEvent.getAuthor();
                         Mood mood = moodEvent.getMood();
                         SocialSituation socialSituation= moodEvent.getSocialSituation();
                         String textComment= moodEvent.getTextComment();
@@ -125,7 +125,6 @@ public class User{
      * delete Mood Event from server.
      * @param selectedMoodEvent
      */
-
     public void deleteMoodEvent(MoodEvent selectedMoodEvent){
         CollectionReference moodHistory = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
