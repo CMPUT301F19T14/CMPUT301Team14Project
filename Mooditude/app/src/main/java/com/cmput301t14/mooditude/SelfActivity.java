@@ -8,9 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -20,16 +17,20 @@ import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -38,15 +39,20 @@ import java.util.ArrayList;
  * It contains the following functions:
  * 1. show the number of mood event and with clicking item to show the summary list of mood events
  * 2. show the number of user's follower and following, and with clicking item to show the summary list of follower/following
+ * 3. show the user's own Mood History as a Custom ListView
  */
 public class SelfActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE_Email = "com.cmput301t14.mooditude.email";
     public static final String EXTRA_MESSAGE_Mode = "com.cmput301t14.mooditude.mode";
 
-
     ListView selfMoodEventList;
     ArrayAdapter<MoodEvent> selfMoodEventAdapter;
     ArrayList<MoodEvent> selfMoodEventDataList;
+
+    private FirebaseUser user;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private String messageEmail;
 
 
     @Override
@@ -55,53 +61,29 @@ public class SelfActivity extends AppCompatActivity {
         setContentView(R.layout.activity_self);
 
 
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+
 
         Intent intent = getIntent();
-        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
+        messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
+        
+        if(messageEmail == null){
+            messageEmail = String.valueOf(user.getEmail());
+        }
+        if(messageEmail.compareTo(String.valueOf(user.getEmail())) != 0){
+            messageEmail = String.valueOf(user.getEmail());
+        }
+      
+       MenuBar menuBar = new MenuBar(SelfActivity.this, messageEmail, 4);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
-        Menu menu = bottomNavigationView.getMenu();
-        MenuItem menuItem = menu.getItem(4);
-        menuItem.setChecked(true);
 
-        //listener user want to jump to another parts of Main Interface and jump to the required activity
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.navigation_home:
-                        Intent intent0 = new Intent(SelfActivity.this, HomeActivity.class);
-                        intent0.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent0.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent0);
-                        break;
-                    case R.id.navigation_search:
-                        Intent intent1 = new Intent(SelfActivity.this, SearchActivity.class);
-                        intent1.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent1);
-                        break;
-                    case R.id.navigation_add:
-                        Intent intent2 = new Intent(SelfActivity.this, AddActivity.class);
-                        intent2.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent2);
-                        break;
-                    case R.id.navigation_notification:
-                        Intent intent3 = new Intent(SelfActivity.this, NotificationActivity.class);
-                        intent3.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent3.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent3);
-                        break;
-                    case R.id.navigation_self:
+        
 
-                        break;
-                }
-                return false;
 
-            }
-        });
-
+        setUpMoodEventList();
+        setUpDeleteMoodEvent();
 
         final String TAG = "Sample";
         final TextView FollowerTV;
@@ -109,9 +91,8 @@ public class SelfActivity extends AppCompatActivity {
         final TextView numFollowerTV;
         final TextView numFollowingTV;
         final TextView userNameTV;
+        final TextView numMoodEvent;       
 
-
-        FirebaseFirestore db;
         db = FirebaseFirestore.getInstance();
 
         final CollectionReference collectionReference = db.collection("Users");
@@ -124,6 +105,9 @@ public class SelfActivity extends AppCompatActivity {
         numFollowingTV = findViewById(R.id.number_of_following);
         FollowingTV = findViewById(R.id.following);
         userNameTV = findViewById(R.id.userNametextView);
+        numMoodEvent= findViewById(R.id.number_of_mood_events);
+
+
 
         //get the total number of followers/following
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -132,6 +116,27 @@ public class SelfActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
+
+                    if(!doc.contains("MoodHistory")){
+                        CollectionReference moodHistory = documentReference.collection("MoodHistory");
+                        moodHistory.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("TAG", task.getResult().size() + "");
+                                    numMoodEvent.setText(String.valueOf(task.getResult().size()));
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+
+                    }
+                    else{
+                        numMoodEvent.setText("0");
+
+                    }
+
                     userNameTV.setText(String.valueOf(doc.get("user_name")));
 
                     ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
@@ -185,7 +190,13 @@ public class SelfActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    /**
+     * setup the Mood History, MoodEvent ListView and sync the data
+     * and the click to edit functionality
+     */
+    private void setUpMoodEventList(){
         selfMoodEventList = findViewById(R.id.self_mood_event_list);
         selfMoodEventDataList = new ArrayList<>();
 
@@ -205,7 +216,12 @@ public class SelfActivity extends AppCompatActivity {
                 ViewEditMoodEventFragment.newInstance(selectedMoodEvent).show(getSupportFragmentManager(), "MoodEvent");
             }
         });
+    }
 
+    /**
+     * setup the MoodEvent ListView item long click to delete functionality
+     */
+    private void setUpDeleteMoodEvent(){
         // long click to delete
         selfMoodEventList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -225,9 +241,9 @@ public class SelfActivity extends AppCompatActivity {
                 };
                 AlertDialog.Builder alert = new AlertDialog.Builder(SelfActivity.this);
                 alert.setMessage("Are you sure that you want to delete?")
-                .setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener)
-                .show();
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .show();
                 return true;
             }
         });

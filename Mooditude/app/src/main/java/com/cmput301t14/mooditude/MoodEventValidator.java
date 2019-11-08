@@ -3,13 +3,19 @@ package com.cmput301t14.mooditude;
 import java.util.StringTokenizer;
 
 /**
- * One Method class used to validate the input of moodevent.
+ * One Method class used to validate the input of Mood Event .
+ * provides static methods to validate one mood event.
  */
 
 public class MoodEventValidator {
 
     static private String errorMessage="";
 
+    /**
+     * validate mood
+     * @param moodStr
+     * @return
+     */
     public static Mood checkMood (String moodStr) { //static method
         //block of code to be executed
         Mood mood;
@@ -23,6 +29,11 @@ public class MoodEventValidator {
         return mood;
     }
 
+    /**
+     * validate SocialSituation
+     * @param socialSituationStr
+     * @return
+     */
     public static SocialSituation checkSocialSituation (String socialSituationStr) { //static method
         //block of code to be executed
         SocialSituation socialSituation;
@@ -35,6 +46,11 @@ public class MoodEventValidator {
         return socialSituation;
     }
 
+    /**
+     * validate Comment
+     * @param Comment
+     * @return
+     */
     public static boolean checkComment(String Comment){
 
         if(Comment == null || Comment.isEmpty())
@@ -49,6 +65,10 @@ public class MoodEventValidator {
         }
     }
 
+    /**
+     * Return error message
+     * @return
+     */
     public static String getErrorMessage() {
         String result=errorMessage ;
         errorMessage="";
