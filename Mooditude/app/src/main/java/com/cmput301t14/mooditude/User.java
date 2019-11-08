@@ -162,13 +162,12 @@ public class User{
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 moodEventDataList.clear();
                 for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
-                    Integer author=1;
                     String textComment=doc.getString("Comment");
                     Mood mood= new Mood(doc.getString("Mood"));
                     SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
                     Location location= new Location(doc.getGeoPoint("Location"));
                     LocalDateTime datetime = LocalDateTime.parse(doc.getString("DateTime"));
-                    MoodEvent moodEvent=new MoodEvent(author, mood, location,socialSituation,textComment,datetime);
+                    MoodEvent moodEvent=new MoodEvent(mood, location,socialSituation,textComment,datetime);
                     moodEventDataList.add(moodEvent);
                 }
                 moodEventAdapter.notifyDataSetChanged();

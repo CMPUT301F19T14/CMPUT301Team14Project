@@ -42,14 +42,13 @@ public class MoodEvent implements Serializable {
 
     /**
      * MoodEvent constructor
-     * @param author
      * @param mood
      * @param location
      * @param socialSituation
      * @param textComment
      * @param datetime
      */
-    public MoodEvent(Integer author, Mood mood, Location location, SocialSituation socialSituation, String textComment, LocalDateTime datetime) {
+    public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, LocalDateTime datetime) {
         this.mood = mood;
         this.location = location;
         this.socialSituation = socialSituation;
