@@ -21,6 +21,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
 
+
+/**
+ * If user already has an account, he/she can
+ * go to the SignIn Activity directly to log in.
+ * There are two edit text fields that requires
+ * user to enter the user email and password.
+ */
 public class SignInActivity extends AppCompatActivity {
 
     private EditText emaiEditText,passwordEditText;
@@ -64,7 +71,15 @@ public class SignInActivity extends AppCompatActivity {
 //                });
 //
 
+
+
         signInBtn.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Validate the user input information. If the input
+             * information is matched to the requirement, user
+             * will be allowed to log in.
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 final String email = emaiEditText.getText().toString();
@@ -83,10 +98,10 @@ public class SignInActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (!task.isSuccessful()){
-                                        Toast.makeText(getApplicationContext(),"Please Login Failed!",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(),"Login Failed!",Toast.LENGTH_SHORT).show();
                                     }
                                     else {
-                                        Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Login Success!", Toast.LENGTH_SHORT).show();
                                         Intent intentHomeActivity = new Intent(getApplicationContext(),HomeActivity.class);
                                         intentHomeActivity.putExtra(EXTRA_MESSAGE_Email, email);
                                         startActivity(intentHomeActivity);

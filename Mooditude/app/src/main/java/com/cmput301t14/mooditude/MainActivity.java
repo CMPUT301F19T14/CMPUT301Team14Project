@@ -7,6 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * This activity is the app start-up interface. Users can
+ * go to SignInActivity or RegisterActivity.
+ */
+
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +25,12 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intentSignIn = new Intent(MainActivity.this, SignInActivity.class);
 //        startActivity(intentSignIn);
 //        Testing End
+
         signInBtn.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Click on signIn button will go to the SignIn Activity.
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 Intent intentSignIn = new Intent(MainActivity.this, SignInActivity.class);
@@ -29,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         joinNowBtn.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Click on joinNow button will go the Register Activity.
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 Intent intentJoinNow = new Intent(MainActivity.this, RegisterActivity.class);

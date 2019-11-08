@@ -44,6 +44,10 @@ import java.util.ArrayList;
 import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
 
 
+/**
+ * User can search other users in the Search Activity
+ * by entering others' user names or user e-mails.
+ */
 public class SearchActivity extends AppCompatActivity {
 
     private EditText searchField;
@@ -57,6 +61,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
         FirebaseFirestore db;
         db = FirebaseFirestore.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -83,12 +88,15 @@ public class SearchActivity extends AppCompatActivity {
 
             }
 
+            /**
+             * check the search text field whether is changed,
+             * and clear the lists after finishing every search.
+             * @param editable
+             */
             @Override
             public void afterTextChanged(Editable editable) {
                 if(!editable.toString().isEmpty()){
                     setAdapter(editable.toString(), collectionReference);
-//                    Toast.makeText(getApplicationContext(),"Email ID:"+userEmailList, Toast.LENGTH_SHORT).show();
-
                 } else {
                     userNameList.clear();
                     userEmailList.clear();
@@ -97,17 +105,8 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-
-
-//        TextView title = (TextView) findViewById(R.id.activityTitle1);
-//        title.setText("Search Activity");
-
         Intent intent = getIntent();
         final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
-
-//        TextView title = (TextView) findViewById(R.id.activityTitle1);
-//        title.setText("Search Activity");
-
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -115,6 +114,9 @@ public class SearchActivity extends AppCompatActivity {
         menuItem.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
+            /**
+             * switch among home, search, self, add and notification activities
+             */
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case R.id.navigation_home:
@@ -151,6 +153,14 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Get the user names and user emails from the firestore firebase.
+     * Check those user names or user emails whether contain the
+     * searched string. And the maximum size for the adapter is
+     * 15.
+     * @param searchedString
+     * @param collectionReference
+     */
     private void setAdapter(final String searchedString, CollectionReference collectionReference){
         userNameList.clear();
         userEmailList.clear();

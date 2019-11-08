@@ -14,11 +14,19 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+/**
+ * Create a custom list view that contains user e-mail.
+ */
 public class CustomList extends ArrayAdapter<String> {
 
     private ArrayList<String> follows;
     private Context context;
 
+    /**
+     * The constructor for CustomList
+     * @param context
+     * @param people
+     */
     public CustomList(Context context, ArrayList<String> people){
         super(context,0, people);
         this.follows = people;
@@ -26,6 +34,14 @@ public class CustomList extends ArrayAdapter<String> {
     }
 
 
+    /**
+     * Link the list view with content
+     * show the content of the list view
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return View view
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

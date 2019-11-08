@@ -18,6 +18,7 @@
         android:drawableStart="@drawable/ic_search"
         android:drawableLeft="@drawable/ic_search"
         android:maxLines="1"
+        android:inputType="text"
         android:hint="Enter user name or user email..."
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
