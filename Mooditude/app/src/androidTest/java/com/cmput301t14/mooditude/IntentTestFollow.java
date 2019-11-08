@@ -3,6 +3,7 @@ package com.cmput301t14.mooditude;
 import android.app.Activity;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -58,6 +59,7 @@ public class IntentTestFollow {
     @Test
     public void start() throws Exception{
         Activity activity= rule.getActivity();
+
     }
 
     @Test
@@ -65,11 +67,8 @@ public class IntentTestFollow {
         solo.clickOnView(solo.getView(R.id.navigation_self));
 
         solo.waitForActivity(SelfActivity.class);
-        SelfActivity activity = (SelfActivity) solo.getCurrentActivity();
+        solo.waitForText("3");
 
-
-        String numFollower = solo.getString(R.id.number_of_follower);
-        assertEquals(2, numFollower);
 
         solo.clickOnView(solo.getView(R.id.follower));
 
@@ -82,11 +81,7 @@ public class IntentTestFollow {
         solo.clickOnView(solo.getView(R.id.navigation_self));
 
         solo.waitForActivity(SelfActivity.class);
-        SelfActivity activity = (SelfActivity) solo.getCurrentActivity();
-
-
-        String numFollowing = solo.getString(R.id.number_of_following);
-        assertEquals(3, numFollowing);
+        solo.waitForText("2");
 
 
         solo.clickOnView(solo.getView(R.id.following));
