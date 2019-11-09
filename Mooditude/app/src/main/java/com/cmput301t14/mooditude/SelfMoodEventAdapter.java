@@ -72,13 +72,25 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
 
         if(moodEvent.getLocation().getGeopoint()==null){
             final ImageView locationImage = (ImageView) view.findViewById(R.id.locationImage);
-            locationImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
+//            locationImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
+            locationImage.setVisibility(View.INVISIBLE);
         }
-//
+
+      final ImageView commentImage = (ImageView) view.findViewById(R.id.commentImage);
         if(moodEvent.getTextComment()==""){
-            final ImageView commentImage = (ImageView) view.findViewById(R.id.commentImage);
-            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
+//            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
+            commentImage.setVisibility(View.INVISIBLE);
         }
+        else{
+//            commentImage.clearColorFilter();
+            commentImage.setVisibility(View.VISIBLE);
+        }
+
+
+
+
+        final ImageView imageView = view.findViewById(R.id.socialSituationImage);
+        imageView.setVisibility(View.INVISIBLE);
 
 
 
