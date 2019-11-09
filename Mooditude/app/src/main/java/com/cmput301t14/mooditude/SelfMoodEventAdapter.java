@@ -49,7 +49,6 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 
-
         if(view == null){
             view = LayoutInflater.from(context).inflate(R.layout.self_mood_event_list_content, parent,false);
         }
@@ -59,8 +58,7 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         TextView timeTextView = view.findViewById(R.id.time_textview);
         TextView emoticonTextView = view.findViewById(R.id.emoticon_textview);
 
-
-//        String string= ;
+//      times by 1000 to change from seconds to miliseconds
         timeTextView.setText(sdf.format(new Date(moodEvent.getDatetime().getSeconds()*1000)));
 
         emoticonTextView.setText(moodEvent.getMood().getEmoticon());
@@ -68,6 +66,5 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         moodEventEntry.setBackgroundColor(moodEvent.getMood().getColor());
         moodEventEntry.getBackground().setAlpha(50);
         return view;
-
     }
 }

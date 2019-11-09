@@ -2,6 +2,7 @@ package com.cmput301t14.mooditude;
 
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -120,8 +121,7 @@ public class User{
                         moodHash.put("Comment",textComment);
                         moodHash.put("DateTime",localDateTime);
                         moodHash.put("SocialSituation",socialSituation.getSocialSituation());
-//                        moodHash.put("TIMESTAMP", FieldValue.serverTimestamp());
-                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
+//                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
                         moodEntry.set(moodHash);
                     }
                 } else {
@@ -163,7 +163,6 @@ public class User{
      * @param moodEventDataList
      * @param moodEventAdapter
      */
-
     public void listenSelfMoodEvents(final ArrayList<MoodEvent> moodEventDataList, final ArrayAdapter<MoodEvent> moodEventAdapter){
         CollectionReference collectionReference = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
@@ -189,36 +188,52 @@ public class User{
         });
     }
 
-
-    /**
-     * fetch user name from database.
-     */
-    private void fetchUserName(){
+    public void listenUserName(final TextView textView){
         DocumentReference docRef = db.collection("Users").document(user.getEmail());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        userName = document.getData().get("user_name").toString();
-                    } else {
-                        Log.d("TAG", "No such document");
-                    }
-                } else {
-                    Log.d("TAG", "get failed with ", task.getException());
-                }
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                textView.setText(documentSnapshot.getData().get("user_name").toString());
+//                        userName = document.getData().get("user_name").toString();
+                Log.i("0822","UserName:"+documentSnapshot.getData().get("user_name").toString());
             }
         });
     }
 
-    /**
-     * return user name to user
-     * @return
-     */
-    public String getUserName(){
-        return this.userName;
-    }
+/**
+ * Replaced by listenUserName
+ */
+//    /**
+//     * fetch user name from database.
+//     */
+//    private void fetchUserName(){
+//        DocumentReference docRef = db.collection("Users").document(user.getEmail());
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        userName = document.getData().get("user_name").toString();
+//                    } else {
+//                        Log.d("TAG", "No such document");
+//                    }
+//                } else {
+//                    Log.d("TAG", "get failed with ", task.getException());
+//                }
+//            }
+//        });
+//    }
+//
+//    /**
+//     * return user name to user
+//     * @return
+//     */
+//    public String getUserName(){
+//        return this.userName;
+//    }
+
+
 
 
 }

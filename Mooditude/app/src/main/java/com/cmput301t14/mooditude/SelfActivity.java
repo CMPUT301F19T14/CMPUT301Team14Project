@@ -32,6 +32,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -60,11 +62,8 @@ public class SelfActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_self);
 
-
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-
-
 
         Intent intent = getIntent();
         messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
@@ -75,12 +74,8 @@ public class SelfActivity extends AppCompatActivity {
         if(messageEmail.compareTo(String.valueOf(user.getEmail())) != 0){
             messageEmail = String.valueOf(user.getEmail());
         }
-      
+
        MenuBar menuBar = new MenuBar(SelfActivity.this, messageEmail, 4);
-
-
-        
-
 
         setUpMoodEventList();
         setUpDeleteMoodEvent();
@@ -107,6 +102,8 @@ public class SelfActivity extends AppCompatActivity {
         userNameTV = findViewById(R.id.userNametextView);
         numMoodEvent= findViewById(R.id.number_of_mood_events);
 
+        User user= new User();
+        user.listenUserName((TextView) userNameTV);
 
 
         //get the total number of followers/following

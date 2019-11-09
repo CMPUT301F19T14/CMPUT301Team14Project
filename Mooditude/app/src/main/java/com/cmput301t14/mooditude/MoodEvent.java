@@ -38,10 +38,8 @@ public class MoodEvent implements Serializable {
         this.location = location;
         this.socialSituation = socialSituation;
         this.textComment = textComment;
-
 //        this.datetime=LocalDateTime.now();
         this.datetime= Timestamp.now();
-
     }
 
     /**
