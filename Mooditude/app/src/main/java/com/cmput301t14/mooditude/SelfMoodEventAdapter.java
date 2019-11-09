@@ -77,7 +77,8 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         }
 
       final ImageView commentImage = (ImageView) view.findViewById(R.id.commentImage);
-        if(moodEvent.getTextComment()==""){
+        Log.i("TAGB",moodEvent.getTextComment());
+        if(moodEvent.getTextComment()=="" || moodEvent.getTextComment()==null){
 //            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
             commentImage.setVisibility(View.GONE);
         }
