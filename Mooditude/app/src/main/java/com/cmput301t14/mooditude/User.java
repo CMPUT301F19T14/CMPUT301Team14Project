@@ -50,8 +50,6 @@ public class User{
     CollectionReference followerCollRef;
     CollectionReference moodHistoryCollRef;
 
-//    private String userName;
-
     /**
      * User Constructor
      * Initialize db
