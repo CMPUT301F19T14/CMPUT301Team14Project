@@ -37,7 +37,7 @@
                 app:srcCompat="@drawable/soicial_situation_icon" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/locationImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -51,11 +51,11 @@
                 app:srcCompat="@drawable/photo_icon" />
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/commentImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/comment" />
+                app:srcCompat="@drawable/comment_notebook" />
         </LinearLayout>
 
         <TextView

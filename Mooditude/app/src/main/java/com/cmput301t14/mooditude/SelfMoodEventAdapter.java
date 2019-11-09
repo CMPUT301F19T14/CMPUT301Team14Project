@@ -1,16 +1,22 @@
 package com.cmput301t14.mooditude;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+
+import com.google.firebase.firestore.GeoPoint;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,7 +58,7 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         if(view == null){
             view = LayoutInflater.from(context).inflate(R.layout.self_mood_event_list_content, parent,false);
         }
-
+        final int colorGreyIcon= ContextCompat.getColor(context, R.color.colorGreyIcon);
         final MoodEvent moodEvent = moodEventList.get(position);
 
         TextView timeTextView = view.findViewById(R.id.time_textview);
@@ -60,6 +66,21 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
 
 //      times by 1000 to change from seconds to miliseconds
         timeTextView.setText(sdf.format(new Date(moodEvent.getDatetime().getSeconds()*1000)));
+
+
+        Location location = moodEvent.getLocation();
+
+        if(moodEvent.getLocation().getGeopoint()==null){
+            final ImageView locationImage = (ImageView) view.findViewById(R.id.locationImage);
+            locationImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
+        }
+//
+        if(moodEvent.getTextComment()==""){
+            final ImageView commentImage = (ImageView) view.findViewById(R.id.commentImage);
+            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
+        }
+
+
 
         emoticonTextView.setText(moodEvent.getMood().getEmoticon());
         LinearLayout moodEventEntry= view.findViewById(R.id.mood_event_entry);

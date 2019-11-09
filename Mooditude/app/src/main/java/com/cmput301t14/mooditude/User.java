@@ -126,7 +126,9 @@ public class User{
                         Mood mood = moodEvent.getMood();
                         SocialSituation socialSituation= moodEvent.getSocialSituation();
                         String textComment= moodEvent.getTextComment();
+
                         moodHash.put("Location",location.getGeopoint());
+
                         moodHash.put("Mood",mood.getMood());
                         moodHash.put("Comment",textComment);
                         moodHash.put("DateTime",localDateTime);
