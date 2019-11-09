@@ -67,103 +67,111 @@ public class SelfActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
-        
-        if(messageEmail == null){
+
+        if (messageEmail == null) {
             messageEmail = String.valueOf(user.getEmail());
         }
-        if(messageEmail.compareTo(String.valueOf(user.getEmail())) != 0){
+        if (messageEmail.compareTo(String.valueOf(user.getEmail())) != 0) {
             messageEmail = String.valueOf(user.getEmail());
         }
 
-       MenuBar menuBar = new MenuBar(SelfActivity.this, messageEmail, 4);
+        MenuBar menuBar = new MenuBar(SelfActivity.this, messageEmail, 4);
 
         setUpMoodEventList();
         setUpDeleteMoodEvent();
 
         final String TAG = "Sample";
-        final TextView FollowerTV;
-        final TextView FollowingTV;
-        final TextView numFollowerTV;
-        final TextView numFollowingTV;
-        final TextView userNameTV;
-        final TextView numMoodEvent;       
+        final TextView followerTextView;
+        final TextView followingTextView;
+        final TextView numberFollowerTextView;
+        final TextView numberFollowingTextView;
+        final TextView userNameTextView;
+        final TextView numberMoodEvents;
 
         db = FirebaseFirestore.getInstance();
 
         final CollectionReference collectionReference = db.collection("Users");
 
-        final DocumentReference documentReference = collectionReference.document(messageEmail);
 
+        followerTextView = findViewById(R.id.follower);
+        numberFollowerTextView = findViewById(R.id.number_of_follower);
+        numberFollowingTextView = findViewById(R.id.number_of_following);
+        followingTextView = findViewById(R.id.following);
+        userNameTextView = findViewById(R.id.userNametextView);
+        numberMoodEvents = findViewById(R.id.number_of_mood_events);
 
-        FollowerTV = findViewById(R.id.follower);
-        numFollowerTV = findViewById(R.id.number_of_follower);
-        numFollowingTV = findViewById(R.id.number_of_following);
-        FollowingTV = findViewById(R.id.following);
-        userNameTV = findViewById(R.id.userNametextView);
-        numMoodEvent= findViewById(R.id.number_of_mood_events);
-
-        User user= new User();
-        user.listenUserName((TextView) userNameTV);
-
-
+        User user = new User();
+        // Set up userName listener
+        user.listenUserName(userNameTextView);
+        user.listenFollowerNumber(numberFollowerTextView);
+        user.listenFollowingNumber(numberFollowingTextView);
+        user.listenMoodHistoryNumber(numberMoodEvents);
+/**
+ *  Moved to User Class with realtime listener
+ *  Original functinality:
+ *  Follower Number
+ *  Following Number
+ *  Number of Moodevents
+ */
+//        final DocumentReference documentReference = collectionReference.document(messageEmail);
         //get the total number of followers/following
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
-
-                if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-
-                    if(!doc.contains("MoodHistory")){
-                        CollectionReference moodHistory = documentReference.collection("MoodHistory");
-                        moodHistory.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d("TAG", task.getResult().size() + "");
-                                    numMoodEvent.setText(String.valueOf(task.getResult().size()));
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
-
-                    }
-                    else{
-                        numMoodEvent.setText("0");
-
-                    }
-
-                    userNameTV.setText(String.valueOf(doc.get("user_name")));
-
-                    ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
-                    if(followerList==null){
-                        numFollowerTV.setText("0");
-                    }
-                    else{
-                        numFollowerTV.setText(String.valueOf(followerList.size()));
-                    }
-
-                    ArrayList<String> followingList = (ArrayList<String>) doc.get("following");
-                    if(followerList==null){
-                        numFollowingTV.setText("0");
-                    }
-                    else{
-                        numFollowingTV.setText(String.valueOf(followingList.size()));
-                    }
-
-                }
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
-            }
-        });
+//        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
+//
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot doc = task.getResult();
+//
+//                    if(!doc.contains("MoodHistory")){
+//                        CollectionReference moodHistory = documentReference.collection("MoodHistory");
+//                        moodHistory.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                if (task.isSuccessful()) {
+//                                    Log.d("TAG", task.getResult().size() + "");
+//                                    numberMoodEvents.setText(String.valueOf(task.getResult().size()));
+//                                } else {
+//                                    Log.d(TAG, "Error getting documents: ", task.getException());
+//                                }
+//                            }
+//                        });
+//
+//                    }
+//                    else{
+//                        numberMoodEvents.setText("0");
+//
+//                    }
+//
+//                    userNameTextView.setText(String.valueOf(doc.get("user_name")));
+//
+//                    ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
+//                    if(followerList==null){
+//                        numberFollowerTextView.setText("0");
+//                    }
+//                    else{
+//                        numberFollowerTextView.setText(String.valueOf(followerList.size()));
+//                    }
+//
+//                    ArrayList<String> followingList = (ArrayList<String>) doc.get("following");
+//                    if(followerList==null){
+//                        numberFollowingTextView.setText("0");
+//                    }
+//                    else{
+//                        numberFollowingTextView.setText(String.valueOf(followingList.size()));
+//                    }
+//
+//                }
+//            }
+//        })
+//        .addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         //if click on item, go to DisplayFollow activity to show the summary list
-        FollowerTV.setOnClickListener(new View.OnClickListener() {
+        followerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String require = "Follower";
@@ -175,14 +183,14 @@ public class SelfActivity extends AppCompatActivity {
 
             }
         });
-        FollowingTV.setOnClickListener(new View.OnClickListener() {
+        followingTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String require = "Following";
                 Intent intent = new Intent(SelfActivity.this, DisplayFollow.class);
                 intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
                 intent.putExtra(EXTRA_MESSAGE_Mode, require);
-               // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 
             }
@@ -193,7 +201,7 @@ public class SelfActivity extends AppCompatActivity {
      * setup the Mood History, MoodEvent ListView and sync the data
      * and the click to edit functionality
      */
-    private void setUpMoodEventList(){
+    private void setUpMoodEventList() {
         selfMoodEventList = findViewById(R.id.self_mood_event_list);
         selfMoodEventDataList = new ArrayList<>();
 
@@ -218,7 +226,7 @@ public class SelfActivity extends AppCompatActivity {
     /**
      * setup the MoodEvent ListView item long click to delete functionality
      */
-    private void setUpDeleteMoodEvent(){
+    private void setUpDeleteMoodEvent() {
         // long click to delete
         selfMoodEventList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -227,7 +235,7 @@ public class SelfActivity extends AppCompatActivity {
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
+                        switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
                                 onConfirmPressed(selectedMoodEvent);
                                 break;
@@ -246,8 +254,9 @@ public class SelfActivity extends AppCompatActivity {
         });
     }
 
-    /** Called by SelfMoodEventAdapter,
-     *  When delete is confirmed, remove the moodEvent from the list
+    /**
+     * Called by SelfMoodEventAdapter,
+     * When delete is confirmed, remove the moodEvent from the list
      */
     public void onConfirmPressed(MoodEvent selectedMoodEvent) {
         User user = new User();

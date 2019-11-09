@@ -45,7 +45,12 @@ public class User{
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
-    private String userName;
+    private DocumentReference userDocRef;
+    CollectionReference followingCollRef;
+    CollectionReference followerCollRef;
+    CollectionReference moodHistoryCollRef;
+
+//    private String userName;
 
     /**
      * User Constructor
@@ -58,7 +63,14 @@ public class User{
         db=FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        fetchUserName();
+        userDocRef = db.collection("Users").document(getEmail());
+        followingCollRef= db.collection("Users").document(user.getEmail()).collection("following");
+        followerCollRef= db.collection("Users").document(user.getEmail()).collection("followers");
+        moodHistoryCollRef= db.collection("Users").document(user.getEmail()).collection("MoodHistory");
+    }
+
+    public String getEmail(){
+        return user.getEmail();
     }
 
     /**
@@ -189,8 +201,8 @@ public class User{
     }
 
     public void listenUserName(final TextView textView){
-        DocumentReference docRef = db.collection("Users").document(user.getEmail());
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//        DocumentReference docRef = db.collection("Users").document(user.getEmail());
+        userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 textView.setText(documentSnapshot.getData().get("user_name").toString());
@@ -199,6 +211,38 @@ public class User{
             }
         });
     }
+
+    public void listenFollowerNumber(final TextView textView){
+        followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                queryDocumentSnapshots.size();
+                textView.setText(String.valueOf(queryDocumentSnapshots.size()));
+            }
+        });
+    }
+
+    public void listenFollowingNumber(final TextView textView){
+        followingCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                queryDocumentSnapshots.size();
+                textView.setText(String.valueOf(queryDocumentSnapshots.size()));
+            }
+        });
+    }
+
+    public void listenMoodHistoryNumber(final TextView textView){
+        moodHistoryCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                queryDocumentSnapshots.size();
+                textView.setText(String.valueOf(queryDocumentSnapshots.size()));
+            }
+        });
+    }
+
+
 
 /**
  * Replaced by listenUserName
@@ -232,8 +276,5 @@ public class User{
 //    public String getUserName(){
 //        return this.userName;
 //    }
-
-
-
 
 }
