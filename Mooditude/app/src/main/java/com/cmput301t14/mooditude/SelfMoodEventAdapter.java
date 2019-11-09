@@ -79,7 +79,7 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
       final ImageView commentImage = (ImageView) view.findViewById(R.id.commentImage);
         if(moodEvent.getTextComment()==""){
 //            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
-            commentImage.setVisibility(View.INVISIBLE);
+            commentImage.setVisibility(View.GONE);
         }
         else{
 //            commentImage.clearColorFilter();
@@ -89,8 +89,8 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
 
 
 
-        final ImageView imageView = view.findViewById(R.id.socialSituationImage);
-        imageView.setVisibility(View.INVISIBLE);
+//        final ImageView imageView = view.findViewById(R.id.socialSituationImage);
+//        imageView.setVisibility(View.INVISIBLE);
 
 
 
