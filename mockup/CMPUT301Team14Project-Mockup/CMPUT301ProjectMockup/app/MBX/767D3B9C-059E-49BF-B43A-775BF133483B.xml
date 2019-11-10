@@ -1,0 +1,117 @@
+﻿<mockup version="5.3" minAllowVersion="5.3" ID="767D3B9C-059E-49BF-B43A-775BF133483B" platform="MtMobile" defaultW="360" defaultH="640" measureW="360" measureH="640" screenOrientation="MoPortrait" mobileScreenScale="1.77777779102325">
+  <controls controlCount="12">
+    <control controlID="930CA85D-234D-44F2-B3AD-429E679F5F67" controlTypeID="HRule" x="0" y="59" w="360" h="12" zOrder="0">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="78BA5663-61AF-4E1F-8BBB-4CA14CD17CDD" controlTypeID="Image" x="26" y="136" w="45" h="45" zOrder="1">
+      <URL>A81633ACDF29AE2E23C889C952BDAB62.png</URL>
+    </control>
+    <control controlID="0C682E66-D20D-4F9A-B7A4-F5F88DD2F93F" controlTypeID="Icon" x="27" y="247" w="45" h="45" zOrder="2">
+      <color>4293348412</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62348</iconCode>
+      </icon>
+      <URL>C9A19AEA8333861081ABFD164D361FEF.svg</URL>
+    </control>
+    <control controlID="1B509943-3B10-4DB7-8CD5-98F22508EA57" controlTypeID="TextInput" x="76" y="12" w="256" h="45" zOrder="3">
+      <borderColor>4294953984</borderColor>
+      <borderVisible>False</borderVisible>
+      <font family="Segoe+UI" displayName="Segoe+UI" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>2019-10-16+09%3A56%3A59</text>
+      <textColor>4293348412</textColor>
+      <textSize>18</textSize>
+      <textAlign>HaCenter</textAlign>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+      <canInput>False</canInput>
+    </control>
+    <control controlID="76FD55D4-D7F6-4B29-802C-DC6FB8F2A4C8" controlTypeID="Icon" x="26" y="14" w="40" h="40" zOrder="4">
+      <color>4293348412</color>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="99FBBEBF-5621-42D1-82F8-F5CFD925F04A" linkType="ltPageLink" isApplyIncludePage="False" title="About_Me">
+          <area shape="0" alt="" ID="{368DF791-5BA7-4E13-8D35-B317DA6D4B97}" coords="(0,0,40,40)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62154</iconCode>
+      </icon>
+      <URL>D95E480717200F895E41DB6E5B869596.svg</URL>
+    </control>
+    <control controlID="9D408013-A133-4566-A772-544116A08940" controlTypeID="TextInput" x="82" y="137" w="256" h="45" zOrder="5">
+      <borderColor>4293348412</borderColor>
+      <font family="Segoe+UI" displayName="Segoe+UI" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>With+one+other+person</text>
+      <textColor>4293348412</textColor>
+      <textSize>18</textSize>
+      <textAlign>HaCenter</textAlign>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+      <canInput>False</canInput>
+    </control>
+    <control controlID="BD7FDD7E-06E9-4A17-A937-43FEFE5827B7" controlTypeID="TextInput" x="81" y="81" w="256" h="45" zOrder="6">
+      <borderColor>4293348412</borderColor>
+      <font family="Segoe+UI" displayName="Segoe+UI" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Happy</text>
+      <textColor>4293348412</textColor>
+      <textSize>18</textSize>
+      <textAlign>HaCenter</textAlign>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+      <canInput>False</canInput>
+    </control>
+    <control controlID="A6FC7BEB-2008-4FFA-8F89-445FFF862ED0" controlTypeID="TextInput" x="82" y="247" w="256" h="45" zOrder="7">
+      <borderColor>4293348412</borderColor>
+      <font family="Segoe+UI" displayName="Segoe+UI" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Edmonton.+Alberta</text>
+      <textColor>4293348412</textColor>
+      <textSize>18</textSize>
+      <textAlign>HaCenter</textAlign>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+      <canInput>False</canInput>
+    </control>
+    <control controlID="CE9F8F72-3AB1-490B-9EC3-F95FDD204B53" controlTypeID="Icon" x="27" y="192" w="45" h="45" zOrder="8">
+      <color>4293348412</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62353</iconCode>
+      </icon>
+      <URL>273F820FD8252835AA1E7927378AF485.svg</URL>
+    </control>
+    <control controlID="EF27938B-F70F-4E3E-A847-D3E592384394" controlTypeID="TextInput" x="82" y="192" w="256" h="45" zOrder="9">
+      <borderColor>4293348412</borderColor>
+      <font family="Segoe+UI" displayName="Segoe+UI" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Bad+Day+!!</text>
+      <textColor>4293348412</textColor>
+      <textSize>18</textSize>
+      <textAlign>HaCenter</textAlign>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+      <placeHolder>Comments%3F</placeHolder>
+    </control>
+    <control controlID="137069C3-E2B9-488F-9127-D6115A985355" controlTypeID="Image" x="25" y="79" w="50" h="50" zOrder="10">
+      <URL>73FC889120652F85382D9B9A1D289CC7.png</URL>
+    </control>
+    <control controlID="A0E2DEB9-C82B-4601-95E9-671271F833B6" controlTypeID="Image" x="55" y="325" w="250" h="250" zOrder="11">
+      <URL>1D85297B1B4479BFF730FCE4DC772A6A.jpg</URL>
+    </control>
+  </controls>
+  <param>
+    <backgroundColor>4294967295</backgroundColor>
+    <fontSize>0</fontSize>
+    <fontFamily/>
+    <guideLines/>
+  </param>
+</mockup>

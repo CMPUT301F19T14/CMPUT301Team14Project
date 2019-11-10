@@ -1,0 +1,100 @@
+﻿<mockup version="5.3" minAllowVersion="5.3" ID="F481D3A1-5B6D-4A90-B889-C2D5F9A37F82" platform="MtMobile" defaultW="360" defaultH="640" measureW="360" measureH="640" screenOrientation="MoPortrait" mobileScreenScale="1.77777779102325">
+  <controls controlCount="9">
+    <control controlID="A576545B-DE89-4DB7-A0DF-EAD3E7DD78BA" controlTypeID="Tabs" x="0" y="620" w="360" h="20" zOrder="0">
+      <font family="Segoe+UI" displayName="Segoe+UI" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Home%2CSearch%2CPost%2CNotification%2CMe</text>
+      <textColor>4284900966</textColor>
+      <textSize>14</textSize>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>3</selectedIndex>
+      <dividerColor>4293190884</dividerColor>
+      <selectedTextColor>4278242559</selectedTextColor>
+    </control>
+    <control controlID="4988C56B-1155-474C-B5FF-41B49FED9178" controlTypeID="Icon" x="95" y="596" w="24" h="24" zOrder="1">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="3DA3CBBA-396A-4985-8A4A-FF31BB10ABBA" linkType="ltPageLink" isApplyIncludePage="False" title="Search">
+          <area shape="0" alt="" ID="{5A8AE464-2488-485F-8F34-87C2972C91A4}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIcoFont</iconFontName>
+        <iconCode>59217</iconCode>
+      </icon>
+      <URL>5B42555577E2EDEFD5648F7EACF271B1.svg</URL>
+    </control>
+    <control controlID="477B8257-48A0-4A1B-A784-A66EADD1D7C9" controlTypeID="Icon" x="239" y="596" w="24" h="24" zOrder="2">
+      <color>4278242559</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdFontAwesome</iconFontName>
+        <iconCode>61443</iconCode>
+      </icon>
+      <URL>B580EFDE757BFEFDFAE97C8770013819.svg</URL>
+    </control>
+    <control controlID="91B47F92-3067-496F-A49A-05A8E084A253" controlTypeID="Icon" x="23" y="596" w="24" h="24" zOrder="3">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="38381CBD-5D8A-4BB3-9C76-4F9FDC1E7441" linkType="ltPageLink" isApplyIncludePage="False" title="Home">
+          <area shape="0" alt="" ID="{11EA510B-8058-40F3-87DC-34647B42A094}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62535</iconCode>
+      </icon>
+      <URL>CF75DBB601952B6BB4B151C544C1D2C8.svg</URL>
+    </control>
+    <control controlID="B5A29506-C79A-483A-8537-634458080415" controlTypeID="Icon" x="310" y="596" w="24" h="24" zOrder="4">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="99FBBEBF-5621-42D1-82F8-F5CFD925F04A" linkType="ltPageLink" isApplyIncludePage="False" title="About+Me">
+          <area shape="0" alt="" ID="{14A11D60-8870-40C2-BF9D-8645D01F50DA}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62168</iconCode>
+      </icon>
+      <URL>A4BBA5CCC7880CC1D7108AAE4A99AB6E.svg</URL>
+    </control>
+    <control controlID="781F5830-6A63-4FCF-93F6-3718CFC0F2D7" controlTypeID="Icon" x="167" y="596" w="24" h="24" zOrder="5">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="7110ACB6-31F4-42A7-AB9F-33644F29A409" linkType="ltPageLink" isApplyIncludePage="False" title="Post">
+          <area shape="0" alt="" ID="{1D910D0A-241A-46ED-8963-E88E7C564E53}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62151</iconCode>
+      </icon>
+      <URL>D08755C22A9B40B6BF65036DEC8B44B4.svg</URL>
+    </control>
+    <control controlID="D58DDD81-7465-48B5-84E2-8A61D979D6EC" controlTypeID="HRule" x="-1" y="584" w="361" h="12" zOrder="6">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="D6463395-1C15-403E-9AAD-EEE0C808EA19" controlTypeID="HRule" x="0" y="59" w="360" h="12" zOrder="7">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="F1D7E10D-F67D-4F6D-BB5C-A0289A98C125" controlTypeID="Label" x="24" y="19" w="122" h="30" zOrder="8">
+      <font family="Segoe+UI" displayName="Segoe+UI" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Notifications</text>
+      <textColor>4284927231</textColor>
+      <textSize>22</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+  </controls>
+  <param>
+    <backgroundColor>4294967295</backgroundColor>
+    <fontSize>0</fontSize>
+    <fontFamily/>
+    <guideLines/>
+  </param>
+</mockup>
