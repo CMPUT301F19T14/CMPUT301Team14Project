@@ -68,6 +68,8 @@
                     android:id="@+id/locationImage"
                     android:layout_width="65dp"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="7dp"
                     android:layout_weight="1"
                     android:paddingStart="3dp"
                     app:srcCompat="@drawable/location_icon" />
@@ -89,7 +91,7 @@
                     android:layout_weight="1"
                     android:paddingStart="3dp"
                     android:paddingEnd="3dp"
-                    app:srcCompat="@drawable/comment_notebook" />
+                    app:srcCompat="@drawable/comment_icon" />
             </LinearLayout>
 
         </LinearLayout>
