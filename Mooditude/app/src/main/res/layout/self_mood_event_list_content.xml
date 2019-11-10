@@ -14,11 +14,15 @@
         android:layout_gravity="left"
         android:layout_weight="1.5"
         android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
 
         <TextView
             android:id="@+id/time_textview"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
             android:padding="0dp"
@@ -26,7 +30,8 @@
             android:paddingTop="10dp"
             android:paddingEnd="10dp"
             android:text="time"
-            android:textSize="20sp"></TextView>
+            android:textSize="12sp"></TextView>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,6 +60,8 @@
                     android:layout_width="65dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="3dp"
                     app:srcCompat="@drawable/soicial_situation_icon" />
 
                 <ImageView
@@ -62,6 +69,7 @@
                     android:layout_width="65dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:paddingStart="3dp"
                     app:srcCompat="@drawable/location_icon" />
 
                 <ImageView
@@ -69,6 +77,8 @@
                     android:layout_width="65dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="3dp"
                     app:srcCompat="@drawable/photo_icon" />
 
                 <ImageView
@@ -77,6 +87,8 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
                     android:layout_weight="1"
+                    android:paddingStart="3dp"
+                    android:paddingEnd="3dp"
                     app:srcCompat="@drawable/comment_notebook" />
             </LinearLayout>
 

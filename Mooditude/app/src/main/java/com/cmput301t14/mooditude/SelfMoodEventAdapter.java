@@ -33,18 +33,19 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
 
     /**
      * Constructor for the adapter
+     *
      * @param context
      * @param moodEventList - the data list of moodEvents
      */
-    public SelfMoodEventAdapter(Context context, ArrayList<MoodEvent> moodEventList){
-        super(context,0, moodEventList);
+    public SelfMoodEventAdapter(Context context, ArrayList<MoodEvent> moodEventList) {
+        super(context, 0, moodEventList);
         this.moodEventList = moodEventList;
         this.context = context;
     }
 
-
     /**
      * get the view for each item in the list
+     *
      * @param position
      * @param convertView
      * @param parent
@@ -55,50 +56,54 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 
-        if(view == null){
-            view = LayoutInflater.from(context).inflate(R.layout.self_mood_event_list_content, parent,false);
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.self_mood_event_list_content, parent, false);
         }
-        final int colorGreyIcon= ContextCompat.getColor(context, R.color.colorGreyIcon);
+
         final MoodEvent moodEvent = moodEventList.get(position);
+        final int colorGreyIcon = ContextCompat.getColor(context, R.color.colorGreyIcon);
 
         TextView timeTextView = view.findViewById(R.id.time_textview);
         TextView emoticonTextView = view.findViewById(R.id.emoticon_textview);
+        ImageView locationImage = view.findViewById(R.id.locationImage);
+        ImageView commentImage = view.findViewById(R.id.commentImage);
+        ImageView socialSituationImage = view.findViewById(R.id.socialSituationImage);
 
 //      times by 1000 to change from seconds to miliseconds
-        timeTextView.setText(sdf.format(new Date(moodEvent.getDatetime().getSeconds()*1000)));
+        timeTextView.setText(sdf.format(new Date(moodEvent.getDatetime().getSeconds() * 1000)));
 
-
-        Location location = moodEvent.getLocation();
-
-        if(moodEvent.getLocation().getGeopoint()==null){
-            final ImageView locationImage = (ImageView) view.findViewById(R.id.locationImage);
-//            locationImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
-            locationImage.setVisibility(View.INVISIBLE);
+        if (moodEvent.getLocation().getGeopoint() == null) {
+            locationImage.setVisibility(View.GONE);
+        } else {
+            locationImage.setVisibility(View.VISIBLE);
         }
 
-      final ImageView commentImage = (ImageView) view.findViewById(R.id.commentImage);
-        Log.i("TAGB",moodEvent.getTextComment());
-        if(moodEvent.getTextComment()=="" || moodEvent.getTextComment()==null){
+        if (moodEvent.getTextComment().isEmpty() || moodEvent.getTextComment() == null) {
 //            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
             commentImage.setVisibility(View.GONE);
-        }
-        else{
+        } else {
 //            commentImage.clearColorFilter();
             commentImage.setVisibility(View.VISIBLE);
         }
 
-
+        if (moodEvent.getSocialSituation()== null) {
+//            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
+            socialSituationImage.setVisibility(View.GONE);
+        } else {
+//            commentImage.clearColorFilter();
+            socialSituationImage.setVisibility(View.VISIBLE);
+        }
 
 
 //        final ImageView imageView = view.findViewById(R.id.socialSituationImage);
 //        imageView.setVisibility(View.INVISIBLE);
 
 
-
         emoticonTextView.setText(moodEvent.getMood().getEmoticon());
-        LinearLayout moodEventEntry= view.findViewById(R.id.mood_event_entry);
+        LinearLayout moodEventEntry = view.findViewById(R.id.mood_event_entry);
         moodEventEntry.setBackgroundColor(moodEvent.getMood().getColor());
         moodEventEntry.getBackground().setAlpha(50);
+
         return view;
     }
 }
