@@ -24,7 +24,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
      */
     class SearchViewHolder extends RecyclerView.ViewHolder{
         TextView user_name, user_email;
-
         public SearchViewHolder(View itemView){
             super(itemView);
             user_name = itemView.findViewById(R.id.searchList_user_name_textView);

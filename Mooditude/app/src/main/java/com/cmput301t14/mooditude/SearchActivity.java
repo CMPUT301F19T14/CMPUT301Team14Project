@@ -46,17 +46,18 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-
-        Intent intent = getIntent();
-        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
-        MenuBar menuBar = new MenuBar(SearchActivity.this, messageEmail, 1);
+//        Intent intent = getIntent();
+//        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
+        User user = new User();
+        MenuBar menuBar = new MenuBar(SearchActivity.this, user.getEmail(), 1);
 
         FirebaseFirestore db;
         db = FirebaseFirestore.getInstance();
-        mFirebaseAuth = FirebaseAuth.getInstance();
+//        mFirebaseAuth = FirebaseAuth.getInstance();
+        final CollectionReference collectionReference = db.collection("Users");
+
         searchField = findViewById(R.id.search_edit_text);
         resultList = findViewById(R.id.search_list);
-        final CollectionReference collectionReference = db.collection("Users");
 
         resultList.setHasFixedSize(true);
         resultList.setLayoutManager(new LinearLayoutManager(this));
@@ -83,12 +84,12 @@ public class SearchActivity extends AppCompatActivity {
              */
             @Override
             public void afterTextChanged(Editable editable) {
-                if(!editable.toString().isEmpty()){
-                    setAdapter(editable.toString(), collectionReference);
-                } else {
+                if (editable.toString().isEmpty()) {
                     userNameList.clear();
                     userEmailList.clear();
                     resultList.removeAllViews();
+                } else {
+                    setAdapter(editable.toString(), collectionReference);
                 }
             }
         });
@@ -101,10 +102,11 @@ public class SearchActivity extends AppCompatActivity {
      * Check those user names or user emails whether contain the
      * searched string. And the maximum size for the adapter is
      * 15.
+     *
      * @param searchedString
      * @param collectionReference
      */
-    private void setAdapter(final String searchedString, CollectionReference collectionReference){
+    private void setAdapter(final String searchedString, CollectionReference collectionReference) {
         userNameList.clear();
         userEmailList.clear();
         resultList.removeAllViews();
@@ -112,20 +114,20 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 int counter = 0;
-                for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                     String user_name = String.valueOf(doc.getData().get("user_name"));
                     String user_email = doc.getId();
-                    if(user_name.contains(searchedString)){
+                    if (user_name.contains(searchedString)) {
                         userNameList.add(user_name);
                         userEmailList.add(user_email);
                         counter++;
-                    } else if (user_email.contains(searchedString)){
+                    } else if (user_email.contains(searchedString)) {
                         userNameList.add(user_name);
                         userEmailList.add(user_email);
                         counter++;
                     }
 
-                    if(counter == 15) {
+                    if (counter == 15) {
                         break;
                     }
                 }

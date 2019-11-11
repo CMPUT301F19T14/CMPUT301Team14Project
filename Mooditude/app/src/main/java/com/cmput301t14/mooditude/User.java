@@ -61,7 +61,11 @@ public class User{
         db=FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+//        Log.i("email","tag: "+getEmail());
         userDocRef = db.collection("Users").document(getEmail());
+        if(userDocRef==null){
+            Log.i("email","tag: "+getEmail());
+        }
         followingCollRef= db.collection("Users").document(user.getEmail()).collection("following");
         followerCollRef= db.collection("Users").document(user.getEmail()).collection("followers");
         moodHistoryCollRef= db.collection("Users").document(user.getEmail()).collection("MoodHistory");
@@ -205,9 +209,10 @@ public class User{
         userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                textView.setText(documentSnapshot.getData().get("user_name").toString());
-//                        userName = document.getData().get("user_name").toString();
-                Log.i("0822","UserName:"+documentSnapshot.getData().get("user_name").toString());
+                Object user_name=documentSnapshot.getData().get("user_name");
+                if(user_name!= null){
+                    textView.setText(user_name.toString());
+                }
             }
         });
     }
