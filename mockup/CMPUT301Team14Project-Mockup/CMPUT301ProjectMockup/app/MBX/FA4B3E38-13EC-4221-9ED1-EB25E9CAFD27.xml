@@ -1,0 +1,28 @@
+﻿<mockup version="5.3" minAllowVersion="5.3" ID="FA4B3E38-13EC-4221-9ED1-EB25E9CAFD27" platform="MtMobile" defaultW="360" defaultH="640" measureW="360" measureH="640" screenOrientation="MoPortrait" mobileScreenScale="1.77777779102325" clipArea="(0,0,0,0)">
+  <controls controlCount="2">
+    <control controlID="DD715923-B856-484C-BA31-66C1FE45A949" controlTypeID="Label" x="46" y="88" w="46" h="32" zOrder="0">
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Date</text>
+      <textColor>4284927231</textColor>
+      <textSize>24</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="CDDEB8FC-1F56-4CB3-9DDD-EF9C92E35077" controlTypeID="Label" x="46" y="130" w="46" h="32" zOrder="1">
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Date</text>
+      <textColor>4284927231</textColor>
+      <textSize>24</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+  </controls>
+  <param>
+    <backgroundColor>4294967295</backgroundColor>
+    <fontSize>0</fontSize>
+    <fontFamily/>
+    <guideLines/>
+  </param>
+</mockup>

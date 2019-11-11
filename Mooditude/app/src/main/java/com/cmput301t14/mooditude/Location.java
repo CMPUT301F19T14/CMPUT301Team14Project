@@ -5,12 +5,15 @@ import com.google.firebase.firestore.GeoPoint;
  * Location class used to store GPS coordinates as GeoPoint
  */
 public class Location {
-    private Double latitude=0.0;
-    private Double longtitude=0.0;
-
+//    private Double latitude=0.0;
+//    private Double longtitude=0.0;
     private String address ="";
 
     GeoPoint geopoint;
+
+    public Location(){
+        this.geopoint=null;
+    }
 
 
     /**
@@ -19,9 +22,8 @@ public class Location {
      */
 
     public Location(Double latitude, Double longtitude) {
-        this.latitude = latitude;
-        this.longtitude = longtitude;
-
+//        this.latitude = latitude;
+//        this.longtitude = longtitude;
         geopoint= new GeoPoint(latitude,longtitude);
     }
     /**
@@ -29,8 +31,8 @@ public class Location {
      * @param latitude, longtitude,addres
      */
     public Location(Double latitude, Double longtitude, String addres) {
-        this.latitude = latitude;
-        this.longtitude = longtitude;
+//        this.latitude = latitude;
+//        this.longtitude = longtitude;
         this.address = addres;
         geopoint= new GeoPoint(latitude,longtitude);
     }

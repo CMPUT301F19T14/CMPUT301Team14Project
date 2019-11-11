@@ -1,0 +1,67 @@
+﻿<mockup version="5.3" minAllowVersion="5.3" ID="B80164C8-A5F6-473D-8B94-D25DE9601EE3" platform="MtMobile" defaultW="360" defaultH="640" measureW="360" measureH="640" screenOrientation="MoPortrait" mobileScreenScale="1.77777779102325">
+  <controls controlCount="5">
+    <control controlID="49F9E789-1B3D-45C3-ABB9-BDC6C379E302" controlTypeID="Image" x="0" y="0" w="45" h="45" zOrder="0">
+      <URL>A4C7FAF132EA69193C97FAD1B86B1A62.png</URL>
+    </control>
+    <control controlID="1E98F3A4-B6F8-41BF-9951-754EBC4CF997" controlTypeID="CompositeComboBox" x="55" y="0" w="256" h="45" zOrder="1">
+      <borderColor>4284927231</borderColor>
+      <groupChildrenDescriptors>
+        <control controlID="EA843F29-C242-4B6B-ABCD-255532BD0577" controlTypeID="TextInput" x="0" y="0" w="233" h="45" zOrder="0">
+          <locked>True</locked>
+          <borderColor>4284927231</borderColor>
+          <canMove>False</canMove>
+          <alias>input</alias>
+          <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+          <text>--How+Do+You+Feel+Today%3F--</text>
+          <textColor>4284927231</textColor>
+          <textSize>18</textSize>
+          <lineSpacing>0</lineSpacing>
+          <selectedIndex>-1</selectedIndex>
+        </control>
+        <control controlID="2F175F87-7590-4916-8B63-286DFA03FBF7" controlTypeID="Button" x="232" y="0" w="24" h="45" zOrder="1">
+          <locked>True</locked>
+          <borderColor>4284927231</borderColor>
+          <canMove>False</canMove>
+          <alias>button</alias>
+          <font family="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" displayName="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False"/>
+          <lineSpacing>0</lineSpacing>
+          <selectedIndex>-1</selectedIndex>
+          <radius>0</radius>
+        </control>
+        <control controlID="4C93555E-DC0D-48F9-B624-8D8F5A8B4BAF" controlTypeID="List" x="0" y="45" w="256" h="137" zOrder="2">
+          <isShow>False</isShow>
+          <borderColor>4284927231</borderColor>
+          <canMove>False</canMove>
+          <alias>dropDown</alias>
+          <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+            <link targetPageID="" linkType="ltPageLink" isApplyIncludePage="False" title="--How+Do+You+Feel+Today%3F--">
+              <area shape="0" alt="" ID="{473B0557-4573-40FE-A5C9-2836FCFCE796}" coords="(1,1,255,46)"/>
+            </link>
+            <link targetPageID="D473A54C-78D6-47EB-9087-FBD8D4447925" linkType="ltPageLink" isApplyIncludePage="False" title="Happy">
+              <area shape="0" alt="" ID="{A72C6977-8FD3-4163-84B7-1B56D83E81C9}" coords="(1,46,255,91)"/>
+            </link>
+            <link targetPageID="" linkType="ltPageLink" isApplyIncludePage="False" title="Sad">
+              <area shape="0" alt="" ID="{DA17CE9F-F827-4B2B-9F03-F57FF774FE91}" coords="(1,91,255,136)"/>
+            </link>
+          </links>
+          <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+          <text>--How+Do+You+Feel+Today%3F--%0D%0AHappy%0D%0ASad%0D%0A</text>
+          <textSize>18</textSize>
+          <lineSpacing>0</lineSpacing>
+          <itemHeight>45</itemHeight>
+          <interlaceColor>4294967295</interlaceColor>
+        </control>
+      </groupChildrenDescriptors>
+      <baseHeight>45</baseHeight>
+      <font family="%E7%AD%89%E7%BA%BF+Light"/>
+      <textColor>4284927231</textColor>
+      <textSize>18</textSize>
+    </control>
+  </controls>
+  <param>
+    <backgroundColor>4294967295</backgroundColor>
+    <fontSize>0</fontSize>
+    <fontFamily/>
+    <guideLines/>
+  </param>
+</mockup>

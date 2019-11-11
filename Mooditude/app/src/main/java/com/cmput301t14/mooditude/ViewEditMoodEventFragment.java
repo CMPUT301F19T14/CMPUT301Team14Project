@@ -75,7 +75,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
             commentEditText.setText(selectedMoodEvent.getTextComment());
 
             // set dropdown moodSpinner Adapter
-            ArrayAdapter<CharSequence> moodArrayAdapter = ArrayAdapter.createFromResource(getContext(),
+            final ArrayAdapter<CharSequence> moodArrayAdapter = ArrayAdapter.createFromResource(getContext(),
                     R.array.mood_string_array, android.R.layout.simple_spinner_item);
             moodArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             moodSpinner.setAdapter(moodArrayAdapter);
@@ -150,14 +150,14 @@ public class ViewEditMoodEventFragment extends DialogFragment {
 
                             if (valid) {
                                 // TODO: put actual location and photo
-                                MoodEvent moodEvent = new MoodEvent(1, mood,
+                                MoodEvent moodEvent = new MoodEvent(mood,
                                         new Location(0.0, 0.0),
                                         socialSituation, commentString, selectedMoodEvent.getDatetime());
-
 
                                 // push the MoodEvent to database
                                 User user = new User();
                                 user.pushMoodEvent(moodEvent);
+//                                moodArrayAdapter.notifyDataSetChanged();
                                 getDialog().dismiss();
                             }
                         }

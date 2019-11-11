@@ -1,0 +1,67 @@
+﻿<mockup version="5.3" minAllowVersion="5.3" ID="7EEF8204-AA12-46CC-8A22-5419C37A4194" platform="MtMobile" defaultW="360" defaultH="640" measureW="360" measureH="640" screenOrientation="MoPortrait" mobileScreenScale="1.77777779102325">
+  <controls controlCount="6">
+    <control controlID="8BCFCA14-88B8-48B8-B31E-87C2628E28D2" controlTypeID="HRule" x="0" y="59" w="360" h="12" zOrder="0">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="68FADAB8-2DAC-493F-B5E4-A4D42801F678" controlTypeID="Icon" x="26" y="14" w="40" h="40" zOrder="1">
+      <color>4284927231</color>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="99FBBEBF-5621-42D1-82F8-F5CFD925F04A" linkType="ltPageLink" isApplyIncludePage="False" title="About_Me">
+          <area shape="0" alt="" ID="{368DF791-5BA7-4E13-8D35-B317DA6D4B97}" coords="(0,0,40,40)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62154</iconCode>
+      </icon>
+      <URL>D95E480717200F895E41DB6E5B869596.svg</URL>
+    </control>
+    <control controlID="76C339FC-BE94-4510-88ED-0289F7BAD3F9" controlTypeID="Map" x="0" y="71" w="360" h="569" zOrder="2"/>
+    <control controlID="842916A0-E107-40BF-A176-5157740A89B0" controlTypeID="Icon" x="135" y="308" w="24" h="24" zOrder="3">
+      <color>4293348412</color>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="767D3B9C-059E-49BF-B43A-775BF133483B" linkType="ltPageLink" isApplyIncludePage="False" title="Angry_Mood_Detail">
+          <area shape="0" alt="" ID="{283AC43C-12CB-46A4-8B0E-F196BE8B70B4}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62371</iconCode>
+      </icon>
+      <URL>474A61FDC203C97B2EEFAF494C017CCB.svg</URL>
+    </control>
+    <control controlID="72AC6A08-BB44-4827-8AA7-143D8F3FA619" controlTypeID="Icon" x="200" y="358" w="25" h="25" zOrder="4">
+      <color>4294953984</color>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="68FB9C23-FD13-460B-A7DE-9DE460B749BE" linkType="ltPageLink" isApplyIncludePage="False" title="Happy_Mood_Detail">
+          <area shape="0" alt="" ID="{03CF3F2D-0172-4EEB-B708-15E56E2864F8}" coords="(0,0,25,25)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62371</iconCode>
+      </icon>
+      <URL>474A61FDC203C97B2EEFAF494C017CCB.svg</URL>
+    </control>
+    <control controlID="162AADEB-7314-47FD-A2E7-FBFCE2B0446D" controlTypeID="Icon" x="80" y="446" w="24" h="24" zOrder="5">
+      <color>4294953984</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62371</iconCode>
+      </icon>
+      <URL>474A61FDC203C97B2EEFAF494C017CCB.svg</URL>
+    </control>
+  </controls>
+  <param>
+    <backgroundColor>4294967295</backgroundColor>
+    <fontSize>0</fontSize>
+    <fontFamily/>
+    <guideLines/>
+  </param>
+</mockup>
