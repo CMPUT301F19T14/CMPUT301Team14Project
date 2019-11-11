@@ -70,6 +70,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         holder.user_name.setText(userNameList.get(position));
         holder.user_email.setText(userEmailList.get(position));
+        
     }
 
     /**
