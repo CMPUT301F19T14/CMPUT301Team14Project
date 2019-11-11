@@ -1,10 +1,14 @@
 package com.cmput301t14.mooditude;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,6 +60,32 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public SearchAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context).inflate(R.layout.search_list_content,parent,false);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), ((TextView) view.findViewById(R.id.searchList_user_email_textView)).getText(), Toast.LENGTH_LONG).show();
+
+                //creating a popup menu
+                PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.searchResultButton), Gravity.RIGHT);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.popmenu_follow);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.popmenu_search_add:
+                                //handle menu1 click
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                //displaying the popup
+                popup.show();
+            }
+        });
 
         return new SearchAdapter.SearchViewHolder(view);
     }
@@ -70,7 +100,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         holder.user_name.setText(userNameList.get(position));
         holder.user_email.setText(userEmailList.get(position));
-        
+
+
     }
 
     /**
