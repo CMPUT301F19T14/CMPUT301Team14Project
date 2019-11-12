@@ -13,6 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 /**
@@ -59,12 +62,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     @Override
     public SearchAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.search_list_content,parent,false);
+        final View view = LayoutInflater.from(context).inflate(R.layout.search_list_content,parent,false);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), ((TextView) view.findViewById(R.id.searchList_user_email_textView)).getText(), Toast.LENGTH_LONG).show();
 
+                final String receiverEmail= ((TextView) view.findViewById(R.id.searchList_user_email_textView)).getText().toString();
+//                Toast.makeText(view.getContext(), receiverEmail, Toast.LENGTH_LONG).show();
                 //creating a popup menu
                 PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.searchResultButton), Gravity.RIGHT);
                 //inflating menu from xml resource
@@ -76,6 +80,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                         switch (item.getItemId()) {
                             case R.id.popmenu_search_add:
                                 //handle menu1 click
+                                new FollowRequestMessage(receiverEmail).invoke();
+                                Toast.makeText(context, "Follow request to \""+receiverEmail+"\" sent", Toast.LENGTH_LONG).show();
                                 return true;
                             default:
                                 return false;
@@ -100,7 +106,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         holder.user_name.setText(userNameList.get(position));
         holder.user_email.setText(userEmailList.get(position));
-
 
     }
 
