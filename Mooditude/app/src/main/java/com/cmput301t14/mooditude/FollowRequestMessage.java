@@ -74,15 +74,29 @@ public class FollowRequestMessage extends Message {
         // send accept message to sender's MessageBox collection
         CollectionReference senderMsgBox= usersCollection.document(this.sender).collection("MessageBox");
         String epochTimeString= String.valueOf(Timestamp.now().getSeconds());
-        final DocumentReference messageEntry=senderMsgBox.document(epochTimeString);
-        final HashMap<String,Object> messageHash = new HashMap<>();
+        DocumentReference messageEntry=senderMsgBox.document(epochTimeString);
+        HashMap<String,Object> messageHash = new HashMap<>();
+        messageHash.put("text", receiver+" accepted you to follow");
         messageHash.put("sender",this.receiver);
         messageHash.put("receiver",this.sender);
         messageHash.put("newMessage", TRUE);
         messageHash.put("datetime", Timestamp.now());
-        messageHash.put("type", "accept");
+        messageHash.put("type", "text");
         messageEntry.set(messageHash);
-        // TODO: change the type of this message to completed
+
+        // delete this message and add new TextMessage to receiver MessageBox collection
+        this.delete();
+        CollectionReference receiverMsgBox= usersCollection.document(this.receiver).collection("MessageBox");
+        epochTimeString= String.valueOf(Timestamp.now().getSeconds());
+        messageEntry = receiverMsgBox.document(epochTimeString);
+        messageHash = new HashMap<>();
+        messageHash.put("text", "you accepted "+sender+" successfully");
+        messageHash.put("sender",this.sender);
+        messageHash.put("receiver",this.receiver);
+        messageHash.put("newMessage", TRUE);
+        messageHash.put("datetime", Timestamp.now());
+        messageHash.put("type", "text");
+        messageEntry.set(messageHash);
     }
 
     public void reject(){
@@ -90,14 +104,28 @@ public class FollowRequestMessage extends Message {
         CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
         CollectionReference senderMsgBox= usersCollection.document(this.sender).collection("MessageBox");
         String epochTimeString= String.valueOf(Timestamp.now().getSeconds());
-        final DocumentReference messageEntry=senderMsgBox.document(epochTimeString);
-        final HashMap<String,Object> messageHash = new HashMap<>();
+        DocumentReference messageEntry=senderMsgBox.document(epochTimeString);
+        HashMap<String,Object> messageHash = new HashMap<>();
+        messageHash.put("text", receiver+" rejected you to follow");
         messageHash.put("sender",this.receiver);
         messageHash.put("receiver",this.sender);
         messageHash.put("newMessage", TRUE);
         messageHash.put("datetime", Timestamp.now());
-        messageHash.put("type", "reject");
+        messageHash.put("type", "text");
         messageEntry.set(messageHash);
-        // TODO: change the type of this message to completed
+
+        // delete this message and add new TextMessage to receiver MessageBox collection
+        this.delete();
+        CollectionReference receiverMsgBox= usersCollection.document(this.receiver).collection("MessageBox");
+        epochTimeString= String.valueOf(Timestamp.now().getSeconds());
+        messageEntry = receiverMsgBox.document(epochTimeString);
+        messageHash = new HashMap<>();
+        messageHash.put("text", "you rejected "+sender+" successfully");
+        messageHash.put("sender",this.sender);
+        messageHash.put("receiver",this.receiver);
+        messageHash.put("newMessage", TRUE);
+        messageHash.put("datetime", Timestamp.now());
+        messageHash.put("type", "text");
+        messageEntry.set(messageHash);
     }
 }
