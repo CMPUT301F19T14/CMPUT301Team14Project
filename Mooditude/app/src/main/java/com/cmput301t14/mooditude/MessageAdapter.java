@@ -59,10 +59,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         final int positionFinal=position;
         if (message.getType().equals("followRequest")) {
             final FollowRequestMessage followRequestMessage = (FollowRequestMessage) message;
+            holder.view.findViewById(R.id.messageViewButton).setVisibility(View.VISIBLE);
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     messageArrayList.get(positionFinal).setNewMessage();
+
 //                    if(message.isNewMessage()){
 //                        Log.i("LOGA","new");
 //                    }
@@ -72,7 +74,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     messageViewHolder.messageContentTextView.setTypeface(null, Typeface.NORMAL);
                     Log.i("LOGA", "HERE2");
 
-                    PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.message_content), Gravity.RIGHT);
+                    PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.RIGHT);
                     //inflating menu from xml resource
                     popup.inflate(R.menu.popmenu_follow_request);
                     //adding click listener
