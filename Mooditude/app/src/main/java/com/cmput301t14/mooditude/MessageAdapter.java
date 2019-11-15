@@ -75,6 +75,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 //                    else{
 //                        Log.i("LOGA","old");
 //                    }
+                    message.setNewMessage();
                     messageViewHolder.messageContentTextView.setTypeface(null, Typeface.NORMAL);
                     Log.i("LOGA", "HERE2");
 
@@ -109,6 +110,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    message.setNewMessage();
                     messageViewHolder.messageContentTextView.setTypeface(null, Typeface.NORMAL);
                 }
             });

@@ -140,9 +140,38 @@ public class User{
 //                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
                         moodEntry.set(moodHash);
                     }
+                    //--
+                    followerCollRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for(DocumentSnapshot doc: queryDocumentSnapshots){
+                                String followerEmail =doc.getId().toString();
+                                DocumentReference documentReference =db.collection("Users")
+                                        .document(followerEmail).collection("Followings").document(user.getEmail());
+                                Location location  =moodEvent.getLocation();
+                                Timestamp localDateTime=moodEvent.getDatetime();
+//                        Integer author= moodEvent.getAuthor();
+                                Mood mood = moodEvent.getMood();
+                                SocialSituation socialSituation= moodEvent.getSocialSituation();
+                                String textComment= moodEvent.getTextComment();
+
+                                moodHash.put("Location",location.getGeopoint());
+
+                                moodHash.put("Mood",mood.getMood());
+                                moodHash.put("Comment",textComment);
+                                moodHash.put("DateTime",localDateTime);
+                                moodHash.put("SocialSituation",socialSituation.getSocialSituation());
+//                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
+                                documentReference.set(moodHash);
+
+                            }
+                        }
+                    });
+
                 } else {
                     Log.d("TAG", "Failed with: ", task.getException());
                 }
+
             }
         });
     }
