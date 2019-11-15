@@ -105,7 +105,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 }
             });
         }
-        else if(message.getType().equals("accept")){
+        else if(message.getType().equals("text")){
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

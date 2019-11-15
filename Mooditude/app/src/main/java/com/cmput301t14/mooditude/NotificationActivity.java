@@ -74,7 +74,7 @@ public class NotificationActivity extends AppCompatActivity {
                     }
                     else if(typeStr.equals("text")){
                         String textMessage = doc.getString("text");
-//                        messageArrayList.add(new TextMessage(sender,receiver,datetime,textMessage));
+                        messageArrayList.add(new TextMessage(textMessage,sender,receiver,datetime,newMessage));
                     }
                 }
                 Log.i("LOGB",String.valueOf(queryDocumentSnapshots.size()));
