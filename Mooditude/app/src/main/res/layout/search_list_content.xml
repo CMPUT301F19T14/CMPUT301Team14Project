@@ -29,7 +29,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/searchResultButton"
+        android:id="@+id/messageViewButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"

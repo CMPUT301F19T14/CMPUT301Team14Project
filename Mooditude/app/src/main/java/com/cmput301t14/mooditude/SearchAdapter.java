@@ -13,9 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 
 /**
@@ -70,7 +67,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 final String receiverEmail= ((TextView) view.findViewById(R.id.searchList_user_email_textView)).getText().toString();
 //                Toast.makeText(view.getContext(), receiverEmail, Toast.LENGTH_LONG).show();
                 //creating a popup menu
-                PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.searchResultButton), Gravity.RIGHT);
+                PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.RIGHT);
                 //inflating menu from xml resource
                 popup.inflate(R.menu.popmenu_follow);
                 //adding click listener

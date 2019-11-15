@@ -12,7 +12,7 @@ public abstract class Message {
     protected String sender;
     protected String receiver;
     protected Timestamp datetime;
-    protected boolean newMessage;
+    protected Boolean newMessage;
     protected String type;
     protected static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -23,7 +23,7 @@ public abstract class Message {
         this.newMessage=TRUE;
     }
 
-    public Message(String sender, String receiver, Timestamp datetime, boolean newMessage) {
+    public Message(String sender, String receiver, Timestamp datetime, Boolean newMessage) {
         this.sender = sender;
         this.receiver = receiver;
         this.datetime = datetime;
@@ -37,7 +37,7 @@ public abstract class Message {
         this.newMessage=TRUE;
     }
 
-    public Message(String sender, String receiver, boolean newMessage) {
+    public Message(String sender, String receiver, Boolean newMessage) {
         this.sender = sender;
         this.receiver = receiver;
         this.newMessage = newMessage;
@@ -51,6 +51,23 @@ public abstract class Message {
         this.newMessage=TRUE;
     }
 
+
+    public String getType() {
+        return type;
+    }
+
+    public Boolean isNewMessage() {
+        return newMessage;
+    }
+
+    public void setNewMessage( ) {
+        this.newMessage = Boolean.FALSE;
+    }
+
+    
+    abstract String toStringContent();
+  
+
     public abstract String toStringContent();
 
     public String toStringDatetime() {
@@ -58,4 +75,5 @@ public abstract class Message {
     }
 
     // TODO: Implement delete() method
+
 }

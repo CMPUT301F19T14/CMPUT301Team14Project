@@ -66,8 +66,8 @@ public class User{
         if(userDocRef==null){
             Log.i("email","tag: "+getEmail());
         }
-        followingCollRef= db.collection("Users").document(user.getEmail()).collection("following");
-        followerCollRef= db.collection("Users").document(user.getEmail()).collection("followers");
+        followingCollRef= db.collection("Users").document(user.getEmail()).collection("Followings");
+        followerCollRef= db.collection("Users").document(user.getEmail()).collection("Followers");
         moodHistoryCollRef= db.collection("Users").document(user.getEmail()).collection("MoodHistory");
     }
 
