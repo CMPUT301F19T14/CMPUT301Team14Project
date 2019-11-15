@@ -4,6 +4,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static java.lang.Boolean.TRUE;
 
@@ -50,7 +51,11 @@ public abstract class Message {
         this.newMessage=TRUE;
     }
 
-    abstract void invoke();
-    abstract String toStringContent();
-    abstract String toStringDatetime();
+    public abstract String toStringContent();
+
+    public String toStringDatetime() {
+        return sdf.format(new Date(this.datetime.getSeconds() * 1000));
+    }
+
+    // TODO: Implement delete() method
 }
