@@ -25,6 +25,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 
 public class NotificationActivity extends AppCompatActivity {
 
@@ -60,16 +62,23 @@ public class NotificationActivity extends AppCompatActivity {
                 messageArrayList.clear();
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                     String typeStr = doc.getString("type");
-                    Log.i("LOGA", typeStr);
+                    String sender = doc.getString("sender");
+                    String receiver = doc.getString("receiver");
+                    Timestamp datetime = doc.getTimestamp("datetime");
+                    Boolean newMessage = doc.getBoolean("newMessage");
+
+//                    Log.i("LOGA", typeStr);
                     if (typeStr.equals("followRequest")) {
-                        String sender = doc.getString("sender");
-                        String receiver = doc.getString("receiver");
-                        Timestamp datetime = doc.getTimestamp("datetime");
-                        boolean newMessage = doc.getBoolean("newMessage");
                         FollowRequestMessage followRequestMessage = new FollowRequestMessage(sender, receiver, datetime, newMessage);
                         messageArrayList.add(followRequestMessage);
                     }
+                    else if(typeStr.equals("text")){
+                        String textMessage = doc.getString("text");
+//                        messageArrayList.add(new TextMessage(sender,receiver,datetime,textMessage));
+                    }
                 }
+                Log.i("LOGB",String.valueOf(queryDocumentSnapshots.size()));
+                Log.i("LOGB",String.valueOf(messageArrayList.size()));
 //                searchAdapter = new SearchAdapter(SearchActivity.this, userNameList, userEmailList);
                 messageAdapter = new MessageAdapter(NotificationActivity.this, messageArrayList);
                 recyclerView.setAdapter(messageAdapter);

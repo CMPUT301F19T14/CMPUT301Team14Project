@@ -20,6 +20,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     Context context;
     ArrayList<Message> messageArrayList;
 
+
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         TextView messageDatetimeTextView, messageContentTextView;
@@ -37,6 +38,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public MessageAdapter(Context context, ArrayList<Message> messageArrayList) {
         this.context = context;
         this.messageArrayList = messageArrayList;
+        Log.i("LOGB","MessageAdapter: "+String.valueOf(messageArrayList.size()));
     }
 
     @Override
@@ -54,9 +56,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 //        holder.textView.setText("test");
+        Log.i("LOGB","MessageAdapter position: "+String.valueOf(position));
         final MessageViewHolder messageViewHolder=holder;
         final Message message = messageArrayList.get(position);
         final int positionFinal=position;
+
         if (message.getType().equals("followRequest")) {
             final FollowRequestMessage followRequestMessage = (FollowRequestMessage) message;
             holder.view.findViewById(R.id.messageViewButton).setVisibility(View.VISIBLE);
@@ -86,10 +90,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                                     //handle menu1 click
 //                                    new FollowRequestMessage(receiverEmail).invoke();
 //                                    Toast.makeText(context, "Follow request to \""+receiverEmail+"\" sent", Toast.LENGTH_LONG).show();
-//                                    followRequestMessage.accept();
+                                    followRequestMessage.accept();
                                     return true;
                                 case R.id.popmenu_reject_follow:
-//                                    followRequestMessage.reject();
+                                    followRequestMessage.reject();
                                     return true;
                                 default:
                                     return false;
@@ -101,11 +105,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 }
             });
         }
+        else if(message.getType().equals("accept")){
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    messageViewHolder.messageContentTextView.setTypeface(null, Typeface.NORMAL);
+                }
+            });
+        }
+
         holder.messageContentTextView.setText(messageArrayList.get(position).toStringContent());
         holder.messageDatetimeTextView.setText(messageArrayList.get(position).toStringDatetime());
         if (message.isNewMessage()) {
             holder.messageContentTextView.setTypeface(null, Typeface.BOLD);
             Log.i("LOGA", "HERE1");
+        }
+        else{
+            holder.messageContentTextView.setTypeface(null, Typeface.NORMAL);
         }
 
 
@@ -114,8 +130,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return 1;
-//        return mDataset.length;
+//        return 1;
+        return messageArrayList.size();
     }
 }
 

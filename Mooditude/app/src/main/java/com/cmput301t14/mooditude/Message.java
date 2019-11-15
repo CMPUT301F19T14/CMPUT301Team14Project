@@ -65,9 +65,6 @@ public abstract class Message {
     }
 
     
-    abstract String toStringContent();
-  
-
     public abstract String toStringContent();
 
     public String toStringDatetime() {

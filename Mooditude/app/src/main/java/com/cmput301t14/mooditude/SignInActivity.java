@@ -54,8 +54,8 @@ public class SignInActivity extends AppCompatActivity {
 
 
 // Bypass Sign in for testing
-        mFirebaseAuth.signInWithEmailAndPassword("test@test.com","tester")
-//        mFirebaseAuth.signInWithEmailAndPassword("test2@test.com","tester")
+//        mFirebaseAuth.signInWithEmailAndPassword("test@test.com","tester")
+        mFirebaseAuth.signInWithEmailAndPassword("test2@test.com","tester")
 
                 .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
