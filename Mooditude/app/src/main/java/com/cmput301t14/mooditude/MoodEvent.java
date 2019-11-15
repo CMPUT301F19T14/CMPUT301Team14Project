@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  */
 public class MoodEvent implements Serializable {
 
-//    private Integer author;
+    private String author;
     private Mood mood;
     private Timestamp datetime;
     private Location location;
@@ -32,8 +32,8 @@ public class MoodEvent implements Serializable {
      * @param socialSituation
      * @param textComment
      */
-    public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment) {
-//        this.author = author;
+    public MoodEvent(String author,Mood mood, Location location, SocialSituation socialSituation, String textComment) {
+        this.author = author;
         this.mood = mood;
         this.location = location;
         this.socialSituation = socialSituation;
@@ -41,6 +41,18 @@ public class MoodEvent implements Serializable {
 //        this.datetime=LocalDateTime.now();
         this.datetime= Timestamp.now();
     }
+
+    public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment) {
+        this.author = "";
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+//        this.datetime=LocalDateTime.now();
+        this.datetime= Timestamp.now();
+    }
+
+
 
     /**
      * MoodEvent constructor
@@ -50,12 +62,25 @@ public class MoodEvent implements Serializable {
      * @param textComment
      * @param timestamp
      */
-    public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
+    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
+        this.author = author;
         this.mood = mood;
         this.location = location;
         this.socialSituation = socialSituation;
         this.textComment = textComment;
         this.datetime=timestamp;
+    }
+    public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
+        this.author = "";
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+        this.datetime=timestamp;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     /**

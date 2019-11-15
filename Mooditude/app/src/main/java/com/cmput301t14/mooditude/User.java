@@ -233,6 +233,36 @@ public class User{
         });
     }
 
+    public void listenFollowingMoodEvents(final ArrayList<MoodEvent> moodEventDataList, final ArrayAdapter<MoodEvent> moodEventAdapter){
+        CollectionReference collectionReference = db.collection("Users")
+                .document(user.getEmail()).collection("Followings");
+
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                moodEventDataList.clear();
+                for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
+                    Log.i("follow",doc.getId());
+                    String textComment=doc.getString("Comment");
+                    Log.i("follow","Comment:"+ doc.getString("Comment"));
+                    Log.i("follow","Mood:"+ doc.getString("Mood"));
+                    Mood mood= new Mood(doc.getString("Mood"));
+
+                    SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
+                    Location location= new Location(doc.getGeoPoint("Location"));
+//                    LocalDateTime datetime = LocalDateTime.parse(doc.getString("DateTime"));
+                    Timestamp datetime = doc.getTimestamp("DateTime");
+                    String author=doc.getId();
+                    MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime);
+//                    if(doc.getTimestamp("TIMESTAMP")!=null)
+//                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
+                    moodEventDataList.add(moodEvent);
+                }
+                moodEventAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
     public void listenUserName(final TextView textView){
 //        DocumentReference docRef = db.collection("Users").document(user.getEmail());
         userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
