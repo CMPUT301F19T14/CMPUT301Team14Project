@@ -1,9 +1,13 @@
 package com.cmput301t14.mooditude;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 
@@ -69,6 +73,21 @@ public class FollowRequestMessage extends Message {
         final HashMap<String,Object> followingHash = new HashMap<>();
         // TODO: get receiver's most recent MoodEvent and put it in the senderFollowingsEntry
 //        followerHash.put("type", "reject");
+        usersCollection.document(receiver).collection("MoodHistory").orderBy("DateTime", Query.Direction.DESCENDING).limit(1).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                HashMap<String,Object> moodEventHash= new HashMap<>();
+                for(DocumentSnapshot doc: queryDocumentSnapshots){
+                    moodEventHash.put("DateTime", doc.getTimestamp("DateTime"));
+                    moodEventHash.put("Comment", doc.getString("Comment"));
+                    moodEventHash.put("SocialSituation", doc.get("SocialSituation"));
+                    moodEventHash.put("Mood",doc.get("Mood"));
+                    moodEventHash.put("Location",doc.getGeoPoint("Location"));
+                    senderFollowingsEntry.set(moodEventHash);
+                }
+
+            }
+        });
         senderFollowingsEntry.set(followingHash);
 
         // send accept message to sender's MessageBox collection

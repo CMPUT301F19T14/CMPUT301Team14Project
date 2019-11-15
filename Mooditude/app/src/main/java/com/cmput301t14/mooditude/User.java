@@ -140,9 +140,38 @@ public class User{
 //                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
                         moodEntry.set(moodHash);
                     }
+                    //--
+                    followerCollRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for(DocumentSnapshot doc: queryDocumentSnapshots){
+                                String followerEmail =doc.getId().toString();
+                                DocumentReference documentReference =db.collection("Users")
+                                        .document(followerEmail).collection("Followings").document(user.getEmail());
+                                Location location  =moodEvent.getLocation();
+                                Timestamp localDateTime=moodEvent.getDatetime();
+//                        Integer author= moodEvent.getAuthor();
+                                Mood mood = moodEvent.getMood();
+                                SocialSituation socialSituation= moodEvent.getSocialSituation();
+                                String textComment= moodEvent.getTextComment();
+
+                                moodHash.put("Location",location.getGeopoint());
+
+                                moodHash.put("Mood",mood.getMood());
+                                moodHash.put("Comment",textComment);
+                                moodHash.put("DateTime",localDateTime);
+                                moodHash.put("SocialSituation",socialSituation.getSocialSituation());
+//                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
+                                documentReference.set(moodHash);
+
+                            }
+                        }
+                    });
+
                 } else {
                     Log.d("TAG", "Failed with: ", task.getException());
                 }
+
             }
         });
     }
@@ -195,6 +224,36 @@ public class User{
 //                    LocalDateTime datetime = LocalDateTime.parse(doc.getString("DateTime"));
                     Timestamp datetime = doc.getTimestamp("DateTime");
                     MoodEvent moodEvent=new MoodEvent(mood, location,socialSituation,textComment,datetime);
+//                    if(doc.getTimestamp("TIMESTAMP")!=null)
+//                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
+                    moodEventDataList.add(moodEvent);
+                }
+                moodEventAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void listenFollowingMoodEvents(final ArrayList<MoodEvent> moodEventDataList, final ArrayAdapter<MoodEvent> moodEventAdapter){
+        CollectionReference collectionReference = db.collection("Users")
+                .document(user.getEmail()).collection("Followings");
+
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                moodEventDataList.clear();
+                for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
+                    Log.i("follow",doc.getId());
+                    String textComment=doc.getString("Comment");
+                    Log.i("follow","Comment:"+ doc.getString("Comment"));
+                    Log.i("follow","Mood:"+ doc.getString("Mood"));
+                    Mood mood= new Mood(doc.getString("Mood"));
+
+                    SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
+                    Location location= new Location(doc.getGeoPoint("Location"));
+//                    LocalDateTime datetime = LocalDateTime.parse(doc.getString("DateTime"));
+                    Timestamp datetime = doc.getTimestamp("DateTime");
+                    String author=doc.getId();
+                    MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime);
 //                    if(doc.getTimestamp("TIMESTAMP")!=null)
 //                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
                     moodEventDataList.add(moodEvent);
