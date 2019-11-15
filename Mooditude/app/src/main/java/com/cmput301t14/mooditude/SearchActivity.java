@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
  * by entering others' user names or user e-mails.
  */
 public class SearchActivity extends AppCompatActivity {
+
 
     private EditText searchEditTextView;
     private RecyclerView recyclerView;
@@ -46,12 +48,17 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+
+
         user = new User();
         MenuBar menuBar = new MenuBar(SearchActivity.this, user.getEmail(), 1);
         userEmailList = new ArrayList<>();
         userNameList = new ArrayList<>();
 
         usersCollection = FirebaseFirestore.getInstance().collection("Users");
+
+
+
 
         searchEditTextView = findViewById(R.id.search_edit_text);
         recyclerView = findViewById(R.id.search_list);

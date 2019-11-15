@@ -8,7 +8,6 @@ import java.util.StringTokenizer;
  */
 
 public class MoodEventValidator {
-
     static private String errorMessage="";
 
     /**
