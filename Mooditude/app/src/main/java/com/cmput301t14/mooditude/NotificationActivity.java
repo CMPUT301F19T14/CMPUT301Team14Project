@@ -32,6 +32,7 @@ public class NotificationActivity extends AppCompatActivity {
     CollectionReference messageBoxRef;
     User user;
     ArrayList<Message> messageArrayList;
+    MessageAdapter messageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,9 @@ public class NotificationActivity extends AppCompatActivity {
                         messageArrayList.add(followRequestMessage);
                     }
                 }
+//                searchAdapter = new SearchAdapter(SearchActivity.this, userNameList, userEmailList);
+                messageAdapter = new MessageAdapter(NotificationActivity.this, messageArrayList);
+                recyclerView.setAdapter(messageAdapter);
             }
         });
 //        messageBoxRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

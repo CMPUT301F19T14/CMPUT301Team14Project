@@ -3,6 +3,8 @@ package com.cmput301t14.mooditude;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 
+import java.text.SimpleDateFormat;
+
 import static java.lang.Boolean.TRUE;
 
 public abstract class Message {
@@ -11,6 +13,7 @@ public abstract class Message {
     protected Timestamp datetime;
     protected boolean newMessage;
     protected String type;
+    protected static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     public Message(String receiver) {
         this.receiver = receiver;
@@ -48,4 +51,6 @@ public abstract class Message {
     }
 
     abstract void invoke();
+    abstract String toStringContent();
+    abstract String toStringDatetime();
 }

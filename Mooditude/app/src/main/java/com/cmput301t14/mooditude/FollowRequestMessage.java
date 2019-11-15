@@ -5,6 +5,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Date;
 import java.util.HashMap;
 
 public class FollowRequestMessage extends Message {
@@ -31,6 +32,16 @@ public class FollowRequestMessage extends Message {
     public FollowRequestMessage(String sender, String receiver) {
         super(sender, receiver);
         this.type="followRequest";
+    }
+
+    @Override
+    String toStringContent() {
+        return this.sender+" wants to follow you";
+    }
+
+    @Override
+    String toStringDatetime() {
+        return super.sdf.format(new Date(this.datetime.getSeconds() * 1000));
     }
 
     @Override
