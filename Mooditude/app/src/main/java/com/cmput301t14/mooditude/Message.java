@@ -2,6 +2,8 @@ package com.cmput301t14.mooditude;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -61,16 +63,25 @@ public abstract class Message {
     }
 
     public void setNewMessage( ) {
-        this.newMessage = Boolean.FALSE;
+        CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
+        CollectionReference receiverMsgBox= usersCollection.document(receiver).collection("MessageBox");
+        String epochTimeString= String.valueOf(this.datetime.getSeconds());
+        final DocumentReference messageEntry=receiverMsgBox.document(epochTimeString);
+        messageEntry.update("newMessage",false);
     }
 
-    
+
     public abstract String toStringContent();
 
     public String toStringDatetime() {
         return sdf.format(new Date(this.datetime.getSeconds() * 1000));
     }
 
-    // TODO: Implement delete() method
-
+    public void delete(){
+        CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
+        CollectionReference receiverMsgBox= usersCollection.document(receiver).collection("MessageBox");
+        String epochTimeString= String.valueOf(this.datetime.getSeconds());
+        final DocumentReference messageEntry=receiverMsgBox.document(epochTimeString);
+        messageEntry.delete();
+    }
 }
