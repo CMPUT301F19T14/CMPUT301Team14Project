@@ -70,6 +70,7 @@ public abstract class Message {
         messageEntry.update("newMessage",false);
     }
 
+
     public abstract String toStringContent();
 
     public String toStringDatetime() {
