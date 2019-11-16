@@ -1,6 +1,7 @@
 package com.cmput301t14.mooditude.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,10 +88,28 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         if (moodEvent.getSocialSituation()== null) {
 //            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
             socialSituationImage.setVisibility(View.GONE);
-        } else {
+        } else if(moodEvent.getSocialSituation().getSocialSituation().equals("ALONE")) {
 //            commentImage.clearColorFilter();
+            Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
             socialSituationImage.setVisibility(View.VISIBLE);
+            socialSituationImage.setImageResource(R.drawable.ic_alone);
+        } else if(moodEvent.getSocialSituation().getSocialSituation().equals("ONE_PERSON")) {
+//            commentImage.clearColorFilter();
+            Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
+            socialSituationImage.setVisibility(View.VISIBLE);
+            socialSituationImage.setImageResource(R.drawable.ic_with_one_person);
+        } else if(moodEvent.getSocialSituation().getSocialSituation().equals("SEVERAL")) {
+//            commentImage.clearColorFilter();
+            Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
+            socialSituationImage.setVisibility(View.VISIBLE);
+            socialSituationImage.setImageResource(R.drawable.ic_several);
+        }else if(moodEvent.getSocialSituation().getSocialSituation().equals("CROWD")) {
+//            commentImage.clearColorFilter();
+            Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
+            socialSituationImage.setVisibility(View.VISIBLE);
+            socialSituationImage.setImageResource(R.drawable.ic_group);
         }
+
 
 
 //        final ImageView imageView = view.findViewById(R.id.socialSituationImage);
