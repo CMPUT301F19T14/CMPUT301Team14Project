@@ -1,4 +1,4 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -10,9 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.cmput301t14.mooditude.models.FollowRequestMessage;
+import com.cmput301t14.mooditude.models.Message;
+import com.cmput301t14.mooditude.R;
 
 import java.util.ArrayList;
 

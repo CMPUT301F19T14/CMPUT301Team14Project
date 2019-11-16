@@ -1,5 +1,6 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.models;
 
+import com.cmput301t14.mooditude.services.User;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;

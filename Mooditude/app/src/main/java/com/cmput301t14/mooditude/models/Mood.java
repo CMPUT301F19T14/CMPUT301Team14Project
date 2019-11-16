@@ -1,4 +1,4 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.models;
 
 import android.graphics.Color;
 

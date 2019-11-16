@@ -1,4 +1,4 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,6 +17,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.cmput301t14.mooditude.models.Location;
+import com.cmput301t14.mooditude.models.Mood;
+import com.cmput301t14.mooditude.models.MoodEvent;
+import com.cmput301t14.mooditude.services.MoodEventValidator;
+import com.cmput301t14.mooditude.R;
+import com.cmput301t14.mooditude.models.SocialSituation;
+import com.cmput301t14.mooditude.services.User;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.cmput301t14.mooditude.R;
 
 import org.w3c.dom.Text;
 

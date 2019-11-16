@@ -1,4 +1,4 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.services;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,9 +7,15 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 
+import com.cmput301t14.mooditude.R;
+import com.cmput301t14.mooditude.activities.AddActivity;
+import com.cmput301t14.mooditude.activities.HomeActivity;
+import com.cmput301t14.mooditude.activities.NotificationActivity;
+import com.cmput301t14.mooditude.activities.SearchActivity;
+import com.cmput301t14.mooditude.activities.SelfActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
+import static com.cmput301t14.mooditude.activities.SelfActivity.EXTRA_MESSAGE_Email;
 
 
 /**

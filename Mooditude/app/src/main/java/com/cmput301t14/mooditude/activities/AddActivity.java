@@ -1,4 +1,4 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +15,16 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
+import com.cmput301t14.mooditude.models.Location;
+import com.cmput301t14.mooditude.services.MenuBar;
+import com.cmput301t14.mooditude.models.Mood;
+import com.cmput301t14.mooditude.models.MoodEvent;
+import com.cmput301t14.mooditude.services.MoodEventValidator;
+import com.cmput301t14.mooditude.R;
+import com.cmput301t14.mooditude.models.SocialSituation;
+import com.cmput301t14.mooditude.services.User;
+
+import static com.cmput301t14.mooditude.activities.SelfActivity.EXTRA_MESSAGE_Email;
 
 
 /**

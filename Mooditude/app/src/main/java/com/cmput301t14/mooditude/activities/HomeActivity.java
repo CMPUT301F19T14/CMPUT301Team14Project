@@ -1,4 +1,4 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,9 +9,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.cmput301t14.mooditude.adapters.FollowingMoodEventAdapter;
+import com.cmput301t14.mooditude.services.MenuBar;
+import com.cmput301t14.mooditude.models.MoodEvent;
+import com.cmput301t14.mooditude.R;
+import com.cmput301t14.mooditude.services.User;
+
 import java.util.ArrayList;
 
-import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
+import static com.cmput301t14.mooditude.activities.SelfActivity.EXTRA_MESSAGE_Email;
 
 public class HomeActivity extends AppCompatActivity {
 

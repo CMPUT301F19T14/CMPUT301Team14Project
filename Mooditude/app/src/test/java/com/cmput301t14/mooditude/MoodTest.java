@@ -2,6 +2,8 @@ package com.cmput301t14.mooditude;
 
 import android.graphics.Color;
 
+import com.cmput301t14.mooditude.models.Mood;
+
 import org.junit.Before;
 import org.junit.Test;
 

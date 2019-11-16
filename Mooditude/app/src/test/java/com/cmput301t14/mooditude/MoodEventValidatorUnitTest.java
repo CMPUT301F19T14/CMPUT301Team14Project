@@ -1,6 +1,6 @@
 package com.cmput301t14.mooditude;
 
-import android.util.Log;
+import com.cmput301t14.mooditude.services.MoodEventValidator;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

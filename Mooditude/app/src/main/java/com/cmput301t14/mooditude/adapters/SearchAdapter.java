@@ -1,4 +1,4 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.adapters;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.cmput301t14.mooditude.models.FollowRequestMessage;
+import com.cmput301t14.mooditude.R;
 
 import java.util.ArrayList;
 

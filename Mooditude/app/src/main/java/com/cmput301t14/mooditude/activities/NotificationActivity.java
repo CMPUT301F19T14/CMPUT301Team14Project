@@ -1,6 +1,5 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.activities;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -10,13 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.cmput301t14.mooditude.models.FollowRequestMessage;
+import com.cmput301t14.mooditude.services.MenuBar;
+import com.cmput301t14.mooditude.models.Message;
+import com.cmput301t14.mooditude.adapters.MessageAdapter;
+import com.cmput301t14.mooditude.R;
+import com.cmput301t14.mooditude.models.TextMessage;
+import com.cmput301t14.mooditude.services.User;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -24,8 +26,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 
 public class NotificationActivity extends AppCompatActivity {

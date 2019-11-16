@@ -1,4 +1,4 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,15 +11,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.dynamic.IFragmentWrapper;
+import com.cmput301t14.mooditude.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import static com.cmput301t14.mooditude.SelfActivity.EXTRA_MESSAGE_Email;
+import static com.cmput301t14.mooditude.activities.SelfActivity.EXTRA_MESSAGE_Email;
 
 
 /**
@@ -54,8 +52,8 @@ public class SignInActivity extends AppCompatActivity {
 
 
 // Bypass Sign in for testing
-        mFirebaseAuth.signInWithEmailAndPassword("test@test.com","tester")
-//        mFirebaseAuth.signInWithEmailAndPassword("test2@test.com","tester")
+//        mFirebaseAuth.signInWithEmailAndPassword("test@test.com","tester")
+        mFirebaseAuth.signInWithEmailAndPassword("test2@test.com","tester")
 
                 .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -65,7 +63,7 @@ public class SignInActivity extends AppCompatActivity {
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
-                            Intent intentHomeActivity = new Intent(getApplicationContext(),HomeActivity.class);
+                            Intent intentHomeActivity = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(intentHomeActivity);
                         }
                     }

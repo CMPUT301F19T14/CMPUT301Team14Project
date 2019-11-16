@@ -1,4 +1,7 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.services;
+
+import com.cmput301t14.mooditude.models.Mood;
+import com.cmput301t14.mooditude.models.SocialSituation;
 
 import java.util.StringTokenizer;
 

@@ -1,8 +1,6 @@
 package com.cmput301t14.mooditude;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -10,6 +8,10 @@ import android.widget.TextView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.cmput301t14.mooditude.activities.HomeActivity;
+import com.cmput301t14.mooditude.activities.MainActivity;
+import com.cmput301t14.mooditude.activities.SelfActivity;
+import com.cmput301t14.mooditude.activities.SignInActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;

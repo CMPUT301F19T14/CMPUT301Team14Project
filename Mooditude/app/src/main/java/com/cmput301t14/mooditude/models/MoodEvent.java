@@ -1,9 +1,8 @@
-package com.cmput301t14.mooditude;
+package com.cmput301t14.mooditude.models;
 
 import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 
 /**
