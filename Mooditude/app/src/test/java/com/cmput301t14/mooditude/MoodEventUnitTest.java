@@ -2,10 +2,13 @@ package com.cmput301t14.mooditude;
 
 import android.graphics.Color;
 
+import com.cmput301t14.mooditude.models.Location;
+import com.cmput301t14.mooditude.models.Mood;
+import com.cmput301t14.mooditude.models.MoodEvent;
+import com.cmput301t14.mooditude.models.SocialSituation;
+
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-
-import java.time.LocalDateTime;
 
 public class MoodEventUnitTest {
     @Test

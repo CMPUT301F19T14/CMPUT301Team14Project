@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+    android:id="@+id/popmenu_accept_follow"
+    android:title="accept"
+        />
+    <item
+    android:id="@+id/popmenu_reject_follow"
+    android:title="reject"
+        />
+
+
+
+</menu>

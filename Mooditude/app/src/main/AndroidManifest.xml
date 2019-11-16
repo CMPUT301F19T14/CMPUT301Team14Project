@@ -9,18 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DisplayFollow"
-            android:parentActivityName=".SelfActivity"></activity>
-        <activity android:name=".SelfActivity" />
-        <activity android:name=".NotificationActivity" />
-        <activity android:name=".AddActivity" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".SignInActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".RegisterActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.DisplayFollow"
+            android:parentActivityName=".activities.SelfActivity"></activity>
+        <activity android:name=".activities.SelfActivity" />
+        <activity android:name=".activities.NotificationActivity" />
+        <activity android:name=".activities.AddActivity" />
+        <activity android:name=".activities.SearchActivity" />
+        <activity android:name=".activities.HomeActivity" />
+        <activity android:name=".activities.SignInActivity"
+            android:parentActivityName=".activities.MainActivity"/>
+        <activity android:name=".activities.RegisterActivity"
+            android:parentActivityName=".activities.MainActivity"/>
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

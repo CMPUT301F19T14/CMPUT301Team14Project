@@ -1,5 +1,7 @@
 package com.cmput301t14.mooditude;
 
+import com.cmput301t14.mooditude.models.Location;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

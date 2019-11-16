@@ -1,0 +1,234 @@
+﻿<mockup version="5.3" minAllowVersion="5.3" ID="38381CBD-5D8A-4BB3-9C76-4F9FDC1E7441" platform="MtMobile" defaultW="360" defaultH="640" measureW="360" measureH="640" screenOrientation="MoPortrait" mobileScreenScale="1.77777779102325" clipArea="(0,0,0,0)">
+  <controls controlCount="29">
+    <control controlID="F8A70CF4-C073-41D7-9E3F-40D896556B70" controlTypeID="Tabs" x="0" y="620" w="360" h="20" zOrder="0">
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Home%2CSearch%2CPost%2CNotification%2CMe</text>
+      <textColor>4284900966</textColor>
+      <textSize>14</textSize>
+      <lineSpacing>0</lineSpacing>
+      <dividerColor>4293190884</dividerColor>
+      <selectedTextColor>4278242559</selectedTextColor>
+    </control>
+    <control controlID="F6E559F5-A735-4A98-800E-1B705655017A" controlTypeID="Icon" x="95" y="596" w="24" h="24" zOrder="1">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="3DA3CBBA-396A-4985-8A4A-FF31BB10ABBA" linkType="ltPageLink" isApplyIncludePage="False" title="Search">
+          <area shape="0" alt="" ID="{97B8C3C8-DE7C-4FB3-9ED5-4543259957AA}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIcoFont</iconFontName>
+        <iconCode>59217</iconCode>
+      </icon>
+      <URL>5B42555577E2EDEFD5648F7EACF271B1.svg</URL>
+    </control>
+    <control controlID="C36F5685-C81E-4936-821C-3D7B3F0624EC" controlTypeID="Icon" x="239" y="596" w="24" h="24" zOrder="2">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="8948A0DB-0DC4-4561-BBA7-3D6AC8D58F83" linkType="ltPageLink" isApplyIncludePage="False" title="Notification">
+          <area shape="0" alt="" ID="{5B22C974-288F-4499-989F-385F502DB918}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdFontAwesome</iconFontName>
+        <iconCode>61443</iconCode>
+      </icon>
+      <URL>B580EFDE757BFEFDFAE97C8770013819.svg</URL>
+    </control>
+    <control controlID="838ED784-4370-4BEE-A5CD-B5457498129D" controlTypeID="Icon" x="23" y="596" w="24" h="24" zOrder="3">
+      <color>4278242559</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62535</iconCode>
+      </icon>
+      <URL>CF75DBB601952B6BB4B151C544C1D2C8.svg</URL>
+    </control>
+    <control controlID="9390DF80-2393-4239-BB51-BB3643FB2739" controlTypeID="Icon" x="310" y="596" w="24" h="24" zOrder="4">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="99FBBEBF-5621-42D1-82F8-F5CFD925F04A" linkType="ltPageLink" isApplyIncludePage="False" title="About+Me">
+          <area shape="0" alt="" ID="{42A9D576-CB0A-4B1D-93A4-93C72A4AE7C3}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62168</iconCode>
+      </icon>
+      <URL>A4BBA5CCC7880CC1D7108AAE4A99AB6E.svg</URL>
+    </control>
+    <control controlID="4634A299-034E-4ED6-96C4-E50CA674CFBC" controlTypeID="Icon" x="167" y="596" w="24" h="24" zOrder="5">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="7110ACB6-31F4-42A7-AB9F-33644F29A409" linkType="ltPageLink" isApplyIncludePage="False" title="Post">
+          <area shape="0" alt="" ID="{F858F754-F129-49BF-9199-DE68FB281D38}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62151</iconCode>
+      </icon>
+      <URL>D08755C22A9B40B6BF65036DEC8B44B4.svg</URL>
+    </control>
+    <control controlID="815B3F30-736F-4A02-9165-253F9B707ABE" controlTypeID="HRule" x="-1" y="584" w="361" h="12" zOrder="6">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="EC1CBF74-49EF-4872-B3BF-00B176729B0D" controlTypeID="HRule" x="0" y="59" w="360" h="12" zOrder="7">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="2ABC3C3E-A54C-4B30-9798-E2EDEEAAA7F0" controlTypeID="Icon" x="302" y="16" w="40" h="40" zOrder="8">
+      <color>4284927231</color>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="7EEF8204-AA12-46CC-8A22-5419C37A4194" linkType="ltPageLink" isApplyIncludePage="False" title="Google+Maps">
+          <area shape="0" alt="" ID="{046832DB-084E-450E-AF76-3609CCEEB04A}" coords="(0,0,40,40)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>61955</iconCode>
+      </icon>
+      <URL>CDEBBF7EBDD37DA54AC604792FCAECCA.svg</URL>
+    </control>
+    <control controlID="6C987A0B-C0A5-4D37-8246-E9EC5C169F44" controlTypeID="Label" x="23" y="21" w="199" h="30" zOrder="9">
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Find+Out+What's+New!</text>
+      <textColor>4284927231</textColor>
+      <textSize>22</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="FD7875C4-EB07-4527-B59A-E630539C2B7F" controlTypeID="HRule" x="0" y="138" w="360" h="12" zOrder="10">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="19433D44-524D-4E62-817A-863CC6237C31" controlTypeID="Image" x="21" y="72" w="45" h="45" zOrder="11">
+      <URL>3F77B22234EDDB48994560DDABECE656.png</URL>
+    </control>
+    <control controlID="79C72890-EAE6-4F45-8FC9-E75F2A24BC9B" controlTypeID="Label" x="539" y="302" w="131" h="22" zOrder="12">
+      <color>6710886</color>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>2019-10-16+09%3A56%3A59</text>
+      <textColor>4284900966</textColor>
+      <textSize>16</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="5E468E80-E9A5-4F22-B8DE-80F4E121823F" controlTypeID="Image" x="69" y="81" w="30" h="30" zOrder="13">
+      <URL>C3F54CC0DAA83EB09A3BC8D826191F5F.png</URL>
+    </control>
+    <control controlID="BC0ADB65-DFF4-46F3-844F-42FD85CAE500" controlTypeID="Icon" x="103" y="81" w="30" h="30" zOrder="14">
+      <color>4284927231</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62348</iconCode>
+      </icon>
+      <URL>C9A19AEA8333861081ABFD164D361FEF.svg</URL>
+    </control>
+    <control controlID="8557F8CB-74A7-4769-92B2-212AB592EBDF" controlTypeID="Image" x="138" y="81" w="30" h="30" zOrder="15">
+      <URL>C93E5DB575CF3B81893ADD27F2CFFCC4.png</URL>
+    </control>
+    <control controlID="863508E2-2493-4333-9EB3-4B29469EF9D5" controlTypeID="HRule" x="0" y="216" w="360" h="12" zOrder="16">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="4C2AFEE0-6F52-4FD6-928D-DEBD08D553A3" controlTypeID="Label" x="23" y="117" w="131" h="22" zOrder="17">
+      <color>6710886</color>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>2019-10-16+09%3A45%3A59</text>
+      <textColor>4284900966</textColor>
+      <textSize>16</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="7C58543B-25F4-42B2-9D4B-36FA5A0A20CE" controlTypeID="Image" x="69" y="159" w="30" h="30" zOrder="18">
+      <URL>C3F54CC0DAA83EB09A3BC8D826191F5F.png</URL>
+    </control>
+    <control controlID="FF9077CB-9D4F-4496-AE35-ADB71767B241" controlTypeID="Icon" x="103" y="159" w="30" h="30" zOrder="19">
+      <color>4284927231</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62348</iconCode>
+      </icon>
+      <URL>C9A19AEA8333861081ABFD164D361FEF.svg</URL>
+    </control>
+    <control controlID="A289B639-87FD-4BF1-91C5-065C87B0B70E" controlTypeID="Image" x="173" y="159" w="30" h="30" zOrder="20">
+      <URL>C93E5DB575CF3B81893ADD27F2CFFCC4.png</URL>
+    </control>
+    <control controlID="833337CA-C1A2-4C11-B454-0CEAD6FCDDB4" controlTypeID="Image" x="19" y="149" w="50" h="50" zOrder="21">
+      <URL>73FC889120652F85382D9B9A1D289CC7.png</URL>
+    </control>
+    <control controlID="3C235F56-1971-4291-880C-4F2F5A81B1CA" controlTypeID="Icon" x="138" y="159" w="30" h="30" zOrder="22">
+      <color>4284927231</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62353</iconCode>
+      </icon>
+      <URL>273F820FD8252835AA1E7927378AF485.svg</URL>
+    </control>
+    <control controlID="7C4DD89C-1496-4B0E-8733-C9DC284AB32B" controlTypeID="Label" x="262" y="119" w="80" h="19" zOrder="23">
+      <color>6710886</color>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>pierce_WANG</text>
+      <textColor>4284900966</textColor>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="34DFAF19-EB81-47F1-9E4A-DCFF19F4AC97" controlTypeID="Image" x="297" y="74" w="45" h="45" zOrder="24">
+      <URL>CD616F9260210EA68075D5A705AADBEE.png</URL>
+    </control>
+    <control controlID="C3348673-EFAE-4937-9369-87536D11B173" controlTypeID="Label" x="22" y="199" w="131" h="22" zOrder="25">
+      <color>6710886</color>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>2019-10-16+09%3A45%3A59</text>
+      <textColor>4284900966</textColor>
+      <textSize>16</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="35DAF329-13E0-45CF-B1AF-D829B6B20F3B" controlTypeID="Image" x="297" y="152" w="45" h="45" zOrder="26">
+      <URL>3A09DFA083517FC02D21EECAF673412D.png</URL>
+    </control>
+    <control controlID="B1106F33-E987-43D0-881A-BFBD78532486" controlTypeID="Label" x="287" y="197" w="55" h="19" zOrder="27">
+      <color>6710886</color>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>pierce_YE</text>
+      <textColor>4284900966</textColor>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="0101D429-15AF-4BBF-92C7-D93C697121D6" controlTypeID="Button" x="202" y="81" w="35" h="48" zOrder="28">
+      <borderColor>4293190884</borderColor>
+      <opacity>0.5</opacity>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="8E37487E-73D1-4265-AF04-E2A3B8C8B1BC" linkType="ltPageLink" isApplyIncludePage="False" title="Pierce_Mood_Detail">
+          <area shape="0" alt="" ID="{6AAC5D13-B36E-480D-86B8-E0E6D0FF9602}" coords="(0,0,35,48)"/>
+        </link>
+      </links>
+      <font family="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" displayName="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False"/>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+  </controls>
+  <param>
+    <backgroundColor>4294967295</backgroundColor>
+    <fontSize>0</fontSize>
+    <fontFamily/>
+    <guideLines/>
+  </param>
+</mockup>
