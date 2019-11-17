@@ -22,6 +22,7 @@ public class MoodEvent implements Serializable {
     private Location location;
     private SocialSituation socialSituation;
     private String textComment;
+    private String photoUrl;
 //    photoComment: Bitmap
 
     /**
@@ -47,6 +48,17 @@ public class MoodEvent implements Serializable {
         this.location = location;
         this.socialSituation = socialSituation;
         this.textComment = textComment;
+//        this.datetime=LocalDateTime.now();
+        this.datetime= Timestamp.now();
+    }
+
+    public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, String photoUrl) {
+        this.author = "";
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+        this.photoUrl = photoUrl;
 //        this.datetime=LocalDateTime.now();
         this.datetime= Timestamp.now();
     }
@@ -160,5 +172,16 @@ public class MoodEvent implements Serializable {
      */
     public void setTextComment(String textComment) {
         this.textComment = textComment;
+    }
+
+
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

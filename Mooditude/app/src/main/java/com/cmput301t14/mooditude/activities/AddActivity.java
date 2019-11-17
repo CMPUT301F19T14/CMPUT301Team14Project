@@ -1,21 +1,30 @@
 package com.cmput301t14.mooditude.activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.content.Intent;
 
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmput301t14.mooditude.models.Location;
+import com.cmput301t14.mooditude.models.Photo;
 import com.cmput301t14.mooditude.services.MenuBar;
 import com.cmput301t14.mooditude.models.Mood;
 import com.cmput301t14.mooditude.models.MoodEvent;
@@ -23,6 +32,13 @@ import com.cmput301t14.mooditude.services.MoodEventValidator;
 import com.cmput301t14.mooditude.R;
 import com.cmput301t14.mooditude.models.SocialSituation;
 import com.cmput301t14.mooditude.services.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import static com.cmput301t14.mooditude.activities.SelfActivity.EXTRA_MESSAGE_Email;
 
@@ -32,18 +48,35 @@ import static com.cmput301t14.mooditude.activities.SelfActivity.EXTRA_MESSAGE_Em
  */
 public class AddActivity extends AppCompatActivity {
 
+    private static final int PICK_IMAGE_REQUEST = 1;
+
     ImageButton submitButton;
     Spinner moodSpinner;
     Spinner socialSituationSpinner;
     EditText commentEditText;
     TextView locationTextView;
     TextView photoTextView;
+    ImageView photoImageView;
+    ImageButton photoButton;
 
     private String commentString;
     private String moodString;
     private String socialSituationString;
 
     private String messageEmail;
+
+    private Uri mImageUri;
+
+    private Photo photo = new Photo();
+
+    private String temp="temp";
+
+    private StorageReference mStorageRef;
+    private DatabaseReference mDatabaseRef;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +94,15 @@ public class AddActivity extends AppCompatActivity {
         commentEditText = findViewById(R.id.comment_edittext);
         locationTextView = findViewById(R.id.location_textview);
         photoTextView = findViewById(R.id.photo_textview);
+        photoImageView = findViewById(R.id.photo_imageview);
+        photoButton = findViewById(R.id.photo_button);
+
+        mStorageRef = FirebaseStorage.getInstance().getReference("photo");
+
 
         setUpMoodSpinner();
         setUpSocialSituationSpinner();
+        setUpPhotoViews();
         setUpSubmitButton();
     }
 
@@ -113,6 +152,16 @@ public class AddActivity extends AppCompatActivity {
         });
     }
 
+
+    private void setUpPhotoViews(){
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFireChooser();
+            }
+        });
+    }
+
     /**
      * setup the submit button for submitting the mood event,
      * validate and then push the MoodEvent to the database
@@ -124,6 +173,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // validate the input fields
                 boolean valid = true;
+                uploadFile();
 
                 Mood mood = MoodEventValidator.checkMood(moodString);
                 if (mood == null){
@@ -148,7 +198,7 @@ public class AddActivity extends AppCompatActivity {
                     MoodEvent moodEvent = new MoodEvent(mood,
                             new Location(),
 //                            null,
-                            socialSituation, commentString);
+                            socialSituation, commentString, temp);
 
                     // push the MoodEvent to database
                     User user=  new User();
@@ -164,6 +214,61 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
         });
+
+    }
+
+    private void openFireChooser(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode ==PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data!= null && data.getData() != null){
+            mImageUri = data.getData();
+            Picasso.with(this).load(mImageUri).into(photoImageView);
+
+        }
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadFile(){
+        if (mImageUri != null){
+            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
+                    + "." + getFileExtension(mImageUri));
+            fileReference.putFile(mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            photo.setmImageUrl(taskSnapshot.getStorage().getDownloadUrl().toString());
+                            if(photo.getmImageUrl()!=null){
+                                temp = photo.getmImageUrl();
+                                photoTextView.setText(temp);
+                                Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+
+
+        }
+        Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
 
     }
 }

@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import com.cmput301t14.mooditude.models.Location;
 import com.cmput301t14.mooditude.models.Mood;
 import com.cmput301t14.mooditude.models.MoodEvent;
+import com.cmput301t14.mooditude.models.Photo;
 import com.cmput301t14.mooditude.models.SocialSituation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -131,6 +132,7 @@ public class User{
                         Mood mood = moodEvent.getMood();
                         SocialSituation socialSituation= moodEvent.getSocialSituation();
                         String textComment= moodEvent.getTextComment();
+                        String photoUrl = moodEvent.getPhotoUrl();
 
                         moodHash.put("Location",location.getGeopoint());
 
@@ -138,6 +140,7 @@ public class User{
                         moodHash.put("Comment",textComment);
                         moodHash.put("DateTime",localDateTime);
                         moodHash.put("SocialSituation",socialSituation.getSocialSituation());
+                        moodHash.put("Photograph", photoUrl);
 //                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
                         moodEntry.set(moodHash);
                     }

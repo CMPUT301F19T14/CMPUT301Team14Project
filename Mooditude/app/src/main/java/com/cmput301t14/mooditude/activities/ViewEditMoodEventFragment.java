@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.bumptech.glide.Glide;
 import com.cmput301t14.mooditude.models.Location;
 import com.cmput301t14.mooditude.models.Mood;
 import com.cmput301t14.mooditude.models.MoodEvent;
@@ -44,6 +46,9 @@ public class ViewEditMoodEventFragment extends DialogFragment {
 
     private MoodEvent selectedMoodEvent;
 
+
+    ImageView imageView;
+
     /**
      * onAttach for the Fragment, using the super's method
      * @param context
@@ -69,6 +74,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
         commentEditText = view.findViewById(R.id.frag_comment_edittext);
         locationTextView = view.findViewById(R.id.frag_location_textview);
         photoTextView = view.findViewById(R.id.frag_photo_textview);
+        imageView=view.findViewById(R.id.testimage);
 
 
         Bundle args = getArguments();
@@ -81,6 +87,8 @@ public class ViewEditMoodEventFragment extends DialogFragment {
             moodString = selectedMoodEvent.getMood().getMood();
             socialSituationString = selectedMoodEvent.getSocialSituation().getSocialSituation();
             commentEditText.setText(selectedMoodEvent.getTextComment());
+
+            showimage();
 
             // set dropdown moodSpinner Adapter
             final ArrayAdapter<CharSequence> moodArrayAdapter = ArrayAdapter.createFromResource(getContext(),
@@ -191,5 +199,11 @@ public class ViewEditMoodEventFragment extends DialogFragment {
         ViewEditMoodEventFragment fragment = new ViewEditMoodEventFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+    private void showimage(){
+        String url = "https://firebasestorage.googleapis.com/v0/b/mooditude-f81c4.appspot.com/o/photo%2F1573971353330.jpg?alt=media&token=64778323-ff61-4a32-b46e-edc1e38323d3";
+        Glide.with(this).load(url).into(imageView);
     }
 }
