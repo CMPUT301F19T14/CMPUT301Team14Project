@@ -11,6 +11,10 @@ import com.cmput301t14.mooditude.models.Location;
 import com.cmput301t14.mooditude.models.Mood;
 import com.cmput301t14.mooditude.models.MoodEvent;
 import com.cmput301t14.mooditude.models.SocialSituation;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -230,6 +234,30 @@ public class User{
                     moodEventDataList.add(moodEvent);
                 }
                 moodEventAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void listenSelfMoodEventsOnMap(final ArrayList<MoodEvent> moodEventDataList, final GoogleMap googleMap){
+        CollectionReference collectionReference = db.collection("Users")
+                .document(user.getEmail()).collection("MoodHistory");
+
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
+                    if (doc.getGeoPoint("Location") != null){
+                        Double tempLat = doc.getGeoPoint("Location").getLatitude();
+                        Double tempLon = doc.getGeoPoint("Location").getLongitude();
+//                        Log.i(doc.getId(),tempLat.toString()+tempLon.toString());
+                        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+                        // Add a marker in Sydney and move the camera
+                        LatLng moodEventLocation = new LatLng(tempLat, tempLon);
+                        googleMap.addMarker(new MarkerOptions().position(moodEventLocation).title(doc.getId().toString()));
+//                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                    }
+                }
             }
         });
     }
