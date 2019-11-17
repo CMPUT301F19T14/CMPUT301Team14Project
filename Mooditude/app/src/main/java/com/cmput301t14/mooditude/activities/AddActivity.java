@@ -1,7 +1,15 @@
 package com.cmput301t14.mooditude.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -14,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmput301t14.mooditude.models.Location;
 import com.cmput301t14.mooditude.services.MenuBar;
@@ -45,6 +54,22 @@ public class AddActivity extends AppCompatActivity {
 
     private String messageEmail;
 
+    LocationManager locationManager;
+    LocationListener locationListener;
+
+    private Double lat;
+    private Double lon;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +90,8 @@ public class AddActivity extends AppCompatActivity {
         setUpMoodSpinner();
         setUpSocialSituationSpinner();
         setUpSubmitButton();
+
+        getCurrentDeviceLocation();
     }
 
     /**
@@ -146,7 +173,7 @@ public class AddActivity extends AppCompatActivity {
                 if (valid){
                     // TODO: put actual location and photo
                     MoodEvent moodEvent = new MoodEvent(mood,
-                            new Location(),
+                            new Location(lat,lon),
 //                            null,
                             socialSituation, commentString);
 
@@ -164,6 +191,42 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
         });
+
+    }
+
+    public void getCurrentDeviceLocation(){
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+                lat = location.getLatitude();
+                lon = location.getLongitude();
+                Toast.makeText(getApplicationContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }
+        else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, locationListener);
+        }
 
     }
 }
