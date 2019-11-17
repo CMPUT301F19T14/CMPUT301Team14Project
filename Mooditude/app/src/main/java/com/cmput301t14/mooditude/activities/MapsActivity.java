@@ -2,7 +2,9 @@ package com.cmput301t14.mooditude.activities;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.cmput301t14.mooditude.R;
 import com.cmput301t14.mooditude.models.MoodEvent;
@@ -12,6 +14,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -19,13 +22,17 @@ import java.util.ArrayList;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    ArrayList<MoodEvent> selfMoodEventDataList;
+    private String displayOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        Intent intent = getIntent();
+        displayOption = intent.getStringExtra("displayOption");
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -44,14 +51,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        selfMoodEventDataList = new ArrayList<>();
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+        Toast.makeText(getApplicationContext(),displayOption,Toast.LENGTH_SHORT).show();
 
         User user = new User();
-        user.listenSelfMoodEventsOnMap(selfMoodEventDataList,mMap);
+        if (displayOption.equals("self")){
+        user.listenSelfMoodEventsOnMap(mMap);
+        }
+        else if (displayOption.equals("following")){
+        user.listenFollowingMoodEventsOnMap(mMap);
+        }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                MoodEvent selectedMoodEvent = (MoodEvent) marker.getTag();
+
+                ViewEditMoodEventFragment.newInstance(selectedMoodEvent).show(getSupportFragmentManager(), "MoodEvent");
+
+//                Toast.makeText(getApplicationContext(),moodEvent.getTextComment(),Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
     }
 }

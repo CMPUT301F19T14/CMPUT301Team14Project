@@ -14,6 +14,7 @@ import com.cmput301t14.mooditude.models.SocialSituation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -238,23 +239,30 @@ public class User{
         });
     }
 
-    public void listenSelfMoodEventsOnMap(final ArrayList<MoodEvent> moodEventDataList, final GoogleMap googleMap){
+    public void listenSelfMoodEventsOnMap(final GoogleMap googleMap){
         CollectionReference collectionReference = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
 
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                googleMap.clear();
                 for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
                     if (doc.getGeoPoint("Location") != null){
-                        Double tempLat = doc.getGeoPoint("Location").getLatitude();
-                        Double tempLon = doc.getGeoPoint("Location").getLongitude();
-//                        Log.i(doc.getId(),tempLat.toString()+tempLon.toString());
-                        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
-                        // Add a marker in Sydney and move the camera
-                        LatLng moodEventLocation = new LatLng(tempLat, tempLon);
-                        googleMap.addMarker(new MarkerOptions().position(moodEventLocation).title(doc.getId().toString()));
+                        String textComment=doc.getString("Comment");
+                        Mood mood= new Mood(doc.getString("Mood"));
+                        SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
+                        Location location= new Location(doc.getGeoPoint("Location"));
+                        Timestamp datetime = doc.getTimestamp("DateTime");
+                        MoodEvent moodEvent=new MoodEvent(mood, location,socialSituation,textComment,datetime);
+
+                        LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
+                        Marker marker = googleMap.addMarker(new MarkerOptions()
+                                .position(moodEventLocation)
+                                .title(doc.getId().toString()));
+                        marker.setTag(moodEvent);
+
 //                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
                     }
                 }
@@ -288,6 +296,37 @@ public class User{
                     moodEventDataList.add(moodEvent);
                 }
                 moodEventAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void listenFollowingMoodEventsOnMap(final GoogleMap googleMap){
+        CollectionReference collectionReference = db.collection("Users")
+                .document(user.getEmail()).collection("Followings");
+
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                googleMap.clear();
+                for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
+                    Log.i("follow",doc.getId());
+                    String textComment=doc.getString("Comment");
+                    Log.i("follow","Comment:"+ doc.getString("Comment"));
+                    Log.i("follow","Mood:"+ doc.getString("Mood"));
+                    Mood mood= new Mood(doc.getString("Mood"));
+
+                    SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
+                    Location location= new Location(doc.getGeoPoint("Location"));
+                    Timestamp datetime = doc.getTimestamp("DateTime");
+                    String author=doc.getId();
+                    MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime);
+
+                    LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
+                    Marker marker = googleMap.addMarker(new MarkerOptions()
+                            .position(moodEventLocation)
+                            .title(moodEvent.getAuthor()));
+                    marker.setTag(moodEvent);
+                }
             }
         });
     }

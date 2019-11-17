@@ -103,7 +103,7 @@ public class SelfActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Clicked Map Button",Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(SelfActivity.this, MapsActivity.class);
-//                intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
+                intent.putExtra("displayOption", "self");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 //                finish();

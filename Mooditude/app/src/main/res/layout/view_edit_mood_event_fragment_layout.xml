@@ -46,7 +46,7 @@
                     android:background="@android:color/transparent"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/question_mark" />
+                    android:src="@drawable/question_mark" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                     android:background="@android:color/transparent"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/soicial_situation_icon" />
+                    android:src="@drawable/soicial_situation_icon" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -116,7 +116,7 @@
                     android:background="@android:color/transparent"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/comment" />
+                    android:src="@drawable/comment" />
 
                 <EditText
                     android:id="@+id/frag_comment_edittext"
@@ -146,7 +146,7 @@
                     android:background="@android:color/transparent"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/location_icon" />
+                    android:src="@drawable/location_icon" />
 
                 <TextView
                     android:id="@+id/frag_location_textview"
@@ -176,7 +176,7 @@
                     android:background="@android:color/transparent"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/photo_icon" />
+                    android:src="@drawable/photo_icon" />
 
                 <TextView
                     android:id="@+id/frag_photo_textview"
