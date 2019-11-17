@@ -67,7 +67,7 @@ public class AddActivity extends AppCompatActivity {
         setUpSubmitButton();
     }
 
-    /**
+    /**2
      * setup the mood spinner dropdown menu
      */
     private void setUpMoodSpinner(){
