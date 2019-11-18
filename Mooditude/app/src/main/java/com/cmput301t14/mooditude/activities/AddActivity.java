@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import android.content.Intent;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +38,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
@@ -69,10 +73,14 @@ public class AddActivity extends AppCompatActivity {
 
     private Photo photo = new Photo();
 
-    private String temp="temp";
+    private String temp;
 
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
+
+    private ProgressBar mProgressBar;
+
+    private StorageTask mUploadTask;
 
 
 
@@ -98,6 +106,8 @@ public class AddActivity extends AppCompatActivity {
         photoButton = findViewById(R.id.photo_button);
 
         mStorageRef = FirebaseStorage.getInstance().getReference("photo");
+
+        mProgressBar = findViewById(R.id.progress_bar);
 
 
         setUpMoodSpinner();
@@ -172,47 +182,11 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // validate the input fields
-                boolean valid = true;
+
                 uploadFile();
 
-                Mood mood = MoodEventValidator.checkMood(moodString);
-                if (mood == null){
-                    valid = false;
-                    ((TextView)moodSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
+
                 }
-
-                SocialSituation socialSituation = MoodEventValidator.checkSocialSituation(socialSituationString);
-                if (socialSituation == null){
-                    valid = false;
-                    ((TextView)socialSituationSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
-                }
-
-                commentString = commentEditText.getText().toString();
-                if (!MoodEventValidator.checkComment(commentString)){
-                    valid = false;
-                    commentEditText.setError(MoodEventValidator.getErrorMessage());
-                }
-
-                if (valid){
-                    // TODO: put actual location and photo
-                    MoodEvent moodEvent = new MoodEvent(mood,
-                            new Location(),
-//                            null,
-                            socialSituation, commentString, temp);
-
-                    // push the MoodEvent to database
-                    User user=  new User();
-                    Log.i("TAG","Add User");
-                    user.pushMoodEvent(moodEvent);
-
-                    // go to selfActivity
-                    Intent intent = new Intent(AddActivity.this, SelfActivity.class);
-                    intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);
-                    finish();
-                }
-            }
         });
 
     }
@@ -244,19 +218,40 @@ public class AddActivity extends AppCompatActivity {
 
     private void uploadFile(){
         if (mImageUri != null){
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
+            final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
-            fileReference.putFile(mImageUri)
+            mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            photo.setmImageUrl(taskSnapshot.getStorage().getDownloadUrl().toString());
-                            if(photo.getmImageUrl()!=null){
-                                temp = photo.getmImageUrl();
-                                photoTextView.setText(temp);
-                                Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
 
-                            }
+//                                photoTextView.setText(temp);
+
+
+                            fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    // getting image uri and converting into string
+                                    Uri downloadUrl = uri;
+                                    temp = downloadUrl.toString();
+                                    Toast.makeText(AddActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
+                                    uploadDatabase(temp);
+
+
+                                }
+                            });
+
+
+//                            Toast.makeText(AddActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+////                            photo.setmImageUrl(taskSnapshot.getStorage().getDownloadUrl().toString());
+////                            if(photo.getmImageUrl()!=null){
+////                                temp = photo.getmImageUrl();
+//                            temp=taskSnapshot.getStorage().getDownloadUrl().toString();
+//                                Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
+//                                uploadDatabase(temp);
+
+//                            }
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -265,10 +260,61 @@ public class AddActivity extends AppCompatActivity {
 
                         }
                     });
-
+//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+//                            mProgressBar.setProgress((int) progress);
+//                        }
+//                    });
 
         }
-        Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
+        if (mUploadTask.isComplete()){
+            Toast.makeText(getApplicationContext(), "123", Toast.LENGTH_SHORT).show();
+        }
 
+    }
+
+    private void uploadDatabase(String temp){
+        boolean valid = true;
+        Mood mood = MoodEventValidator.checkMood(moodString);
+        if (mood == null){
+            valid = false;
+            ((TextView)moodSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
+        }
+
+        SocialSituation socialSituation = MoodEventValidator.checkSocialSituation(socialSituationString);
+        if (socialSituation == null){
+            valid = false;
+            ((TextView)socialSituationSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
+        }
+
+        commentString = commentEditText.getText().toString();
+        if (!MoodEventValidator.checkComment(commentString)){
+            valid = false;
+            commentEditText.setError(MoodEventValidator.getErrorMessage());
+        }
+
+
+
+        if (valid){
+            // TODO: put actual location and photo
+            MoodEvent moodEvent = new MoodEvent(mood,
+                    new Location(),
+//                            null,
+                    socialSituation, commentString, temp);
+
+            // push the MoodEvent to database
+            User user=  new User();
+            Log.i("TAG","Add User");
+            user.pushMoodEvent(moodEvent);
+
+            // go to selfActivity
+            Intent intent = new Intent(AddActivity.this, SelfActivity.class);
+            intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            finish();
+        }
     }
 }

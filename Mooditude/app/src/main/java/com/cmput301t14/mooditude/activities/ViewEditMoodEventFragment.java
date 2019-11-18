@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ import com.cmput301t14.mooditude.services.MoodEventValidator;
 import com.cmput301t14.mooditude.R;
 import com.cmput301t14.mooditude.models.SocialSituation;
 import com.cmput301t14.mooditude.services.User;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -88,7 +90,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
             socialSituationString = selectedMoodEvent.getSocialSituation().getSocialSituation();
             commentEditText.setText(selectedMoodEvent.getTextComment());
 
-            showimage();
+            showimage(selectedMoodEvent.getPhotoUrl());
 
             // set dropdown moodSpinner Adapter
             final ArrayAdapter<CharSequence> moodArrayAdapter = ArrayAdapter.createFromResource(getContext(),
@@ -202,8 +204,11 @@ public class ViewEditMoodEventFragment extends DialogFragment {
     }
 
 
-    private void showimage(){
-        String url = "https://firebasestorage.googleapis.com/v0/b/mooditude-f81c4.appspot.com/o/photo%2F1573971353330.jpg?alt=media&token=64778323-ff61-4a32-b46e-edc1e38323d3";
-        Glide.with(this).load(url).into(imageView);
+    private void showimage(String photoUrl){
+//        String url = "com.google.android.gms.tasks.zzu@3042b78";
+        Glide.with(this).load(photoUrl).into(imageView);
+        Toast.makeText(getContext(), photoUrl, Toast.LENGTH_LONG).show();
+
+//        Picasso.with(getContext()).load(photoUrl).into(imageView);
     }
 }
