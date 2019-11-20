@@ -27,7 +27,7 @@ public class SearchOnClickListener {
             //creating a popup menu
             PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.RIGHT);
             //inflating menu from xml resource
-            popup.inflate(R.menu.popmenu_follow);
+            popup.inflate(R.menu.popmenu_search_other_user);
             //adding click listener
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
@@ -75,7 +75,7 @@ public class SearchOnClickListener {
                             Toast.makeText(context, "Follow request to \"" + receiverEmail + "\" sent", Toast.LENGTH_LONG).show();
                             return true;
                         case R.id.popmenu_follower_remove:
-
+                            new User().remove(receiverEmail);
                             Toast.makeText(context, "Remove \"" + receiverEmail + "\" as follower", Toast.LENGTH_LONG).show();
                         default:
                             return false;
@@ -101,13 +101,13 @@ public class SearchOnClickListener {
             //creating a popup menu
             PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.RIGHT);
             //inflating menu from xml resource
-            popup.inflate(R.menu.popmenu_follow);
+            popup.inflate(R.menu.popmenu_search_following);
             //adding click listener
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
-                        case R.id.popmenu_search_add:
+                        case R.id.popmenu_search_following_unfollow:
                             //handle menu1 click
 //                            new FollowRequestMessage(receiverEmail).invoke();
                             new User().unfollow(receiverEmail);
@@ -122,6 +122,7 @@ public class SearchOnClickListener {
             popup.show();
         }
     }
+
     public static class Friend implements View.OnClickListener {
         Context context;
 
@@ -142,11 +143,15 @@ public class SearchOnClickListener {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
-                        case R.id.popmenu_search_add:
+                        case R.id.popmenu_friend_unfollow:
                             //handle menu1 click
 //                            new FollowRequestMessage(receiverEmail).invoke();
                             new User().unfollow(receiverEmail);
                             Toast.makeText(context, "Unfollow \"" + receiverEmail + "\"", Toast.LENGTH_LONG).show();
+                            return true;
+                        case R.id.popmenu_friend_remove:
+                            new User().remove(receiverEmail);
+                            Toast.makeText(context, "Remove \"" + receiverEmail + "\" as follower", Toast.LENGTH_LONG).show();
                             return true;
                         default:
                             return false;
@@ -157,6 +162,7 @@ public class SearchOnClickListener {
             popup.show();
         }
     }
+
     public static class Self implements View.OnClickListener {
         Context context;
 
