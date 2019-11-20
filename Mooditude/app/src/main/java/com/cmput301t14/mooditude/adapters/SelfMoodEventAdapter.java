@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 
 import com.cmput301t14.mooditude.models.MoodEvent;
 import com.cmput301t14.mooditude.R;
+import com.cmput301t14.mooditude.services.MoodEventIconSetter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import java.util.Date;
 public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
     private ArrayList<MoodEvent> moodEventList;
     private Context context;
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
 
     /**
      * Constructor for the adapter
@@ -68,52 +69,11 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         ImageView commentImage = view.findViewById(R.id.commentImage);
         ImageView socialSituationImage = view.findViewById(R.id.socialSituationImage);
 
-//      times by 1000 to change from seconds to miliseconds
-        timeTextView.setText(sdf.format(new Date(moodEvent.getDatetime().getSeconds() * 1000)));
-
-        if (moodEvent.getLocation().getGeopoint() == null) {
-            locationImage.setVisibility(View.GONE);
-        } else {
-            locationImage.setVisibility(View.VISIBLE);
-        }
-
-        if (moodEvent.getTextComment().isEmpty() || moodEvent.getTextComment() == null) {
-//            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
-            commentImage.setVisibility(View.GONE);
-        } else {
-//            commentImage.clearColorFilter();
-            commentImage.setVisibility(View.VISIBLE);
-        }
-
-        if (moodEvent.getSocialSituation()== null) {
-//            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
-            socialSituationImage.setVisibility(View.GONE);
-        } else if(moodEvent.getSocialSituation().getSocialSituation().equals("ALONE")) {
-//            commentImage.clearColorFilter();
-            Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
-            socialSituationImage.setVisibility(View.VISIBLE);
-            socialSituationImage.setImageResource(R.drawable.ic_alone);
-        } else if(moodEvent.getSocialSituation().getSocialSituation().equals("ONE_PERSON")) {
-//            commentImage.clearColorFilter();
-            Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
-            socialSituationImage.setVisibility(View.VISIBLE);
-            socialSituationImage.setImageResource(R.drawable.ic_with_one_person);
-        } else if(moodEvent.getSocialSituation().getSocialSituation().equals("SEVERAL")) {
-//            commentImage.clearColorFilter();
-            Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
-            socialSituationImage.setVisibility(View.VISIBLE);
-            socialSituationImage.setImageResource(R.drawable.ic_several);
-        }else if(moodEvent.getSocialSituation().getSocialSituation().equals("CROWD")) {
-//            commentImage.clearColorFilter();
-            Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
-            socialSituationImage.setVisibility(View.VISIBLE);
-            socialSituationImage.setImageResource(R.drawable.ic_group);
-        }
-
-
-
-//        final ImageView imageView = view.findViewById(R.id.socialSituationImage);
-//        imageView.setVisibility(View.INVISIBLE);
+        MoodEventIconSetter moodEventIconSetter = new MoodEventIconSetter(moodEvent);
+        moodEventIconSetter.setTimeView(timeTextView);
+        moodEventIconSetter.setLocationIcon(locationImage);
+        moodEventIconSetter.setCommentIcon(commentImage);
+        moodEventIconSetter.setSocialSituationIcon(socialSituationImage);
 
 
         emoticonTextView.setText(moodEvent.getMood().getEmoticon());
