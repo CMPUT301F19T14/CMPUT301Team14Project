@@ -1,6 +1,8 @@
 package com.cmput301t14.mooditude.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cmput301t14.mooditude.activities.SelfActivity;
 import com.cmput301t14.mooditude.models.FollowRequestMessage;
 import com.cmput301t14.mooditude.models.Message;
 import com.cmput301t14.mooditude.R;
@@ -41,7 +44,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public MessageAdapter(Context context, ArrayList<Message> messageArrayList) {
         this.context = context;
         this.messageArrayList = messageArrayList;
-        Log.i("LOGB","MessageAdapter: "+String.valueOf(messageArrayList.size()));
+        Log.i("LOGB", "MessageAdapter: " + String.valueOf(messageArrayList.size()));
     }
 
     @Override
@@ -59,10 +62,37 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 //        holder.textView.setText("test");
-        Log.i("LOGB","MessageAdapter position: "+String.valueOf(position));
-        final MessageViewHolder messageViewHolder=holder;
+        Log.i("LOGB", "MessageAdapter position: " + String.valueOf(position));
+        final MessageViewHolder messageViewHolder = holder;
         final Message message = messageArrayList.get(position);
-        final int positionFinal=position;
+        final int positionFinal = position;
+
+        messageViewHolder.view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+//                Log.i("LOGBBB", message.getDatetime().toString());
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+//                                onConfirmPressed(selectedMoodEvent);
+                                message.delete();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setMessage("Are you sure that you want to delete?")
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .show();
+                return true;
+            }
+        });
 
         if (message.getType().equals("followRequest")) {
             final FollowRequestMessage followRequestMessage = (FollowRequestMessage) message;
@@ -108,8 +138,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     popup.show();
                 }
             });
-        }
-        else if(message.getType().equals("text")){
+        } else if (message.getType().equals("text")) {
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -124,8 +153,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         if (message.isNewMessage()) {
             holder.messageContentTextView.setTypeface(null, Typeface.BOLD);
             Log.i("LOGA", "HERE1");
-        }
-        else{
+        } else {
             holder.messageContentTextView.setTypeface(null, Typeface.NORMAL);
         }
 

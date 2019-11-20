@@ -71,6 +71,9 @@ public abstract class Message {
         messageEntry.update("newMessage",false);
     }
 
+    public Timestamp getDatetime() {
+        return datetime;
+    }
 
     public abstract String toStringContent();
 

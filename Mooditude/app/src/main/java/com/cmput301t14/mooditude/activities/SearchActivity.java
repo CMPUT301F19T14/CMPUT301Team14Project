@@ -3,7 +3,9 @@ package com.cmput301t14.mooditude.activities;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,12 +43,12 @@ public class SearchActivity extends AppCompatActivity {
 
     private User user;
     private CollectionReference usersCollection;
+    private ArrayList<String> followerList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
 
 
         user = new User();
@@ -57,7 +59,8 @@ public class SearchActivity extends AppCompatActivity {
         usersCollection = FirebaseFirestore.getInstance().collection("Users");
 
 
-
+        user.listenFollower(User.followerList);
+        user.listenFollowing(User.followingList);
 
         searchEditTextView = findViewById(R.id.search_edit_text);
         recyclerView = findViewById(R.id.search_list);
@@ -83,13 +86,14 @@ public class SearchActivity extends AppCompatActivity {
              */
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString().isEmpty()) {
-                    userNameList.clear();
-                    userEmailList.clear();
-                    recyclerView.removeAllViews();
-                } else {
+                userNameList.clear();
+                userEmailList.clear();
+                recyclerView.removeAllViews();
+                if (!editable.toString().isEmpty()) {
                     setAdapter(editable.toString(), usersCollection);
                 }
+                if (!User.followerList.isEmpty())
+                    Log.i("TAGBB", User.followerList.toString());
             }
         });
 
@@ -131,7 +135,7 @@ public class SearchActivity extends AppCompatActivity {
                     }
                 }
 
-                searchAdapter = new SearchAdapter(SearchActivity.this, userNameList, userEmailList);
+                searchAdapter = new SearchAdapter(SearchActivity.this, userNameList, userEmailList,User.followerList,User.followingList);
                 recyclerView.setAdapter(searchAdapter);
             }
         });
