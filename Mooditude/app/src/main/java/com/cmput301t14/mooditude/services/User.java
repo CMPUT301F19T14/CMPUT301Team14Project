@@ -334,9 +334,19 @@ public class User{
         });
     }
 
+    public void unfollow(String targetUserEmail){
+        followingCollRef.document(targetUserEmail).delete();
+         db.collection("Users").document(targetUserEmail)
+                .collection("Follower").document(user.getEmail())
+                 .delete();
+    }
 
-
-
+    public void remove(String targetUserEmail){
+        followerCollRef.document(targetUserEmail).delete();
+        db.collection("Users").document(targetUserEmail)
+                .collection("Following").document(user.getEmail())
+                .delete();
+    }
 
 /**
  * Replaced by listenUserName
