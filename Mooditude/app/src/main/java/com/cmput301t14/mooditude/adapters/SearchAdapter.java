@@ -122,7 +122,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         }
         else if(followerList.contains(userEmailList.get(position))&&followingList.contains(userEmailList.get(position))){
             holder.user_name.setText(userNameList.get(position)+" (Friend)");
-            holder.itemView.setOnClickListener( new SearchOnClickListener.Follower(context));
+            holder.itemView.setOnClickListener( new SearchOnClickListener.Following(context));
         }
         else if(followerList.contains(userEmailList.get(position))){
             holder.user_name.setText(userNameList.get(position)+" (Follower)");
@@ -130,7 +130,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         }
         else if(followingList.contains(userEmailList.get(position))){
             holder.user_name.setText(userNameList.get(position)+" (Following)");
-            holder.itemView.setOnClickListener( new SearchOnClickListener.Follower(context));
+            holder.itemView.setOnClickListener( new SearchOnClickListener.Following(context));
         }
         else{
             holder.user_name.setText(userNameList.get(position));
