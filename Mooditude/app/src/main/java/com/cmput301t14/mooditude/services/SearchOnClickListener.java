@@ -48,10 +48,10 @@ public class SearchOnClickListener {
         }
     }
 
-    public static class Friends implements View.OnClickListener{
+    public static class Follower implements View.OnClickListener{
         Context context;
 
-        public Friends(Context context) {
+        public Follower(Context context) {
             this.context = context;
         }
 

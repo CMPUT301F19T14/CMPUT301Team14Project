@@ -51,6 +51,9 @@ public class User{
     CollectionReference followerCollRef;
     CollectionReference moodHistoryCollRef;
 
+    static public ArrayList<String> followerList=new ArrayList<>();
+    static public ArrayList<String> followingList=new ArrayList<>();
+
     /**
      * User Constructor
      * Initialize db
@@ -277,12 +280,24 @@ public class User{
         });
     }
 
-    public void listenFollowerNumber(final TextView textView){
+    public void listenFollowerNumber(final TextView textView ){
         followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 queryDocumentSnapshots.size();
                 textView.setText(String.valueOf(queryDocumentSnapshots.size()));
+            }
+        });
+    }
+
+    public void listenFollower(final ArrayList<String> arrayList ){
+        followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                arrayList.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots){
+                    arrayList.add(doc.getId());
+                }
             }
         });
     }
@@ -297,6 +312,18 @@ public class User{
         });
     }
 
+    public void listenFollowing(final ArrayList<String> arrayList){
+        followingCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                arrayList.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots){
+                    arrayList.add(doc.getId());
+                }
+            }
+        });
+    }
+
     public void listenMoodHistoryNumber(final TextView textView){
         moodHistoryCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -306,6 +333,8 @@ public class User{
             }
         });
     }
+
+
 
 
 

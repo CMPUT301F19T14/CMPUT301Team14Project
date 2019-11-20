@@ -22,6 +22,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     Context context;
     ArrayList<String> userNameList;
     ArrayList<String> userEmailList;
+    ArrayList<String> followerList;
+    ArrayList<String> followingList;
     User user;
 
     /**
@@ -47,10 +49,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
      * @param userNameList
      * @param userEmailList
      */
-    public SearchAdapter(Context context, ArrayList<String> userNameList, ArrayList<String> userEmailList) {
+    public SearchAdapter(Context context, ArrayList<String> userNameList, ArrayList<String> userEmailList, ArrayList<String> followerList, ArrayList<String> followingList) {
         this.context = context;
         this.userNameList = userNameList;
         this.userEmailList = userEmailList;
+        this.followerList=followerList;
+        this.followingList=followingList;
         this.user= new User();
     }
 
@@ -114,6 +118,18 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         if(userEmailList.get(position).equals(user.getEmail())){
             holder.user_name.setText(userNameList.get(position)+" (You)");
             holder.itemView.setOnClickListener( new SearchOnClickListener.Self(context));
+        }
+        else if(followerList.contains(userEmailList.get(position))&&followingList.contains(userEmailList.get(position))){
+            holder.user_name.setText(userNameList.get(position)+" (Friend)");
+            holder.itemView.setOnClickListener( new SearchOnClickListener.Follower(context));
+        }
+        else if(followerList.contains(userEmailList.get(position))){
+            holder.user_name.setText(userNameList.get(position)+" (Follower)");
+            holder.itemView.setOnClickListener( new SearchOnClickListener.Follower(context));
+        }
+        else if(followingList.contains(userEmailList.get(position))){
+            holder.user_name.setText(userNameList.get(position)+" (Following)");
+            holder.itemView.setOnClickListener( new SearchOnClickListener.Follower(context));
         }
         else{
             holder.user_name.setText(userNameList.get(position));
