@@ -83,11 +83,10 @@ public class SearchActivity extends AppCompatActivity {
              */
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString().isEmpty()) {
-                    userNameList.clear();
-                    userEmailList.clear();
-                    recyclerView.removeAllViews();
-                } else {
+                userNameList.clear();
+                userEmailList.clear();
+                recyclerView.removeAllViews();
+                if (!editable.toString().isEmpty()) {
                     setAdapter(editable.toString(), usersCollection);
                 }
             }
