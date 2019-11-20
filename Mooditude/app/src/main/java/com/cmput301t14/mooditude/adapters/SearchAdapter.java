@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301t14.mooditude.R;
 import com.cmput301t14.mooditude.services.SearchOnClickListener;
+import com.cmput301t14.mooditude.services.User;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     Context context;
     ArrayList<String> userNameList;
     ArrayList<String> userEmailList;
+    User user;
 
     /**
      *
@@ -49,6 +51,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         this.context = context;
         this.userNameList = userNameList;
         this.userEmailList = userEmailList;
+        this.user= new User();
     }
 
     /**
@@ -106,9 +109,17 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
      */
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
-        holder.user_name.setText(userNameList.get(position));
+
         holder.user_email.setText(userEmailList.get(position));
-        holder.itemView.setOnClickListener( new SearchOnClickListener.OtherUser(context));
+        if(userEmailList.get(position).equals(user.getEmail())){
+            holder.user_name.setText(userNameList.get(position)+" (You)");
+            holder.itemView.setOnClickListener( new SearchOnClickListener.Self(context));
+        }
+        else{
+            holder.user_name.setText(userNameList.get(position));
+            holder.itemView.setOnClickListener( new SearchOnClickListener.OtherUser(context));
+        }
+
 
     }
 
