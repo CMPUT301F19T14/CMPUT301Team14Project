@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.cmput301t14.mooditude.models.MoodEvent;
 import com.cmput301t14.mooditude.R;
+import com.cmput301t14.mooditude.services.MoodEventIconSetter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,34 +56,12 @@ public class FollowingMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         ImageView socialSituationImage = view.findViewById(R.id.socialSituationImage);
         TextView userNameTextView= view.findViewById(R.id.userNameTextView);
 
-//      times by 1000 to change from seconds to miliseconds
-        timeTextView.setText(sdf.format(new Date(moodEvent.getDatetime().getSeconds() * 1000)));
+        MoodEventIconSetter moodEventIconSetter = new MoodEventIconSetter(moodEvent);
+        moodEventIconSetter.setTimeView(timeTextView);
+        moodEventIconSetter.setLocationIcon(locationImage);
+        moodEventIconSetter.setCommentIcon(commentImage);
+        moodEventIconSetter.setSocialSituationIcon(socialSituationImage);
 
-        if (moodEvent.getLocation().getGeopoint() == null) {
-            locationImage.setVisibility(View.GONE);
-        } else {
-            locationImage.setVisibility(View.VISIBLE);
-        }
-
-        if (moodEvent.getTextComment().isEmpty() || moodEvent.getTextComment() == null) {
-//            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
-            commentImage.setVisibility(View.GONE);
-        } else {
-//            commentImage.clearColorFilter();
-            commentImage.setVisibility(View.VISIBLE);
-        }
-
-        if (moodEvent.getSocialSituation()== null) {
-//            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
-            socialSituationImage.setVisibility(View.GONE);
-        } else {
-//            commentImage.clearColorFilter();
-            socialSituationImage.setVisibility(View.VISIBLE);
-        }
-
-
-//        final ImageView imageView = view.findViewById(R.id.socialSituationImage);
-//        imageView.setVisibility(View.INVISIBLE);
 
         userNameTextView.setText(moodEvent.getAuthor());
         emoticonTextView.setText(moodEvent.getMood().getEmoticon());
