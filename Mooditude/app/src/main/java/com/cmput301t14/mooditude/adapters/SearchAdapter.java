@@ -118,6 +118,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         if(userEmailList.get(position).equals(user.getEmail())){
             holder.user_name.setText(userNameList.get(position)+" (You)");
             holder.itemView.setOnClickListener( new SearchOnClickListener.Self(context));
+            holder.itemView.findViewById(R.id.messageViewButton).setVisibility(View.INVISIBLE);
         }
         else if(followerList.contains(userEmailList.get(position))&&followingList.contains(userEmailList.get(position))){
             holder.user_name.setText(userNameList.get(position)+" (Friend)");
