@@ -3,14 +3,21 @@ package com.cmput301t14.mooditude.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+import android.app.Activity;
 
+import android.Manifest;
 import android.content.ContentResolver;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.content.Intent;
 
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -43,6 +50,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.cmput301t14.mooditude.activities.SelfActivity.EXTRA_MESSAGE_Email;
 
@@ -167,7 +180,8 @@ public class AddActivity extends AppCompatActivity {
         photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFireChooser();
+//                openFireChooser();
+                takePictureIntent();
             }
         });
     }
@@ -207,6 +221,23 @@ public class AddActivity extends AppCompatActivity {
             mImageUri = data.getData();
             Picasso.with(this).load(mImageUri).into(photoImageView);
 
+        }
+
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode == RESULT_OK) {
+//                mImageUri = data.getData();
+//                Picasso.with(this).load(mImageUri).into(photoImageView);
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                photoImageView.setImageBitmap(imageBitmap);
+                galleryAddPic();
+
+//                Bitmap bp = (Bitmap) data.getExtras().get("data");
+//                photoImageView.setImageBitmap(bp);
+
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -317,4 +348,76 @@ public class AddActivity extends AppCompatActivity {
             finish();
         }
     }
+
+
+
+    String currentPhotoPath;
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
+    private File createImageFile() throws IOException {
+        FileOutputStream outStream = null;
+
+
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+
+        File sdCard = Environment.getExternalStorageDirectory();
+        File storageDir = new File (sdCard.getAbsolutePath() + "/moodcam");
+        storageDir.mkdirs();
+
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+
+        return image;
+    }
+
+
+
+
+    static final int REQUEST_TAKE_PHOTO = 100;
+
+    private void takePictureIntent() {
+
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+
+//        // Ensure that there's a camera activity to handle the intent
+        //https://developer.android.com/training/camera/photobasics
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+//                // Error occurred while creating the File
+//
+            }
+//            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = Uri.fromFile(photoFile);
+
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+//
+            }
+        }
+    }
+
+
+
 }
