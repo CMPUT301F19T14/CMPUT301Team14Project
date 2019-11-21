@@ -95,56 +95,44 @@ public class FollowRequestMessage extends Message {
         String epochTimeString= String.valueOf(Timestamp.now().getSeconds());
         DocumentReference messageEntry=senderMsgBox.document(epochTimeString);
         HashMap<String,Object> messageHash = new HashMap<>();
-        messageHash.put("text", receiver+" accepted you to follow");
-        messageHash.put("sender",this.receiver);
-        messageHash.put("receiver",this.sender);
-        messageHash.put("newMessage", TRUE);
-        messageHash.put("datetime", Timestamp.now());
-        messageHash.put("type", "text");
-        messageEntry.set(messageHash);
+
+        new TextMessage(this.receiver+" accepted you to follow",this.sender,this.receiver, Timestamp.now(),TRUE).invoke(senderMsgBox);
 
         // delete this message and add new TextMessage to receiver MessageBox collection
         this.delete();
         CollectionReference receiverMsgBox= usersCollection.document(this.receiver).collection("MessageBox");
-        epochTimeString= String.valueOf(Timestamp.now().getSeconds());
-        messageEntry = receiverMsgBox.document(epochTimeString);
-        messageHash = new HashMap<>();
-        messageHash.put("text", "you accepted "+sender+" successfully");
-        messageHash.put("sender",this.sender);
-        messageHash.put("receiver",this.receiver);
-        messageHash.put("newMessage", TRUE);
-        messageHash.put("datetime", Timestamp.now());
-        messageHash.put("type", "text");
-        messageEntry.set(messageHash);
+        new TextMessage("you accepted "+sender+" successfully",this.sender,this.receiver, Timestamp.now(),TRUE).invoke(receiverMsgBox);
     }
 
     public void reject(){
         // send reject message to sender's MessageBox collection
         CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
         CollectionReference senderMsgBox= usersCollection.document(this.sender).collection("MessageBox");
-        String epochTimeString= String.valueOf(Timestamp.now().getSeconds());
-        DocumentReference messageEntry=senderMsgBox.document(epochTimeString);
-        HashMap<String,Object> messageHash = new HashMap<>();
-        messageHash.put("text", receiver+" rejected you to follow");
-        messageHash.put("sender",this.receiver);
-        messageHash.put("receiver",this.sender);
-        messageHash.put("newMessage", TRUE);
-        messageHash.put("datetime", Timestamp.now());
-        messageHash.put("type", "text");
-        messageEntry.set(messageHash);
+//        String epochTimeString= String.valueOf(Timestamp.now().getSeconds());
+//        DocumentReference messageEntry=senderMsgBox.document(epochTimeString);
+//        HashMap<String,Object> messageHash = new HashMap<>();
+//        messageHash.put("text", receiver+" rejected you to follow");
+//        messageHash.put("sender",this.receiver);
+//        messageHash.put("receiver",this.sender);
+//        messageHash.put("newMessage", TRUE);
+//        messageHash.put("datetime", Timestamp.now());
+//        messageHash.put("type", "text");
+//        messageEntry.set(messageHash);
 
+        new TextMessage(receiver+" rejected you to follow",this.receiver,this.sender, Timestamp.now(),TRUE).invoke(senderMsgBox);
         // delete this message and add new TextMessage to receiver MessageBox collection
         this.delete();
         CollectionReference receiverMsgBox= usersCollection.document(this.receiver).collection("MessageBox");
-        epochTimeString= String.valueOf(Timestamp.now().getSeconds());
-        messageEntry = receiverMsgBox.document(epochTimeString);
-        messageHash = new HashMap<>();
-        messageHash.put("text", "you rejected "+sender+" successfully");
-        messageHash.put("sender",this.sender);
-        messageHash.put("receiver",this.receiver);
-        messageHash.put("newMessage", TRUE);
-        messageHash.put("datetime", Timestamp.now());
-        messageHash.put("type", "text");
-        messageEntry.set(messageHash);
+//        epochTimeString= String.valueOf(Timestamp.now().getSeconds());
+//        messageEntry = receiverMsgBox.document(epochTimeString);
+//        messageHash = new HashMap<>();
+//        messageHash.put("text", "you rejected "+sender+" successfully");
+//        messageHash.put("sender",this.sender);
+//        messageHash.put("receiver",this.receiver);
+//        messageHash.put("newMessage", TRUE);
+//        messageHash.put("datetime", Timestamp.now());
+//        messageHash.put("type", "text");
+//        messageEntry.set(messageHash);
+        new TextMessage("you rejected "+sender+" successfully",this.sender,this.receiver, Timestamp.now(),TRUE).invoke(receiverMsgBox);
     }
 }
