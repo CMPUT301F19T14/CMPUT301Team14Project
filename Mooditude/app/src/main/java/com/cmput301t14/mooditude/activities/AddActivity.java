@@ -3,6 +3,8 @@ package com.cmput301t14.mooditude.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import android.app.Activity;
 
@@ -122,12 +124,28 @@ public class AddActivity extends AppCompatActivity {
 
         mProgressBar = findViewById(R.id.progress_bar);
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            photoButton.setEnabled(false);
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+        }
+
 
         setUpMoodSpinner();
         setUpSocialSituationSpinner();
         setUpPhotoViews();
         setUpSubmitButton();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                photoButton.setEnabled(true);
+            }
+        }
+    }
+
 
     /**
      * setup the mood spinner dropdown menu
@@ -180,7 +198,8 @@ public class AddActivity extends AppCompatActivity {
         photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                openFireChooser();
+                //openFireChooser();
+
                 takePictureIntent();
             }
         });
@@ -216,20 +235,31 @@ public class AddActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        //xianda
         if (requestCode ==PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data!= null && data.getData() != null){
             mImageUri = data.getData();
             Picasso.with(this).load(mImageUri).into(photoImageView);
 
         }
 
+
+        //shixiong
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
+                Log.i("cam", "back photo file sucess");
+                Log.i("cam",String.valueOf(photoURI));
+                //photoImageView.setImageURI(photoURI);
 //                mImageUri = data.getData();
 //                Picasso.with(this).load(mImageUri).into(photoImageView);
+
+                //Get the photo
                 Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                photoImageView.setImageBitmap(imageBitmap);
+                Bitmap photo = (Bitmap) extras.get("data");
+                photoImageView.setImageBitmap(photo);
+
+//                Bundle extras = data.getExtras();
+//                Bitmap imageBitmap = (Bitmap) extras.get("data");
+//                photoImageView.setImageBitmap(imageBitmap);
                 galleryAddPic();
 
 //                Bitmap bp = (Bitmap) data.getExtras().get("data");
@@ -351,72 +381,121 @@ public class AddActivity extends AppCompatActivity {
 
 
 
-    String currentPhotoPath;
+
 
     private void galleryAddPic() {
+        Log.i("cam", "photo gallery sucess");
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(currentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
+//        File f = new File(currentPhotoPath);
+//        photoURI
+//        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(photoURI);
         this.sendBroadcast(mediaScanIntent);
     }
 
-    private File createImageFile() throws IOException {
-        FileOutputStream outStream = null;
+//    private File createImageFile() throws IOException {
+//        FileOutputStream outStream = null;
+//
+//
+//        // Create an image file name
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//        String imageFileName = "JPEG_" + timeStamp + "_";
+//
+//        File sdCard = Environment.getExternalStorageDirectory();
+//        File storageDir = new File (sdCard.getAbsolutePath() + "/moodcam");
+//        storageDir.mkdirs();
+//
+//        File image = File.createTempFile(
+//                imageFileName,  /* prefix */
+//                ".jpg",         /* suffix */
+//                storageDir      /* directory */
+//        );
+//
+//        // Save a file: path for use with ACTION_VIEW intents
+//        currentPhotoPath = image.getAbsolutePath();
+//
+//        return image;
+//    }
 
 
-        // Create an image file name
+
+    private static File createImageFile() throws IOException {
+        Log.i("cam", "create file ");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "CameraDemo");
+
+        if (!mediaStorageDir.exists()){
+            if (!mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-
-        File sdCard = Environment.getExternalStorageDirectory();
-        File storageDir = new File (sdCard.getAbsolutePath() + "/moodcam");
-        storageDir.mkdirs();
-
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-
-        return image;
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
     }
+
 
 
 
 
     static final int REQUEST_TAKE_PHOTO = 100;
+    Uri photoURI;
+
+
 
     private void takePictureIntent() {
 
 
+
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Log.i("cam", "photo clikck");
+        File photoFile = null;
+
+        try {
+            photoFile = createImageFile();
+
+        }catch (IOException ex) {
+            Log.i("cam", "photo file failed");
+        }
+
+        if (photoFile != null) {
+            photoURI = Uri.fromFile(photoFile);
+
+            //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            Log.i("cam", "photo file sucess");
+            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+
+        }
+
 
 
 //        // Ensure that there's a camera activity to handle the intent
-        //https://developer.android.com/training/camera/photobasics
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-//                // Error occurred while creating the File
+//        //https://developer.android.com/training/camera/photobasics
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+////            // Create the File where the photo should go
+//            File photoFile = null;
+//            try {
+//                photoFile = createImageFile();
+//            } catch (IOException ex) {
+////                // Error occurred while creating the File
+////
+//            }
+////            // Continue only if the File was successfully created
+//            if (photoFile != null) {
+//                Uri photoURI = Uri.fromFile(photoFile);
 //
-            }
-//            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = Uri.fromFile(photoFile);
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//
+////
+//            }
+//        }
 
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-//
-            }
-        }
+
     }
+
+
 
 
 
