@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // go to ViewEditMoodEventFragment
                 MoodEvent selectedMoodEvent = (MoodEvent) parent.getItemAtPosition(position);
-                ViewEditMoodEventFragment.newInstance(selectedMoodEvent).show(getSupportFragmentManager(), "MoodEvent");
+                ViewEditMoodEventFragment.newInstance(selectedMoodEvent, false).show(getSupportFragmentManager(), "MoodEvent");
             }
         });
 
