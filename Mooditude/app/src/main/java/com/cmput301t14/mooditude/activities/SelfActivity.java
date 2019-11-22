@@ -50,6 +50,7 @@ public class SelfActivity extends AppCompatActivity {
     ListView selfMoodEventList;
     ArrayAdapter<MoodEvent> selfMoodEventAdapter;
     ArrayList<MoodEvent> selfMoodEventDataList;
+    ArrayList<MoodEvent> filteredMoodEventDataList;
 
     private FirebaseUser user;
     private FirebaseFirestore db;
