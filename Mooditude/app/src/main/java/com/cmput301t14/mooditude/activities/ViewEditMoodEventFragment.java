@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,6 +44,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
     private String socialSituationString;
 
     private MoodEvent selectedMoodEvent;
+    private Boolean editable;
 
     /**
      * onAttach for the Fragment, using the super's method
@@ -74,6 +76,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
         Bundle args = getArguments();
         if (args != null){
             selectedMoodEvent = (MoodEvent) args.getSerializable("moodEvent");
+            editable = (Boolean) args.getSerializable("editable");
         }
 
         if (selectedMoodEvent != null) {
@@ -121,10 +124,23 @@ public class ViewEditMoodEventFragment extends DialogFragment {
             });
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            final AlertDialog d = builder.setView(view)
-                    .setTitle("MoodEvent")
-                    .setNegativeButton("Cancel", null)
-                    .setPositiveButton("OK", null).create();
+            final AlertDialog d;
+            if (editable){
+                // editable, can submit by "OK" and can "Cancel"
+                d = builder.setView(view)
+                        .setTitle("MoodEvent")
+                        .setNegativeButton("Cancel", null)
+                        .setPositiveButton("OK", null).create();
+            }
+            else{
+                // not editable, can only close
+                d = builder.setView(view)
+                        .setTitle("MoodEvent")
+                        .setNegativeButton("Close", null).create();
+
+                // lock the fields
+                this.disableEdit();
+            }
 
             /* Use View.OnclickListener to get manual control of Dialog dismiss, only dismiss
             after all validation passed and value updated , use validator 's
@@ -177,6 +193,29 @@ public class ViewEditMoodEventFragment extends DialogFragment {
      return null;
     }
 
+    /**
+     * lock and disable the editable fields when editable is set to false
+     */
+    private void disableEdit(){
+        // TODO: add real location and photo
+        moodSpinner.setEnabled(false);
+        moodSpinner.setFocusable(false);
+
+        socialSituationSpinner.setEnabled(false);
+        socialSituationSpinner.setFocusable(false);
+
+        commentEditText.setEnabled(false);
+        commentEditText.setInputType(InputType.TYPE_NULL);
+        commentEditText.setFocusable(false);
+
+        locationTextView.setEnabled(false);
+        locationTextView.setInputType(InputType.TYPE_NULL);
+        locationTextView.setFocusable(false);
+
+        photoTextView.setEnabled(false);
+        photoTextView.setInputType(InputType.TYPE_NULL);
+        photoTextView.setFocusable(false);
+    }
 
     /**
      * Constructor like method, get the parameters passed in as Bundle
@@ -184,9 +223,10 @@ public class ViewEditMoodEventFragment extends DialogFragment {
      * @return
      */
 
-    static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent) {
+    static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent, Boolean editable) {
         Bundle args = new Bundle();
         args.putSerializable("moodEvent", moodEvent);
+        args.putSerializable("editable", editable);
 
         ViewEditMoodEventFragment fragment = new ViewEditMoodEventFragment();
         fragment.setArguments(args);
