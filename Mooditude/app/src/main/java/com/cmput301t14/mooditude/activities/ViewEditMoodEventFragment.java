@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -136,7 +137,9 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                 d = builder.setView(view)
                         .setTitle("MoodEvent")
                         .setNegativeButton("Close", null).create();
-                // TODO: lock the fields
+
+                // lock the fields
+                this.disableEdit();
             }
 
             /* Use View.OnclickListener to get manual control of Dialog dismiss, only dismiss
@@ -190,6 +193,29 @@ public class ViewEditMoodEventFragment extends DialogFragment {
      return null;
     }
 
+    /**
+     * lock and disable the editable fields when editable is set to false
+     */
+    private void disableEdit(){
+        // TODO: add real location and photo
+        moodSpinner.setEnabled(false);
+        moodSpinner.setFocusable(false);
+
+        socialSituationSpinner.setEnabled(false);
+        socialSituationSpinner.setFocusable(false);
+
+        commentEditText.setEnabled(false);
+        commentEditText.setInputType(InputType.TYPE_NULL);
+        commentEditText.setFocusable(false);
+
+        locationTextView.setEnabled(false);
+        locationTextView.setInputType(InputType.TYPE_NULL);
+        locationTextView.setFocusable(false);
+
+        photoTextView.setEnabled(false);
+        photoTextView.setInputType(InputType.TYPE_NULL);
+        photoTextView.setFocusable(false);
+    }
 
     /**
      * Constructor like method, get the parameters passed in as Bundle
