@@ -4,7 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,13 +31,19 @@ import com.cmput301t14.mooditude.services.MoodEventValidator;
 import com.cmput301t14.mooditude.R;
 import com.cmput301t14.mooditude.models.SocialSituation;
 import com.cmput301t14.mooditude.services.User;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.Serializable;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
  * Fragment Class for Editing and Viewing MoodEvent detail, selected from the Mood History
  */
-public class ViewEditMoodEventFragment extends DialogFragment {
+public class ViewEditMoodEventFragment extends DialogFragment implements Serializable {
 
     private Spinner moodSpinner;
     private Spinner socialSituationSpinner;
@@ -50,6 +59,15 @@ public class ViewEditMoodEventFragment extends DialogFragment {
 
 
     ImageView imageView;
+    private Uri mImageUri;
+
+    private String temp;
+
+    private StorageReference mStorageRef;
+
+    private StorageTask mUploadTask;
+    private static final int PICK_IMAGE_REQUEST = 1;
+
 
     /**
      * onAttach for the Fragment, using the super's method
@@ -127,6 +145,13 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                     // nothing selected
+                }
+            });
+
+            photoTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openFireChooser();
                 }
             });
 
@@ -210,5 +235,23 @@ public class ViewEditMoodEventFragment extends DialogFragment {
         Toast.makeText(getContext(), photoUrl, Toast.LENGTH_LONG).show();
 
 //        Picasso.with(getContext()).load(photoUrl).into(imageView);
+    }
+
+    private void openFireChooser(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        super.startActivityForResult(intent, PICK_IMAGE_REQUEST);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode ==PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data!= null && data.getData() != null){
+            mImageUri = data.getData();
+            Picasso.with(getContext()).load(mImageUri).into(imageView);
+
+        }
     }
 }

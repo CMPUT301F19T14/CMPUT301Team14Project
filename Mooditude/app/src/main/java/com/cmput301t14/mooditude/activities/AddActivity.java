@@ -71,14 +71,9 @@ public class AddActivity extends AppCompatActivity {
 
     private Uri mImageUri;
 
-    private Photo photo = new Photo();
-
     private String temp;
 
     private StorageReference mStorageRef;
-    private DatabaseReference mDatabaseRef;
-
-    private ProgressBar mProgressBar;
 
     private StorageTask mUploadTask;
 
@@ -107,7 +102,6 @@ public class AddActivity extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference("photo");
 
-        mProgressBar = findViewById(R.id.progress_bar);
 
 
         setUpMoodSpinner();
@@ -268,10 +262,14 @@ public class AddActivity extends AppCompatActivity {
 //                        }
 //                    });
 
+            if (mUploadTask.isComplete()){
+                Toast.makeText(getApplicationContext(), "123", Toast.LENGTH_SHORT).show();
+            }
         }
-        if (mUploadTask.isComplete()){
-            Toast.makeText(getApplicationContext(), "123", Toast.LENGTH_SHORT).show();
+        else{
+            uploadDatabase(temp);
         }
+
 
     }
 

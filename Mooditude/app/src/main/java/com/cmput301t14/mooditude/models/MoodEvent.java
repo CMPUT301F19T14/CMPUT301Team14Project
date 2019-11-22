@@ -73,13 +73,15 @@ public class MoodEvent implements Serializable {
      * @param textComment
      * @param timestamp
      */
-    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
+    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp, String photoUrl) {
         this.author = author;
         this.mood = mood;
         this.location = location;
         this.socialSituation = socialSituation;
         this.textComment = textComment;
         this.datetime=timestamp;
+        this.photoUrl = photoUrl;
+
     }
     public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
         this.author = "";
@@ -98,6 +100,15 @@ public class MoodEvent implements Serializable {
         this.textComment = textComment;
         this.datetime=timestamp;
         this.photoUrl = photoUrl;
+    }
+
+    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
+        this.author = author;
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+        this.datetime=timestamp;
     }
 
     public String getAuthor() {

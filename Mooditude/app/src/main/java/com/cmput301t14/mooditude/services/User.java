@@ -257,8 +257,9 @@ public class User{
                     Location location= new Location(doc.getGeoPoint("Location"));
 //                    LocalDateTime datetime = LocalDateTime.parse(doc.getString("DateTime"));
                     Timestamp datetime = doc.getTimestamp("DateTime");
+                    String photo = doc.getString("Photograph");
                     String author=doc.getId();
-                    MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime);
+                    MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime,photo);
 //                    if(doc.getTimestamp("TIMESTAMP")!=null)
 //                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
                     moodEventDataList.add(moodEvent);
