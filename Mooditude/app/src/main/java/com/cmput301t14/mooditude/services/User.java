@@ -31,6 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -232,6 +233,7 @@ public class User{
 //                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
                     moodEventDataList.add(moodEvent);
                 }
+                Collections.reverse(moodEventDataList); // sort in reverse order
                 moodEventAdapter.notifyDataSetChanged();
             }
         });
@@ -262,6 +264,7 @@ public class User{
 //                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
                     moodEventDataList.add(moodEvent);
                 }
+                Collections.reverse(moodEventDataList); // sort in reverse order
                 moodEventAdapter.notifyDataSetChanged();
             }
         });
