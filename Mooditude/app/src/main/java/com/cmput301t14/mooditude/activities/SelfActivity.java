@@ -31,6 +31,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a class for user's profile purpose and one part of Main Interface after login.
@@ -104,21 +107,36 @@ public class SelfActivity extends AppCompatActivity {
         user.listenMoodHistoryNumber(numberMoodEvents);
 
 
+
         TextView happyTextView = findViewById(R.id.happyTextView);
-        happyTextView.setBackgroundColor(new Mood("HAPPY").getColor());
-        happyTextView.getBackground().setAlpha(50);
+        happyTextView.setBackgroundColor(-3090735);
 
         TextView sadTextView = findViewById(R.id.sadTextView);
-        sadTextView.setBackgroundColor(new Mood("SAD").getColor());
-        sadTextView.getBackground().setAlpha(50);
+        sadTextView.setBackgroundColor(-3090735);
 
         TextView angryTextView = findViewById(R.id.angryTextView);
-        angryTextView.setBackgroundColor(new Mood("ANGRY").getColor());
-        angryTextView.getBackground().setAlpha(50);
+        angryTextView.setBackgroundColor(-3090735);
 
         TextView excitedTextView = findViewById(R.id.excitedTextView);
-        excitedTextView.setBackgroundColor(new Mood("EXCITED").getColor());
-        excitedTextView.getBackground().setAlpha(50);
+        excitedTextView.setBackgroundColor(-3090735);
+
+        Map<String,TextView> emotionTextViewList= new HashMap<>();
+        emotionTextViewList.put("HAPPY",happyTextView);
+        emotionTextViewList.put("SAD",sadTextView);
+        emotionTextViewList.put("ANGRY",angryTextView);
+        emotionTextViewList.put("EXCITED",excitedTextView);
+
+        for(String emotion: User.getFilerList().keySet()){
+            TextView v =emotionTextViewList.get(emotion);
+            if (User.getFilerList().get(emotion)){
+                v.setBackgroundColor(new Mood(emotion).getColor());
+                v.getBackground().setAlpha(50);
+            }
+            else{
+                v.setBackgroundColor(Color.rgb(208, 214, 209));
+            }
+        }
+
 
         happyTextView.setOnClickListener(new View.OnClickListener() {
             @Override
