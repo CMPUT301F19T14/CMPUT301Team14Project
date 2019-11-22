@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -245,6 +246,32 @@ public class User{
                 moodEventAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    /**
+     * Filter the input List of MoodEvent by the filterMap (Map<Mood, Boolean>)
+     * @param moodEventDataList the List of MoodEvent to filter
+     * @param filterMap the map of filter setting Boolean flags for each Mood
+     * @return a new filtered list of MoodEvent
+     */
+    public ArrayList<MoodEvent> filterMoodEventList(ArrayList<MoodEvent> moodEventDataList, Map<Mood, Boolean> filterMap){
+        ArrayList<MoodEvent> filteredMoodEventDataList = new ArrayList<MoodEvent>();
+        Iterator itr = filterMap.entrySet().iterator();
+        while (itr.hasNext()) {
+            Map.Entry pair = (Map.Entry)itr.next();
+            Mood mood = (Mood) pair.getKey();
+            Boolean filterOn = (Boolean) pair.getValue();
+            if (filterOn){
+                for (MoodEvent moodEvent : moodEventDataList) {
+                    if (moodEvent.getMood() == mood){
+                        filteredMoodEventDataList.add(moodEvent);
+                    }
+                }
+            }
+            itr.remove(); // avoids a ConcurrentModificationException
+        }
+        Collections.reverse(filteredMoodEventDataList);
+        return filteredMoodEventDataList;
     }
 
     public void listenFollowingMoodEvents(final ArrayList<MoodEvent> moodEventDataList, final ArrayAdapter<MoodEvent> moodEventAdapter){
