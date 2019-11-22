@@ -77,6 +77,11 @@ public class User{
         followingCollRef= db.collection("Users").document(user.getEmail()).collection("Followings");
         followerCollRef= db.collection("Users").document(user.getEmail()).collection("Followers");
         moodHistoryCollRef= db.collection("Users").document(user.getEmail()).collection("MoodHistory");
+
+        filerList.put("HAPPY",Boolean.TRUE);
+        filerList.put("SAD",Boolean.TRUE);
+        filerList.put("ANGRY",Boolean.TRUE);
+        filerList.put("EXCITED",Boolean.TRUE);
     }
 
     public String getEmail(){
@@ -361,6 +366,8 @@ public class User{
     public static void setFilerList(Map<String, Boolean> filerList) {
         User.filerList = filerList;
     }
+
+
 
     /**
  * Replaced by listenUserName
