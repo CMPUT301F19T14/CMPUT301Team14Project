@@ -19,6 +19,7 @@ import android.view.View;
 import com.cmput301t14.mooditude.models.Mood;
 import com.cmput301t14.mooditude.services.MenuBar;
 import com.cmput301t14.mooditude.R;
+import com.cmput301t14.mooditude.services.MoodFilterListener;
 import com.cmput301t14.mooditude.services.User;
 
 
@@ -135,97 +136,102 @@ public class SelfActivity extends AppCompatActivity {
             else{
                 v.setBackgroundColor(Color.rgb(208, 214, 209));
             }
+            v.setOnClickListener(new MoodFilterListener(emotion));
         }
 
 
-        happyTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getBackground() instanceof ColorDrawable) {
-                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-                    int color = cd.getColor();
-                    Log.i("Color", String.valueOf(color));
-//                    Log.i("Color2",String.valueOf(Color.GRAY));
-                    if (color == -3090735) {
-                        v.setBackgroundColor(new Mood("HAPPY").getColor());
-                        v.getBackground().setAlpha(50);
-                        User.getFilerList().put("HAPPY",Boolean.FALSE);
-                    } else {
-                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-                        User.getFilerList().put("HAPPY",Boolean.TRUE);
-                    }
 
-                }
-
-                Log.i("LOGAA",User.getFilerList().toString());
-            }
-        });
+//        happyTextView.setOnClickListener(new MoodFilterListener("HAPPY"));
 
 
+//        happyTextView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (v.getBackground() instanceof ColorDrawable) {
+//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
+//                    int color = cd.getColor();
+//                    Log.i("Color", String.valueOf(color));
+////                    Log.i("Color2",String.valueOf(Color.GRAY));
+//                    if (color == -3090735) {
+//                        v.setBackgroundColor(new Mood("HAPPY").getColor());
+//                        v.getBackground().setAlpha(50);
+//                        User.getFilerList().put("HAPPY",Boolean.FALSE);
+//                    } else {
+//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
+//                        User.getFilerList().put("HAPPY",Boolean.TRUE);
+//                    }
+//
+//                }
+//
+//                Log.i("LOGAA",User.getFilerList().toString());
+//            }
+//        });
 
-        sadTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getBackground() instanceof ColorDrawable) {
-                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-                    int color = cd.getColor();
-                    Log.i("Color", String.valueOf(color));
-//                    Log.i("Color2",String.valueOf(Color.GRAY));
-                    if (color == -3090735) {
-                        v.setBackgroundColor(new Mood("SAD").getColor());
-                        v.getBackground().setAlpha(50);
-                        User.getFilerList().put("SAD",Boolean.FALSE);
-                    } else {
-                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-                        User.getFilerList().put("SAD",Boolean.TRUE);
-                    }
 
-                }
-            }
-        });
 
-        angryTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getBackground() instanceof ColorDrawable) {
-                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-                    int color = cd.getColor();
-                    Log.i("Color", String.valueOf(color));
-//                    Log.i("Color2",String.valueOf(Color.GRAY));
-                    if (color == -3090735) {
-                        v.setBackgroundColor(new Mood("ANGRY").getColor());
-                        v.getBackground().setAlpha(50);
-                        User.getFilerList().put("ANGRY",Boolean.TRUE);
-                    } else {
-                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-                        User.getFilerList().put("ANGRY",Boolean.FALSE);
-                    }
+//        sadTextView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (v.getBackground() instanceof ColorDrawable) {
+//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
+//                    int color = cd.getColor();
+//                    Log.i("Color", String.valueOf(color));
+////                    Log.i("Color2",String.valueOf(Color.GRAY));
+//                    if (color == -3090735) {
+//                        v.setBackgroundColor(new Mood("SAD").getColor());
+//                        v.getBackground().setAlpha(50);
+//                        User.getFilerList().put("SAD",Boolean.FALSE);
+//                    } else {
+//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
+//                        User.getFilerList().put("SAD",Boolean.TRUE);
+//                    }
+//
+//                }
+//            }
+//        });
 
-                }
-            }
-        });
+//        angryTextView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (v.getBackground() instanceof ColorDrawable) {
+//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
+//                    int color = cd.getColor();
+//                    Log.i("Color", String.valueOf(color));
+////                    Log.i("Color2",String.valueOf(Color.GRAY));
+//                    if (color == -3090735) {
+//                        v.setBackgroundColor(new Mood("ANGRY").getColor());
+//                        v.getBackground().setAlpha(50);
+//                        User.getFilerList().put("ANGRY",Boolean.TRUE);
+//                    } else {
+//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
+//                        User.getFilerList().put("ANGRY",Boolean.FALSE);
+//                    }
+//
+//                }
+//            }
+//        });
 
-        excitedTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("Color4", "BERE");
-                if (v.getBackground() instanceof ColorDrawable) {
-                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-                    int color = cd.getColor();
-                    Log.i("Color3", String.valueOf(color));
-//                    Log.i("Color2",String.valueOf(Color.GRAY));
-                    if (color == -3090735) {
-                        v.setBackgroundColor(new Mood("EXCITED").getColor());
-                        v.getBackground().setAlpha(50);
-                        User.getFilerList().put("EXCITED",Boolean.FALSE);
-                    } else {
-                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-                        User.getFilerList().put("EXCITED",Boolean.TRUE);
-                    }
-
-                }
-            }
-        });
+//        excitedTextView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.i("Color4", "BERE");
+//                if (v.getBackground() instanceof ColorDrawable) {
+//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
+//                    int color = cd.getColor();
+//                    Log.i("Color3", String.valueOf(color));
+////                    Log.i("Color2",String.valueOf(Color.GRAY));
+//                    if (color == -3090735) {
+//                        v.setBackgroundColor(new Mood("EXCITED").getColor());
+//                        v.getBackground().setAlpha(50);
+//                        User.getFilerList().put("EXCITED",Boolean.FALSE);
+//                    } else {
+//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
+//                        User.getFilerList().put("EXCITED",Boolean.TRUE);
+//                    }
+//
+//                }
+//            }
+//        });
 /**
  *  Moved to User Class with realtime listener
  *  Original functinality:
