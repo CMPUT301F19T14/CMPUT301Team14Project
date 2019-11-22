@@ -14,7 +14,7 @@ import java.io.Serializable;
  * socialsituation
  * textComment
  */
-public class MoodEvent implements Serializable {
+public class MoodEvent implements Serializable, Comparable {
 
     private String author;
     private Mood mood;
@@ -160,5 +160,28 @@ public class MoodEvent implements Serializable {
      */
     public void setTextComment(String textComment) {
         this.textComment = textComment;
+    }
+
+    /**
+     * Override compareTo method of Comparable interface
+     * @param moodEvent the MoodEvent object to compare to
+     */
+    @Override
+    public int compareTo(Object moodEvent) {
+        int result = 0;
+        if (moodEvent != null) {
+            if (moodEvent instanceof MoodEvent) {
+                MoodEvent m = (MoodEvent) moodEvent;
+                result = this.getDatetime().compareTo(m.getDatetime());
+            }
+            else{
+                throw new IllegalArgumentException("Invalid input type, must be MoodEvent");
+            }
+        }
+        else{
+            throw new IllegalArgumentException("Input cannot be null, must be MoodEvent");
+        }
+
+        return result;
     }
 }
