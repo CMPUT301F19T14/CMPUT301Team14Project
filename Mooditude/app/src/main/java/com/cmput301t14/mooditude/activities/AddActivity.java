@@ -385,12 +385,14 @@ public class AddActivity extends AppCompatActivity {
 
     private void galleryAddPic() {
         Log.i("cam", "photo gallery sucess");
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-//        File f = new File(currentPhotoPath);
-//        photoURI
-//        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(photoURI);
-        this.sendBroadcast(mediaScanIntent);
+//        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+////        File f = new File(currentPhotoPath);
+////        photoURI
+////        Uri contentUri = Uri.fromFile(f);
+//        mediaScanIntent.setData(photoURI);
+//        this.sendBroadcast(mediaScanIntent);
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, photoURI));
+
     }
 
 //    private File createImageFile() throws IOException {
@@ -419,6 +421,7 @@ public class AddActivity extends AppCompatActivity {
 
 
 
+//  file:///storage/emulated/0/Pictures/CameraDemo/IMG_20191121_172846.jpg
     private static File createImageFile() throws IOException {
         Log.i("cam", "create file ");
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
