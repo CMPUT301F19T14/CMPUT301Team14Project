@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User class is one class to implement all user related fucntions.
@@ -55,7 +56,9 @@ public class User{
     static public ArrayList<String> followerList=new ArrayList<>();
     static public ArrayList<String> followingList=new ArrayList<>();
 
-    /**
+    private  static Map<String,Boolean> filerList = new HashMap<>();
+
+    /**and
      * User Constructor
      * Initialize db
      * mAuth
@@ -351,7 +354,15 @@ public class User{
                 .delete();
     }
 
-/**
+    public static Map<String, Boolean> getFilerList() {
+        return filerList;
+    }
+
+    public static void setFilerList(Map<String, Boolean> filerList) {
+        User.filerList = filerList;
+    }
+
+    /**
  * Replaced by listenUserName
  */
 //    /**

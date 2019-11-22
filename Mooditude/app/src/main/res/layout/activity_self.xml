@@ -94,6 +94,45 @@
         app:layout_constraintStart_toEndOf="@+id/following"
         app:layout_constraintTop_toBottomOf="@+id/number_of_follower" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="382dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/number_of_following">
+
+        <TextView
+            android:id="@+id/happyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Happy" />
+
+        <TextView
+            android:id="@+id/sadTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Sad" />
+
+        <TextView
+            android:id="@+id/angryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Angry" />
+
+        <TextView
+            android:id="@+id/excitedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="EXCITED" />
+    </LinearLayout>
+
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="48dp"
@@ -146,13 +185,15 @@
 
     <ListView
         android:id="@+id/self_mood_event_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="394dp"
+        android:layout_height="488dp"
+        android:layout_marginTop="141dp"
         android:background="@drawable/border_lines"
         app:layout_constraintBottom_toTopOf="@+id/navigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/number_of_following" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
