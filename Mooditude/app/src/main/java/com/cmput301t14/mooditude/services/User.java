@@ -450,10 +450,6 @@ public class User {
         return filterList;
     }
 
-    public static void setFilerList(Map<String, Boolean> filerList) {
-        User.filerList = filerList;
-    }
-
      /**
      * Replaced by listenUserName
      */
