@@ -7,8 +7,13 @@ package com.cmput301t14.mooditude.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,6 +35,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a class used to display a list of emails of follower or following for the current user
@@ -40,20 +47,22 @@ public class DisplayFollow extends AppCompatActivity {
     ArrayAdapter<Person> followAdapter;
     ArrayList<Person> followDataList;
     String myID;
+    private CollectionReference collectionReference;
 
     FirebaseFirestore db;
-    public enum ListMode {Followers, Followings};
+
+    public enum ListMode {Followers, Followings}
+
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_follow);
 
-        // Get the Intent that started this activity and extract the string for mode(Follower/Following) and userEmail
         Intent intent = getIntent();
-        ListMode listMode = ListMode.valueOf(intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Mode));
-//        final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
-//        myID = messageEmail;
+        final ListMode listMode = ListMode.valueOf(intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Mode));
+
 
         db = FirebaseFirestore.getInstance();
 
@@ -62,94 +71,62 @@ public class DisplayFollow extends AppCompatActivity {
         followAdapter = new CustomList(this, followDataList);
         followList.setAdapter(followAdapter);
 
-        final CollectionReference collectionReference=db.collection("Users").document(new User().getEmail())
+       collectionReference = db.collection("Users").document(new User().getEmail())
                 .collection(listMode.toString());
 
+        refreshList();
+
+        followList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final String email = followDataList.get(i).getEmail();
+
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                Log.i("BUTTON_POSITIVE", "Here:" + email);
+                                if (listMode == ListMode.Followers)
+                                    new User().remove(email);
+                                if(listMode==ListMode.Followings)
+                                    new User().unfollow(email);
+                                refreshList();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+                Map<ListMode,String> promptMap= new HashMap<>();
+                promptMap.put(ListMode.Followers,"Are you sure that you want to remove this follower?");
+                promptMap.put(ListMode.Followings,"Are you sure that you want to unfollow?");
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(DisplayFollow.this);
+                alert.setMessage(promptMap.get(listMode))
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .show();
+                return true;
+            }
+        });
+
+
+    }
+
+
+    private void refreshList(){
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     followDataList.clear();
-                    for(QueryDocumentSnapshot doc: task.getResult()){
-                        followDataList.add(new Person(doc.getId(),doc.getString("user_name")));
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        followDataList.add(new Person(doc.getId(), doc.getString("user_name")));
                     }
                     followAdapter.notifyDataSetChanged();
                 }
             }
         });
-
-
-
-
-
-
-
-
-
-//        final CollectionReference collectionReference = db.collection("Users");
-//        final DocumentReference documentReference = collectionReference.document(myID).collection("Followers");
-
-        //according to the require mode, get the required filed from database and show.
-//        if (messageMode.compareTo("Follower") == 0){
-//
-//            final TextView followMode = findViewById(R.id.followMode);
-//            followMode.setText("Follwer List");
-//
-//            //Reference: https://dzone.com/articles/cloud-firestore-read-write-update-and-delete
-//            documentReference.get().addOnCompleteListener(new OnCompleteListener< DocumentSnapshot >() {
-//                @Override
-//                public void onComplete(@NonNull Task< DocumentSnapshot > task) {
-//                    followDataList.clear();
-//                    if (task.isSuccessful()) {
-//                        DocumentSnapshot doc = task.getResult();
-//                        ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
-//
-//                        for (String f : followerList) {
-//
-//                            followDataList.add(f);
-//
-//                        }
-//                        followAdapter.notifyDataSetChanged();
-//                    }
-//                }
-//            })
-//            .addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//
-//        }
-//        else if(messageMode.compareTo("Following") == 0){
-//
-//            final TextView followMode = findViewById(R.id.followMode);
-//            followMode.setText("Following List");
-//
-//            documentReference.get().addOnCompleteListener(new OnCompleteListener< DocumentSnapshot >() {
-//                @Override
-//                public void onComplete(@NonNull Task< DocumentSnapshot > task) {
-//                    followDataList.clear();
-//                    if (task.isSuccessful()) {
-//                        DocumentSnapshot doc = task.getResult();
-//                        ArrayList<String> followingList = (ArrayList<String>) doc.get("following");
-//
-//                        for (String f : followingList) {
-//
-//                            followDataList.add(f);
-//
-//                        }
-//                        followAdapter.notifyDataSetChanged();
-//                    }
-//                }
-//            })
-//            .addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//
-//        }
     }
 }
