@@ -16,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cmput301t14.mooditude.adapters.MoodSpinnerAdapter;
 import com.cmput301t14.mooditude.models.Location;
 import com.cmput301t14.mooditude.services.MenuBar;
 import com.cmput301t14.mooditude.models.Mood;
