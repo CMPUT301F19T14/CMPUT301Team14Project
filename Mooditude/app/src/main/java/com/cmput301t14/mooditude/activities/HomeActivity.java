@@ -71,7 +71,9 @@ public class HomeActivity extends AppCompatActivity {
         selfMoodEventList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final String email = ((TextView) view.findViewById(R.id.userNameTextView)).getText().toString();
+//                final String email = ((TextView) view.findViewById(R.id.userNameTextView)).getText().toString();
+                final String email = selfMoodEventDataList.get(i).getEmail();
+
                 Log.i("selfMood", "Here:" + email);
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override

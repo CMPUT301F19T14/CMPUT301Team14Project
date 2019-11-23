@@ -5,7 +5,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -113,6 +112,7 @@ public class SearchActivity extends AppCompatActivity {
         userNameList.clear();
         userEmailList.clear();
         recyclerView.removeAllViews();
+
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -134,8 +134,8 @@ public class SearchActivity extends AppCompatActivity {
                         break;
                     }
                 }
-
                 searchAdapter = new SearchAdapter(SearchActivity.this, userNameList, userEmailList,User.followerList,User.followingList);
+                user.notifyFollowFollowingDateChange(searchAdapter);
                 recyclerView.setAdapter(searchAdapter);
             }
         });
