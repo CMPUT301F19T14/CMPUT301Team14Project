@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.cmput301t14.mooditude.adapters.SearchAdapter;
 import com.cmput301t14.mooditude.models.Location;
 import com.cmput301t14.mooditude.models.Mood;
 import com.cmput301t14.mooditude.models.MoodEvent;
@@ -53,11 +54,11 @@ public class User {
     static public ArrayList<String> followerList = new ArrayList<>();
     static public ArrayList<String> followingList = new ArrayList<>();
 
-    private Map<String,Boolean> filterList;
+    private Map<String, Boolean> filterList;
     private ArrayList<MoodEvent> filteredSelfMoodEventDataList;
     private ArrayList<MoodEvent> moodEventDataList;
     private ArrayAdapter<MoodEvent> moodEventAdapter;
-  
+
     static private String userName = "";
 
     /**
@@ -82,12 +83,12 @@ public class User {
         moodHistoryCollRef = db.collection("Users").document(user.getEmail()).collection("MoodHistory");
 
         User.refreshUserName();
-      
+
         filterList = new HashMap<>();
-        filterList.put("HAPPY",Boolean.TRUE);
-        filterList.put("SAD",Boolean.TRUE);
-        filterList.put("ANGRY",Boolean.TRUE);
-        filterList.put("EXCITED",Boolean.TRUE);
+        filterList.put("HAPPY", Boolean.TRUE);
+        filterList.put("SAD", Boolean.TRUE);
+        filterList.put("ANGRY", Boolean.TRUE);
+        filterList.put("EXCITED", Boolean.TRUE);
     }
 
 //    public void setupListenOn
@@ -99,12 +100,12 @@ public class User {
      */
     public void addFollower(String followerID) {
         // add sender to receiver's Followers collection
-        Log.i("addFollower",followerID);
+        Log.i("addFollower", followerID);
         CollectionReference receiverFollowers = userDocRef.collection("Followers");
         final DocumentReference receiverFollowersEntry = receiverFollowers.document(followerID);
 
         final HashMap<String, Object> followerHash = new HashMap<>();
-        followerHash.put("user_name",User.getUserName());
+        followerHash.put("user_name", User.getUserName());
         receiverFollowersEntry.set(followerHash);
 
     }
@@ -310,7 +311,7 @@ public class User {
     /**
      * Filter the input List of MoodEvent by the filterMap (Map<String, Boolean>)
      */
-    public void filterMoodEventList(){
+    public void filterMoodEventList() {
         this.filteredSelfMoodEventDataList.clear();
         for (Map.Entry<String, Boolean> entry : filterList.entrySet()) {
             String mood = entry.getKey();
@@ -333,7 +334,6 @@ public class User {
                 .document(user.getEmail()).collection("Followings");
 
 
-
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -351,7 +351,8 @@ public class User {
                     Timestamp datetime = doc.getTimestamp("DateTime");
 //                    String author = doc.getId();
                     String author = doc.getString("user_name");
-                    MoodEvent moodEvent = new MoodEvent(author, mood, location, socialSituation, textComment, datetime);
+                    String email= doc.getId();
+                    MoodEvent moodEvent = new MoodEvent(author, mood, location, socialSituation, textComment, datetime,email);
 //                    if(doc.getTimestamp("TIMESTAMP")!=null)
 //                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
                     moodEventDataList.add(moodEvent);
@@ -396,8 +397,42 @@ public class User {
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                     arrayList.add(doc.getId());
                 }
+//                if (searchAdapter != null){
+//                    Log.i("searchAdapter","searchAdapter");
+//                    searchAdapter.notifyDataSetChanged ();
+//                }
+
             }
         });
+    }
+
+
+    /**
+     * Not decent function to notify the searchAdapter that following and follower list has been
+     * changed.
+     * @param searchAdapter
+     */
+    public void notifyFollowFollowingDateChange(final SearchAdapter searchAdapter) {
+        followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (searchAdapter != null){
+                    Log.i("searchAdapter","searchAdapter");
+                    searchAdapter.notifyDataSetChanged ();
+                }
+            }
+        });
+
+        followingCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (searchAdapter != null){
+                    Log.i("searchAdapter","searchAdapter");
+                    searchAdapter.notifyDataSetChanged ();
+                }
+            }
+        });
+
     }
 
     public void listenFollowingNumber(final TextView textView) {
@@ -434,15 +469,16 @@ public class User {
 
     public void unfollow(String targetUserEmail) {
         followingCollRef.document(targetUserEmail).delete();
+        Log.i("unfollow",targetUserEmail);
         db.collection("Users").document(targetUserEmail)
-                .collection("Follower").document(user.getEmail())
+                .collection("Followers").document(user.getEmail())
                 .delete();
     }
 
     public void remove(String targetUserEmail) {
         followerCollRef.document(targetUserEmail).delete();
         db.collection("Users").document(targetUserEmail)
-                .collection("Following").document(user.getEmail())
+                .collection("Followings").document(user.getEmail())
                 .delete();
     }
 
@@ -450,7 +486,7 @@ public class User {
         return filterList;
     }
 
-     /**
+    /**
      * Replaced by listenUserName
      */
 //    /**

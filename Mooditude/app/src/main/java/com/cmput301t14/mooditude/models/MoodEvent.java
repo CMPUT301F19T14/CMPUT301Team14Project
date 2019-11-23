@@ -22,6 +22,7 @@ public class MoodEvent implements Serializable, Comparable {
     private Location location;
     private SocialSituation socialSituation;
     private String textComment;
+    private String email;
 //    photoComment: Bitmap
 
     /**
@@ -69,6 +70,19 @@ public class MoodEvent implements Serializable, Comparable {
         this.textComment = textComment;
         this.datetime=timestamp;
     }
+
+    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp , String email) {
+        this.author = author;
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+        this.datetime=timestamp;
+        this.email = email;
+    }
+
+
+
     public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
         this.author = "";
         this.mood = mood;
@@ -76,6 +90,10 @@ public class MoodEvent implements Serializable, Comparable {
         this.socialSituation = socialSituation;
         this.textComment = textComment;
         this.datetime=timestamp;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getAuthor() {
