@@ -61,6 +61,7 @@ public class User {
     static private Map<String, Boolean> filerList = new HashMap<>();
     static private String userName = "";
 
+
     /**
      * and
      * User Constructor
@@ -90,6 +91,8 @@ public class User {
 
 
     }
+
+//    public void setupListenOn
 
     /**
      * Add follower ID to Follower List along with follower's user_name
@@ -331,6 +334,8 @@ public class User {
     public void listenFollowingMoodEvents(final ArrayList<MoodEvent> moodEventDataList, final ArrayAdapter<MoodEvent> moodEventAdapter) {
         CollectionReference collectionReference = db.collection("Users")
                 .document(user.getEmail()).collection("Followings");
+
+
 
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

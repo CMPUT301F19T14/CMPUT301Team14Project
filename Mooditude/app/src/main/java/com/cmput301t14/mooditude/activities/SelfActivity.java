@@ -6,9 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -32,7 +30,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -142,170 +139,13 @@ public class SelfActivity extends AppCompatActivity {
 
 
 
-//        happyTextView.setOnClickListener(new MoodFilterListener("HAPPY"));
-
-
-//        happyTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (v.getBackground() instanceof ColorDrawable) {
-//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-//                    int color = cd.getColor();
-//                    Log.i("Color", String.valueOf(color));
-////                    Log.i("Color2",String.valueOf(Color.GRAY));
-//                    if (color == -3090735) {
-//                        v.setBackgroundColor(new Mood("HAPPY").getColor());
-//                        v.getBackground().setAlpha(50);
-//                        User.getFilerList().put("HAPPY",Boolean.FALSE);
-//                    } else {
-//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-//                        User.getFilerList().put("HAPPY",Boolean.TRUE);
-//                    }
-//
-//                }
-//
-//                Log.i("LOGAA",User.getFilerList().toString());
-//            }
-//        });
-
-
-
-//        sadTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (v.getBackground() instanceof ColorDrawable) {
-//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-//                    int color = cd.getColor();
-//                    Log.i("Color", String.valueOf(color));
-////                    Log.i("Color2",String.valueOf(Color.GRAY));
-//                    if (color == -3090735) {
-//                        v.setBackgroundColor(new Mood("SAD").getColor());
-//                        v.getBackground().setAlpha(50);
-//                        User.getFilerList().put("SAD",Boolean.FALSE);
-//                    } else {
-//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-//                        User.getFilerList().put("SAD",Boolean.TRUE);
-//                    }
-//
-//                }
-//            }
-//        });
-
-//        angryTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (v.getBackground() instanceof ColorDrawable) {
-//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-//                    int color = cd.getColor();
-//                    Log.i("Color", String.valueOf(color));
-////                    Log.i("Color2",String.valueOf(Color.GRAY));
-//                    if (color == -3090735) {
-//                        v.setBackgroundColor(new Mood("ANGRY").getColor());
-//                        v.getBackground().setAlpha(50);
-//                        User.getFilerList().put("ANGRY",Boolean.TRUE);
-//                    } else {
-//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-//                        User.getFilerList().put("ANGRY",Boolean.FALSE);
-//                    }
-//
-//                }
-//            }
-//        });
-
-//        excitedTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.i("Color4", "BERE");
-//                if (v.getBackground() instanceof ColorDrawable) {
-//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-//                    int color = cd.getColor();
-//                    Log.i("Color3", String.valueOf(color));
-////                    Log.i("Color2",String.valueOf(Color.GRAY));
-//                    if (color == -3090735) {
-//                        v.setBackgroundColor(new Mood("EXCITED").getColor());
-//                        v.getBackground().setAlpha(50);
-//                        User.getFilerList().put("EXCITED",Boolean.FALSE);
-//                    } else {
-//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-//                        User.getFilerList().put("EXCITED",Boolean.TRUE);
-//                    }
-//
-//                }
-//            }
-//        });
-/**
- *  Moved to User Class with realtime listener
- *  Original functinality:
- *  Follower Number
- *  Following Number
- *  Number of Moodevents
- */
-//        final DocumentReference documentReference = collectionReference.document(messageEmail);
-        //get the total number of followers/following
-//        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
-//
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot doc = task.getResult();
-//
-//                    if(!doc.contains("MoodHistory")){
-//                        CollectionReference moodHistory = documentReference.collection("MoodHistory");
-//                        moodHistory.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                if (task.isSuccessful()) {
-//                                    Log.d("TAG", task.getResult().size() + "");
-//                                    numberMoodEvents.setText(String.valueOf(task.getResult().size()));
-//                                } else {
-//                                    Log.d(TAG, "Error getting documents: ", task.getException());
-//                                }
-//                            }
-//                        });
-//
-//                    }
-//                    else{
-//                        numberMoodEvents.setText("0");
-//
-//                    }
-//
-//                    userNameTextView.setText(String.valueOf(doc.get("user_name")));
-//
-//                    ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
-//                    if(followerList==null){
-//                        numberFollowerTextView.setText("0");
-//                    }
-//                    else{
-//                        numberFollowerTextView.setText(String.valueOf(followerList.size()));
-//                    }
-//
-//                    ArrayList<String> followingList = (ArrayList<String>) doc.get("following");
-//                    if(followerList==null){
-//                        numberFollowingTextView.setText("0");
-//                    }
-//                    else{
-//                        numberFollowingTextView.setText(String.valueOf(followingList.size()));
-//                    }
-//
-//                }
-//            }
-//        })
-//        .addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         //if click on item, go to DisplayFollow activity to show the summary list
         followerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String require = "Follower";
                 Intent intent = new Intent(SelfActivity.this, DisplayFollow.class);
-                intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                intent.putExtra(EXTRA_MESSAGE_Mode, require);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra(EXTRA_MESSAGE_Mode, DisplayFollow.ListMode.Followers.toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 
             }
@@ -313,13 +153,11 @@ public class SelfActivity extends AppCompatActivity {
         followingTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String require = "Following";
                 Intent intent = new Intent(SelfActivity.this, DisplayFollow.class);
                 intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                intent.putExtra(EXTRA_MESSAGE_Mode, require);
-                // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra(EXTRA_MESSAGE_Mode, DisplayFollow.ListMode.Followings.toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
-
             }
         });
     }
