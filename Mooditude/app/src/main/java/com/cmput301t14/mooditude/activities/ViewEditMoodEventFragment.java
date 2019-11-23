@@ -95,7 +95,28 @@ public class ViewEditMoodEventFragment extends DialogFragment {
             moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    moodString = parent.getItemAtPosition(position).toString();
+                    Mood happy = new Mood("HAPPY");
+                    Mood sad = new Mood("SAD");
+                    Mood excited = new Mood("EXCITED");
+                    Mood angry = new Mood("ANGRY");
+                    String spinnerStr = parent.getItemAtPosition(position).toString();
+                    if (spinnerStr.equals(happy.getEmoticon() + happy.getMood())){
+                        moodString = happy.getMood();
+                        view.setBackgroundColor(happy.getColor());
+                    }
+                    else if (spinnerStr.equals(sad.getEmoticon() + sad.getMood())){
+                        moodString = sad.getMood();
+                        view.setBackgroundColor(sad.getColor());
+                    }
+                    else if (spinnerStr.equals(excited.getEmoticon() + excited.getMood())){
+                        moodString = excited.getMood();
+                        view.setBackgroundColor(excited.getColor());
+                    }
+                    else if (spinnerStr.equals(angry.getEmoticon() + angry.getMood())){
+                        moodString = angry.getMood();
+                        view.setBackgroundColor(angry.getColor());
+                    }
+                    view.getBackground().setAlpha(50);
                 }
 
                 @Override
