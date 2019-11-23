@@ -10,8 +10,11 @@ import android.app.Activity;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -98,6 +101,11 @@ public class AddActivity extends AppCompatActivity {
     private StorageTask mUploadTask;
 
 
+    static final int REQUEST_TAKE_PHOTO = 100;
+    Uri camPhotoURI;
+    String camImageStoragePath;
+
+
 
 
 
@@ -136,6 +144,12 @@ public class AddActivity extends AppCompatActivity {
         setUpSubmitButton();
     }
 
+    /**
+     * Request permission from user
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 0) {
@@ -247,23 +261,16 @@ public class AddActivity extends AppCompatActivity {
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
                 Log.i("cam", "back photo file sucess");
-                Log.i("cam",String.valueOf(photoURI));
-                //photoImageView.setImageURI(photoURI);
-//                mImageUri = data.getData();
-//                Picasso.with(this).load(mImageUri).into(photoImageView);
+                Log.i("cam",String.valueOf(camPhotoURI));
 
                 //Get the photo
-                Bundle extras = data.getExtras();
-                Bitmap photo = (Bitmap) extras.get("data");
-                photoImageView.setImageBitmap(photo);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeFile(camImageStoragePath, options);
+                photoImageView.setImageBitmap(bitmap);
 
-//                Bundle extras = data.getExtras();
-//                Bitmap imageBitmap = (Bitmap) extras.get("data");
-//                photoImageView.setImageBitmap(imageBitmap);
-                galleryAddPic();
+                //add to gallery
+                galleryAddPic(getApplicationContext(), camImageStoragePath);
 
-//                Bitmap bp = (Bitmap) data.getExtras().get("data");
-//                photoImageView.setImageBitmap(bp);
 
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
@@ -380,44 +387,22 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-
-
-
-    private void galleryAddPic() {
+    /**
+     * Add camera photo to gallery
+     * @param context
+     * @param filePath
+     */
+    private void galleryAddPic(Context context, String filePath) {
         Log.i("cam", "photo gallery sucess");
-//        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-////        File f = new File(currentPhotoPath);
-////        photoURI
-////        Uri contentUri = Uri.fromFile(f);
-//        mediaScanIntent.setData(photoURI);
-//        this.sendBroadcast(mediaScanIntent);
-        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, photoURI));
+
+        MediaScannerConnection.scanFile(context,
+                new String[]{filePath}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                    }
+                });
 
     }
-
-//    private File createImageFile() throws IOException {
-//        FileOutputStream outStream = null;
-//
-//
-//        // Create an image file name
-//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//        String imageFileName = "JPEG_" + timeStamp + "_";
-//
-//        File sdCard = Environment.getExternalStorageDirectory();
-//        File storageDir = new File (sdCard.getAbsolutePath() + "/moodcam");
-//        storageDir.mkdirs();
-//
-//        File image = File.createTempFile(
-//                imageFileName,  /* prefix */
-//                ".jpg",         /* suffix */
-//                storageDir      /* directory */
-//        );
-//
-//        // Save a file: path for use with ACTION_VIEW intents
-//        currentPhotoPath = image.getAbsolutePath();
-//
-//        return image;
-//    }
 
 
 
@@ -429,6 +414,7 @@ public class AddActivity extends AppCompatActivity {
 
         if (!mediaStorageDir.exists()){
             if (!mediaStorageDir.mkdirs()){
+                Log.e("File", "Oops! Failed create ");
                 return null;
             }
         }
@@ -437,20 +423,9 @@ public class AddActivity extends AppCompatActivity {
         return new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_"+ timeStamp + ".jpg");
     }
-
-
-
-
-
-    static final int REQUEST_TAKE_PHOTO = 100;
-    Uri photoURI;
-
-
+    
 
     private void takePictureIntent() {
-
-
-
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Log.i("cam", "photo clikck");
@@ -464,37 +439,15 @@ public class AddActivity extends AppCompatActivity {
         }
 
         if (photoFile != null) {
-            photoURI = Uri.fromFile(photoFile);
+            camImageStoragePath = photoFile.getAbsolutePath();
+            camPhotoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", photoFile);
 
-            //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, camPhotoURI);
             Log.i("cam", "photo file sucess");
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 
         }
 
-
-
-//        // Ensure that there's a camera activity to handle the intent
-//        //https://developer.android.com/training/camera/photobasics
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-////            // Create the File where the photo should go
-//            File photoFile = null;
-//            try {
-//                photoFile = createImageFile();
-//            } catch (IOException ex) {
-////                // Error occurred while creating the File
-////
-//            }
-////            // Continue only if the File was successfully created
-//            if (photoFile != null) {
-//                Uri photoURI = Uri.fromFile(photoFile);
-//
-//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//
-////
-//            }
-//        }
 
 
     }
