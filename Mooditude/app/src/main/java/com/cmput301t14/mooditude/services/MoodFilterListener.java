@@ -1,49 +1,39 @@
 package com.cmput301t14.mooditude.services;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.cmput301t14.mooditude.R;
-import com.cmput301t14.mooditude.models.FollowRequestMessage;
 import com.cmput301t14.mooditude.models.Mood;
 
-public  class MoodFilterListener implements View.OnClickListener {
+public class MoodFilterListener implements View.OnClickListener {
+    String mood;
+    User user;
 
-
-//    TextView v;
-    String emotion;
-
-    public MoodFilterListener(String emotion) {
-        this.emotion = emotion;
+    public MoodFilterListener(User user, String mood) {
+        this.mood = mood;
+        this.user = user;
     }
 
+    /**
+     * when onClick, set the flag in the user.FilterList, and display the correct color
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         if (v.getBackground() instanceof ColorDrawable) {
-            ColorDrawable cd = (ColorDrawable) v.getBackground();
-            int color = cd.getColor();
-            Log.i("Color", String.valueOf(color));
-//                    Log.i("Color2",String.valueOf(Color.GRAY));
-            if (color == -3090735) {
-                v.setBackgroundColor(new Mood(emotion).getColor());
+            if (user.getFilterList().get(mood)) {
+                // if true, display the corresponding color
+                v.setBackgroundColor(Color.GRAY);
                 v.getBackground().setAlpha(50);
-                User.getFilerList().put(emotion,Boolean.FALSE);
+                user.getFilterList().put(mood,Boolean.FALSE); // set the FilterList flag
             } else {
-                v.setBackgroundColor(Color.rgb(208, 214, 209));
-                User.getFilerList().put(emotion,Boolean.TRUE);
+                // if false display grey color
+                v.setBackgroundColor(new Mood(mood).getColor());
+                v.getBackground().setAlpha(50);
+                user.getFilterList().put(mood,Boolean.TRUE); // set the FilterList flag
             }
-
         }
-
-        Log.i("LOGAA",User.getFilerList().toString());
+        user.filterMoodEventList(); // let user class filter the data
     }
 }
-
