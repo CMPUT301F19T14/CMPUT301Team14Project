@@ -47,13 +47,14 @@ public class SelfActivity extends AppCompatActivity {
     ListView selfMoodEventList;
     ArrayAdapter<MoodEvent> selfMoodEventAdapter;
     ArrayList<MoodEvent> selfMoodEventDataList;
-    ArrayList<MoodEvent> filteredMoodEventDataList;
+    ArrayList<MoodEvent> filteredSelfMoodEventDataList;
 
     private FirebaseUser user;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private String messageEmail;
 
+    private User userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class SelfActivity extends AppCompatActivity {
 
         MenuBar menuBar = new MenuBar(SelfActivity.this, messageEmail, 4);
 
+        userService = new User();
         setUpMoodEventList();
         setUpDeleteMoodEvent();
 
@@ -90,7 +92,6 @@ public class SelfActivity extends AppCompatActivity {
 
         final CollectionReference collectionReference = db.collection("Users");
 
-
         followerTextView = findViewById(R.id.follower);
         numberFollowerTextView = findViewById(R.id.number_of_follower);
         numberFollowingTextView = findViewById(R.id.number_of_following);
@@ -98,46 +99,75 @@ public class SelfActivity extends AppCompatActivity {
         userNameTextView = findViewById(R.id.userNametextView);
         numberMoodEvents = findViewById(R.id.number_of_mood_events);
 
-        User user = new User();
         // Set up userName listener
-        user.listenUserName(userNameTextView);
-        user.listenFollowerNumber(numberFollowerTextView);
-        user.listenFollowingNumber(numberFollowingTextView);
-        user.listenMoodHistoryNumber(numberMoodEvents);
+        userService.listenUserName(userNameTextView);
+        userService.listenFollowerNumber(numberFollowerTextView);
+        userService.listenFollowingNumber(numberFollowingTextView);
+        userService.listenMoodHistoryNumber(numberMoodEvents);
 
-
-
-        TextView happyTextView = findViewById(R.id.happyTextView);
-        happyTextView.setBackgroundColor(-3090735);
-
-        TextView sadTextView = findViewById(R.id.sadTextView);
-        sadTextView.setBackgroundColor(-3090735);
-
-        TextView angryTextView = findViewById(R.id.angryTextView);
-        angryTextView.setBackgroundColor(-3090735);
-
-        TextView excitedTextView = findViewById(R.id.excitedTextView);
-        excitedTextView.setBackgroundColor(-3090735);
-
-        Map<String,TextView> emotionTextViewList= new HashMap<>();
-        emotionTextViewList.put("HAPPY",happyTextView);
-        emotionTextViewList.put("SAD",sadTextView);
-        emotionTextViewList.put("ANGRY",angryTextView);
-        emotionTextViewList.put("EXCITED",excitedTextView);
-
-        for(String emotion: User.getFilerList().keySet()){
-            TextView v =emotionTextViewList.get(emotion);
-            if (User.getFilerList().get(emotion)){
-                v.setBackgroundColor(new Mood(emotion).getColor());
-                v.getBackground().setAlpha(50);
-            }
-            else{
-                v.setBackgroundColor(Color.rgb(208, 214, 209));
-            }
-            v.setOnClickListener(new MoodFilterListener(emotion));
-        }
-
-
+/**
+ *  Moved to User Class with realtime listener
+ *  Original functinality:
+ *  Follower Number
+ *  Following Number
+ *  Number of Moodevents
+ */
+//        final DocumentReference documentReference = collectionReference.document(messageEmail);
+        //get the total number of followers/following
+//        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
+//
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot doc = task.getResult();
+//
+//                    if(!doc.contains("MoodHistory")){
+//                        CollectionReference moodHistory = documentReference.collection("MoodHistory");
+//                        moodHistory.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                if (task.isSuccessful()) {
+//                                    Log.d("TAG", task.getResult().size() + "");
+//                                    numberMoodEvents.setText(String.valueOf(task.getResult().size()));
+//                                } else {
+//                                    Log.d(TAG, "Error getting documents: ", task.getException());
+//                                }
+//                            }
+//                        });
+//
+//                    }
+//                    else{
+//                        numberMoodEvents.setText("0");
+//
+//                    }
+//
+//                    userNameTextView.setText(String.valueOf(doc.get("user_name")));
+//
+//                    ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
+//                    if(followerList==null){
+//                        numberFollowerTextView.setText("0");
+//                    }
+//                    else{
+//                        numberFollowerTextView.setText(String.valueOf(followerList.size()));
+//                    }
+//
+//                    ArrayList<String> followingList = (ArrayList<String>) doc.get("following");
+//                    if(followerList==null){
+//                        numberFollowingTextView.setText("0");
+//                    }
+//                    else{
+//                        numberFollowingTextView.setText(String.valueOf(followingList.size()));
+//                    }
+//
+//                }
+//            }
+//        })
+//        .addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         //if click on item, go to DisplayFollow activity to show the summary list
         followerTextView.setOnClickListener(new View.OnClickListener() {
@@ -163,20 +193,50 @@ public class SelfActivity extends AppCompatActivity {
     }
 
     /**
+     * setup the filter views and listeners
+     */
+    private void setUpFilters(){
+        TextView happyTextView = findViewById(R.id.happyTextView);
+        TextView sadTextView = findViewById(R.id.sadTextView);
+        TextView angryTextView = findViewById(R.id.angryTextView);
+        TextView excitedTextView = findViewById(R.id.excitedTextView);
+
+        Map<String,TextView> emotionTextViewList= new HashMap<>();
+        emotionTextViewList.put("HAPPY",happyTextView);
+        emotionTextViewList.put("SAD",sadTextView);
+        emotionTextViewList.put("ANGRY",angryTextView);
+        emotionTextViewList.put("EXCITED",excitedTextView);
+
+        for(String mood: userService.getFilterList().keySet()){
+            TextView v =emotionTextViewList.get(mood);
+            v.setText(new Mood(mood).getEmoticon());
+            if (userService.getFilterList().get(mood)){
+                v.setBackgroundColor(new Mood(mood).getColor());
+                v.getBackground().setAlpha(50);
+            }
+            else{
+                v.setBackgroundColor(Color.GRAY);
+                v.getBackground().setAlpha(50);
+            }
+            v.setOnClickListener(new MoodFilterListener(userService, mood));
+        }
+    }
+
+    /**
      * setup the Mood History, MoodEvent ListView and sync the data
      * and the click to edit functionality
      */
     private void setUpMoodEventList() {
         selfMoodEventList = findViewById(R.id.self_mood_event_list);
         selfMoodEventDataList = new ArrayList<>();
+        filteredSelfMoodEventDataList = new ArrayList<>();
 
-        selfMoodEventAdapter = new SelfMoodEventAdapter(this, selfMoodEventDataList);
+        selfMoodEventAdapter = new SelfMoodEventAdapter(this, filteredSelfMoodEventDataList);
 
         selfMoodEventList.setAdapter(selfMoodEventAdapter);
 
         // listen to selfMoodEventDataList sync with database
-        User user = new User();
-        user.listenSelfMoodEvents(selfMoodEventDataList, selfMoodEventAdapter);
+        userService.listenSelfMoodEvents(filteredSelfMoodEventDataList, selfMoodEventDataList, selfMoodEventAdapter);
 
         // click to view moodEvent
         selfMoodEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -186,6 +246,8 @@ public class SelfActivity extends AppCompatActivity {
                 ViewEditMoodEventFragment.newInstance(selectedMoodEvent, true).show(getSupportFragmentManager(), "MoodEvent");
             }
         });
+
+        setUpFilters();
     }
 
     /**
@@ -224,7 +286,6 @@ public class SelfActivity extends AppCompatActivity {
      * When delete is confirmed, remove the moodEvent from the list
      */
     public void onConfirmPressed(MoodEvent selectedMoodEvent) {
-        User user = new User();
-        user.deleteMoodEvent(selectedMoodEvent);
+        userService.deleteMoodEvent(selectedMoodEvent);
     }
 }

@@ -24,16 +24,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -54,13 +50,15 @@ public class User {
     static CollectionReference followerCollRef;
     static CollectionReference moodHistoryCollRef;
 
-
     static public ArrayList<String> followerList = new ArrayList<>();
     static public ArrayList<String> followingList = new ArrayList<>();
 
-    static private Map<String, Boolean> filerList = new HashMap<>();
+    private Map<String,Boolean> filterList;
+    private ArrayList<MoodEvent> filteredSelfMoodEventDataList;
+    private ArrayList<MoodEvent> moodEventDataList;
+    private ArrayAdapter<MoodEvent> moodEventAdapter;
+  
     static private String userName = "";
-
 
     /**
      * and
@@ -83,13 +81,13 @@ public class User {
         followerCollRef = db.collection("Users").document(user.getEmail()).collection("Followers");
         moodHistoryCollRef = db.collection("Users").document(user.getEmail()).collection("MoodHistory");
 
-        for (String mood : Arrays.asList("HAPPY", "SAD", "ANGRY", "EXCITED")) {
-            filerList.put(mood, Boolean.TRUE);
-        }
-
         User.refreshUserName();
-
-
+      
+        filterList = new HashMap<>();
+        filterList.put("HAPPY",Boolean.TRUE);
+        filterList.put("SAD",Boolean.TRUE);
+        filterList.put("ANGRY",Boolean.TRUE);
+        filterList.put("EXCITED",Boolean.TRUE);
     }
 
 //    public void setupListenOn
@@ -278,7 +276,13 @@ public class User {
      * @param moodEventDataList
      * @param moodEventAdapter
      */
-    public void listenSelfMoodEvents(final ArrayList<MoodEvent> moodEventDataList, final ArrayAdapter<MoodEvent> moodEventAdapter) {
+    public void listenSelfMoodEvents(final ArrayList<MoodEvent> filteredSelfMoodEventDataList,
+                                     final ArrayList<MoodEvent> moodEventDataList,
+                                     final ArrayAdapter<MoodEvent> moodEventAdapter) {
+        this.filteredSelfMoodEventDataList = filteredSelfMoodEventDataList;
+        this.moodEventDataList = moodEventDataList;
+        this.moodEventAdapter = moodEventAdapter;
+
         CollectionReference collectionReference = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
 
@@ -298,37 +302,30 @@ public class User {
 //                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
                     moodEventDataList.add(moodEvent);
                 }
-                Collections.reverse(moodEventDataList); // sort in reverse order
-                moodEventAdapter.notifyDataSetChanged();
+                filterMoodEventList();
             }
         });
     }
 
     /**
-     * Filter the input List of MoodEvent by the filterMap (Map<Mood, Boolean>)
-     *
-     * @param moodEventDataList the List of MoodEvent to filter
-     * @param filterMap         the map of filter setting Boolean flags for each Mood
-     * @return a new filtered list of MoodEvent
+     * Filter the input List of MoodEvent by the filterMap (Map<String, Boolean>)
      */
-    public ArrayList<MoodEvent> filterMoodEventList(ArrayList<MoodEvent> moodEventDataList, Map<Mood, Boolean> filterMap) {
-        ArrayList<MoodEvent> filteredMoodEventDataList = new ArrayList<MoodEvent>();
-        Iterator itr = filterMap.entrySet().iterator();
-        while (itr.hasNext()) {
-            Map.Entry pair = (Map.Entry) itr.next();
-            Mood mood = (Mood) pair.getKey();
-            Boolean filterOn = (Boolean) pair.getValue();
+    public void filterMoodEventList(){
+        this.filteredSelfMoodEventDataList.clear();
+        for (Map.Entry<String, Boolean> entry : filterList.entrySet()) {
+            String mood = entry.getKey();
+            Boolean filterOn = entry.getValue();
             if (filterOn) {
                 for (MoodEvent moodEvent : moodEventDataList) {
-                    if (moodEvent.getMood() == mood) {
-                        filteredMoodEventDataList.add(moodEvent);
+                    if (moodEvent.getMood().getMood() == mood) {
+                        this.filteredSelfMoodEventDataList.add(moodEvent);
                     }
                 }
             }
-            itr.remove(); // avoids a ConcurrentModificationException
+            Collections.sort(filteredSelfMoodEventDataList);
+            Collections.reverse(filteredSelfMoodEventDataList);
+            this.moodEventAdapter.notifyDataSetChanged();
         }
-        Collections.reverse(filteredMoodEventDataList);
-        return filteredMoodEventDataList;
     }
 
     public void listenFollowingMoodEvents(final ArrayList<MoodEvent> moodEventDataList, final ArrayAdapter<MoodEvent> moodEventAdapter) {
@@ -449,16 +446,15 @@ public class User {
                 .delete();
     }
 
-    public static Map<String, Boolean> getFilerList() {
-        return filerList;
+    public Map<String, Boolean> getFilterList() {
+        return filterList;
     }
 
     public static void setFilerList(Map<String, Boolean> filerList) {
         User.filerList = filerList;
     }
 
-
-    /**
+     /**
      * Replaced by listenUserName
      */
 //    /**
