@@ -45,19 +45,20 @@ import java.util.Map;
  */
 
 public class User{
-    private FirebaseUser user;
+    static private FirebaseUser user;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
-    private DocumentReference userDocRef;
-    CollectionReference followingCollRef;
-    CollectionReference followerCollRef;
-    CollectionReference moodHistoryCollRef;
+    static private DocumentReference userDocRef;
+    static CollectionReference followingCollRef;
+    static CollectionReference followerCollRef;
+    static CollectionReference moodHistoryCollRef;
 
     static public ArrayList<String> followerList=new ArrayList<>();
     static public ArrayList<String> followingList=new ArrayList<>();
 
-    private  static Map<String,Boolean> filerList = new HashMap<>();
+    static private  Map<String,Boolean> filerList = new HashMap<>();
+    static private  String userName="";
 
     /**and
      * User Constructor
@@ -79,10 +80,40 @@ public class User{
         followerCollRef= db.collection("Users").document(user.getEmail()).collection("Followers");
         moodHistoryCollRef= db.collection("Users").document(user.getEmail()).collection("MoodHistory");
 
-        filerList.put("HAPPY",Boolean.TRUE);
-        filerList.put("SAD",Boolean.TRUE);
-        filerList.put("ANGRY",Boolean.TRUE);
-        filerList.put("EXCITED",Boolean.TRUE);
+        for(String mood: Arrays.asList("HAPPY","SAD","ANGRY","EXCITED")){
+            filerList.put(mood,Boolean.TRUE);
+        }
+
+        User.refreshUserName();
+
+
+    }
+
+    /**
+     * Return userName
+     * @return
+     */
+    public static String getUserName() {
+        return userName;
+    }
+
+    /**
+     * Refresh userName. Refresh User name as required.
+     *
+     */
+    public static void refreshUserName( ) {
+        userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                if(task.isSuccessful()){
+                    if(document.exists()){
+                        User.userName=document.getString("user_name");
+                    }
+                }
+            }
+        });
+        Log.i("refreshUserName",User.userName);
     }
 
     public String getEmail(){
@@ -313,7 +344,9 @@ public class User{
                 Object user_name=documentSnapshot.getData().get("user_name");
                 if(user_name!= null){
                     textView.setText(user_name.toString());
+                    User.userName=user_name.toString();
                 }
+
             }
         });
     }
