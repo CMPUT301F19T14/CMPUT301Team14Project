@@ -6,9 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -32,7 +30,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,12 +47,14 @@ public class SelfActivity extends AppCompatActivity {
     ListView selfMoodEventList;
     ArrayAdapter<MoodEvent> selfMoodEventAdapter;
     ArrayList<MoodEvent> selfMoodEventDataList;
+    ArrayList<MoodEvent> filteredSelfMoodEventDataList;
 
     private FirebaseUser user;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private String messageEmail;
 
+    private User userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +76,7 @@ public class SelfActivity extends AppCompatActivity {
 
         MenuBar menuBar = new MenuBar(SelfActivity.this, messageEmail, 4);
 
+        userService = new User();
         setUpMoodEventList();
         setUpDeleteMoodEvent();
 
@@ -92,7 +92,6 @@ public class SelfActivity extends AppCompatActivity {
 
         final CollectionReference collectionReference = db.collection("Users");
 
-
         followerTextView = findViewById(R.id.follower);
         numberFollowerTextView = findViewById(R.id.number_of_follower);
         numberFollowingTextView = findViewById(R.id.number_of_following);
@@ -100,138 +99,12 @@ public class SelfActivity extends AppCompatActivity {
         userNameTextView = findViewById(R.id.userNametextView);
         numberMoodEvents = findViewById(R.id.number_of_mood_events);
 
-        User user = new User();
         // Set up userName listener
-        user.listenUserName(userNameTextView);
-        user.listenFollowerNumber(numberFollowerTextView);
-        user.listenFollowingNumber(numberFollowingTextView);
-        user.listenMoodHistoryNumber(numberMoodEvents);
+        userService.listenUserName(userNameTextView);
+        userService.listenFollowerNumber(numberFollowerTextView);
+        userService.listenFollowingNumber(numberFollowingTextView);
+        userService.listenMoodHistoryNumber(numberMoodEvents);
 
-
-
-        TextView happyTextView = findViewById(R.id.happyTextView);
-        happyTextView.setBackgroundColor(-3090735);
-
-        TextView sadTextView = findViewById(R.id.sadTextView);
-        sadTextView.setBackgroundColor(-3090735);
-
-        TextView angryTextView = findViewById(R.id.angryTextView);
-        angryTextView.setBackgroundColor(-3090735);
-
-        TextView excitedTextView = findViewById(R.id.excitedTextView);
-        excitedTextView.setBackgroundColor(-3090735);
-
-        Map<String,TextView> emotionTextViewList= new HashMap<>();
-        emotionTextViewList.put("HAPPY",happyTextView);
-        emotionTextViewList.put("SAD",sadTextView);
-        emotionTextViewList.put("ANGRY",angryTextView);
-        emotionTextViewList.put("EXCITED",excitedTextView);
-
-        for(String emotion: User.getFilerList().keySet()){
-            TextView v =emotionTextViewList.get(emotion);
-            if (User.getFilerList().get(emotion)){
-                v.setBackgroundColor(new Mood(emotion).getColor());
-                v.getBackground().setAlpha(50);
-            }
-            else{
-                v.setBackgroundColor(Color.rgb(208, 214, 209));
-            }
-            v.setOnClickListener(new MoodFilterListener(emotion));
-        }
-
-
-
-//        happyTextView.setOnClickListener(new MoodFilterListener("HAPPY"));
-
-
-//        happyTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (v.getBackground() instanceof ColorDrawable) {
-//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-//                    int color = cd.getColor();
-//                    Log.i("Color", String.valueOf(color));
-////                    Log.i("Color2",String.valueOf(Color.GRAY));
-//                    if (color == -3090735) {
-//                        v.setBackgroundColor(new Mood("HAPPY").getColor());
-//                        v.getBackground().setAlpha(50);
-//                        User.getFilerList().put("HAPPY",Boolean.FALSE);
-//                    } else {
-//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-//                        User.getFilerList().put("HAPPY",Boolean.TRUE);
-//                    }
-//
-//                }
-//
-//                Log.i("LOGAA",User.getFilerList().toString());
-//            }
-//        });
-
-
-
-//        sadTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (v.getBackground() instanceof ColorDrawable) {
-//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-//                    int color = cd.getColor();
-//                    Log.i("Color", String.valueOf(color));
-////                    Log.i("Color2",String.valueOf(Color.GRAY));
-//                    if (color == -3090735) {
-//                        v.setBackgroundColor(new Mood("SAD").getColor());
-//                        v.getBackground().setAlpha(50);
-//                        User.getFilerList().put("SAD",Boolean.FALSE);
-//                    } else {
-//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-//                        User.getFilerList().put("SAD",Boolean.TRUE);
-//                    }
-//
-//                }
-//            }
-//        });
-
-//        angryTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (v.getBackground() instanceof ColorDrawable) {
-//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-//                    int color = cd.getColor();
-//                    Log.i("Color", String.valueOf(color));
-////                    Log.i("Color2",String.valueOf(Color.GRAY));
-//                    if (color == -3090735) {
-//                        v.setBackgroundColor(new Mood("ANGRY").getColor());
-//                        v.getBackground().setAlpha(50);
-//                        User.getFilerList().put("ANGRY",Boolean.TRUE);
-//                    } else {
-//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-//                        User.getFilerList().put("ANGRY",Boolean.FALSE);
-//                    }
-//
-//                }
-//            }
-//        });
-
-//        excitedTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.i("Color4", "BERE");
-//                if (v.getBackground() instanceof ColorDrawable) {
-//                    ColorDrawable cd = (ColorDrawable) v.getBackground();
-//                    int color = cd.getColor();
-//                    Log.i("Color3", String.valueOf(color));
-////                    Log.i("Color2",String.valueOf(Color.GRAY));
-//                    if (color == -3090735) {
-//                        v.setBackgroundColor(new Mood("EXCITED").getColor());
-//                        v.getBackground().setAlpha(50);
-//                        User.getFilerList().put("EXCITED",Boolean.FALSE);
-//                    } else {
-//                        v.setBackgroundColor(Color.rgb(208, 214, 209));
-//                        User.getFilerList().put("EXCITED",Boolean.TRUE);
-//                    }
-//
-//                }
-//            }
-//        });
 /**
  *  Moved to User Class with realtime listener
  *  Original functinality:
@@ -324,20 +197,50 @@ public class SelfActivity extends AppCompatActivity {
     }
 
     /**
+     * setup the filter views and listeners
+     */
+    private void setUpFilters(){
+        TextView happyTextView = findViewById(R.id.happyTextView);
+        TextView sadTextView = findViewById(R.id.sadTextView);
+        TextView angryTextView = findViewById(R.id.angryTextView);
+        TextView excitedTextView = findViewById(R.id.excitedTextView);
+
+        Map<String,TextView> emotionTextViewList= new HashMap<>();
+        emotionTextViewList.put("HAPPY",happyTextView);
+        emotionTextViewList.put("SAD",sadTextView);
+        emotionTextViewList.put("ANGRY",angryTextView);
+        emotionTextViewList.put("EXCITED",excitedTextView);
+
+        for(String mood: userService.getFilterList().keySet()){
+            TextView v =emotionTextViewList.get(mood);
+            v.setText(new Mood(mood).getEmoticon());
+            if (userService.getFilterList().get(mood)){
+                v.setBackgroundColor(new Mood(mood).getColor());
+                v.getBackground().setAlpha(50);
+            }
+            else{
+                v.setBackgroundColor(Color.GRAY);
+                v.getBackground().setAlpha(50);
+            }
+            v.setOnClickListener(new MoodFilterListener(userService, mood));
+        }
+    }
+
+    /**
      * setup the Mood History, MoodEvent ListView and sync the data
      * and the click to edit functionality
      */
     private void setUpMoodEventList() {
         selfMoodEventList = findViewById(R.id.self_mood_event_list);
         selfMoodEventDataList = new ArrayList<>();
+        filteredSelfMoodEventDataList = new ArrayList<>();
 
-        selfMoodEventAdapter = new SelfMoodEventAdapter(this, selfMoodEventDataList);
+        selfMoodEventAdapter = new SelfMoodEventAdapter(this, filteredSelfMoodEventDataList);
 
         selfMoodEventList.setAdapter(selfMoodEventAdapter);
 
         // listen to selfMoodEventDataList sync with database
-        User user = new User();
-        user.listenSelfMoodEvents(selfMoodEventDataList, selfMoodEventAdapter);
+        userService.listenSelfMoodEvents(filteredSelfMoodEventDataList, selfMoodEventDataList, selfMoodEventAdapter);
 
         // click to view moodEvent
         selfMoodEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -347,6 +250,8 @@ public class SelfActivity extends AppCompatActivity {
                 ViewEditMoodEventFragment.newInstance(selectedMoodEvent, true).show(getSupportFragmentManager(), "MoodEvent");
             }
         });
+
+        setUpFilters();
     }
 
     /**
@@ -385,7 +290,6 @@ public class SelfActivity extends AppCompatActivity {
      * When delete is confirmed, remove the moodEvent from the list
      */
     public void onConfirmPressed(MoodEvent selectedMoodEvent) {
-        User user = new User();
-        user.deleteMoodEvent(selectedMoodEvent);
+        userService.deleteMoodEvent(selectedMoodEvent);
     }
 }
