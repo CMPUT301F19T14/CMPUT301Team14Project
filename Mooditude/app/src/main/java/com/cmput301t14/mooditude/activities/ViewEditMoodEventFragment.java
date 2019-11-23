@@ -90,12 +90,33 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                     R.array.mood_string_array, android.R.layout.simple_spinner_item);
             moodArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             moodSpinner.setAdapter(moodArrayAdapter);
-            moodSpinner.setSelection(moodArrayAdapter.getPosition(selectedMoodEvent.getMood().getMood()),true);
+
             // set moodSpinner on item select
             moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    moodString = parent.getItemAtPosition(position).toString();
+                    Mood happy = new Mood("HAPPY");
+                    Mood sad = new Mood("SAD");
+                    Mood excited = new Mood("EXCITED");
+                    Mood angry = new Mood("ANGRY");
+                    String spinnerStr = parent.getItemAtPosition(position).toString();
+                    if (spinnerStr.equals(happy.getEmoticon() + happy.getMood())){
+                        moodString = happy.getMood();
+                        view.setBackgroundColor(happy.getColor());
+                    }
+                    else if (spinnerStr.equals(sad.getEmoticon() + sad.getMood())){
+                        moodString = sad.getMood();
+                        view.setBackgroundColor(sad.getColor());
+                    }
+                    else if (spinnerStr.equals(excited.getEmoticon() + excited.getMood())){
+                        moodString = excited.getMood();
+                        view.setBackgroundColor(excited.getColor());
+                    }
+                    else if (spinnerStr.equals(angry.getEmoticon() + angry.getMood())){
+                        moodString = angry.getMood();
+                        view.setBackgroundColor(angry.getColor());
+                    }
+                    view.getBackground().setAlpha(50);
                 }
 
                 @Override
@@ -103,6 +124,14 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                     // nothing selected
                 }
             });
+
+            // select the existing mood value in the spinner
+            int positionOfItem = moodArrayAdapter.getPosition(
+                    selectedMoodEvent.getMood().getEmoticon()+selectedMoodEvent.getMood().getMood());
+            moodSpinner.setSelection(positionOfItem, true);
+            View itemView = (View) moodSpinner.getChildAt(positionOfItem);
+            long itemId = moodSpinner.getAdapter().getItemId(positionOfItem);
+            moodSpinner.performItemClick(itemView, positionOfItem, itemId);
 
             // set dropdown socialSituationSpinner Adapter
             ArrayAdapter<CharSequence> socialSituationArrayAdapter = ArrayAdapter.createFromResource(getContext(),
