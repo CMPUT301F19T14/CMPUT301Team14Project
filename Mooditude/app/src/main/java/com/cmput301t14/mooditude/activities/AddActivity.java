@@ -97,7 +97,7 @@ public class AddActivity extends AppCompatActivity {
 
     //variable for camera
     static final int REQUEST_TAKE_PHOTO = 100;
-    Uri camPhotoURI;
+    Uri camPhotoURI = null;
     String camImageStoragePath;
 
 
@@ -289,6 +289,13 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void uploadFile(){
+
+        if(mImageUri == null){
+            if(camPhotoURI != null){
+                mImageUri = camPhotoURI;
+            }
+        }
+
         if (mImageUri != null){
             final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
@@ -306,7 +313,7 @@ public class AddActivity extends AppCompatActivity {
                                     // getting image uri and converting into string
                                     Uri downloadUrl = uri;
                                     temp = downloadUrl.toString();
-                                    Toast.makeText(AddActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(AddActivity.this, "Photo Upload successful", Toast.LENGTH_LONG).show();
                                     Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
                                     uploadDatabase(temp);
 
@@ -329,7 +336,8 @@ public class AddActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-
+                            Toast.makeText(AddActivity.this, "Photo Upload Failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
                         }
                     });
 //                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
