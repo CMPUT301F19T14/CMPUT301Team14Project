@@ -29,6 +29,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -222,8 +223,8 @@ public class User {
                                 SocialSituation socialSituation = moodEvent.getSocialSituation();
                                 String textComment = moodEvent.getTextComment();
 
+                                moodHash.put("user_name", User.getUserName());
                                 moodHash.put("Location", location.getGeopoint());
-
                                 moodHash.put("Mood", mood.getMood());
                                 moodHash.put("Comment", textComment);
                                 moodHash.put("DateTime", localDateTime);
@@ -339,24 +340,25 @@ public class User {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 moodEventDataList.clear();
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-//                    Log.i("follow", doc.getId());
-                    String textComment = doc.getString("Comment");
-//                    Log.i("follow", "Comment:" + doc.getString("Comment"));
-//                    Log.i("follow", "Mood:" + doc.getString("Mood"));
+                    if (doc.getString("Mood") == null){
+                        // handle following users that has no mood event
+                        continue;
+                    }
                     Mood mood = new Mood(doc.getString("Mood"));
-
+                    String textComment = doc.getString("Comment");
                     SocialSituation socialSituation = new SocialSituation(doc.getString("SocialSituation"));
                     Location location = new Location(doc.getGeoPoint("Location"));
-//                    LocalDateTime datetime = LocalDateTime.parse(doc.getString("DateTime"));
                     Timestamp datetime = doc.getTimestamp("DateTime");
-//                    String author = doc.getId();
                     String author = doc.getString("user_name");
+
                     String email= doc.getId();
                     MoodEvent moodEvent = new MoodEvent(author, mood, location, socialSituation, textComment, datetime,email);
 //                    if(doc.getTimestamp("TIMESTAMP")!=null)
 //                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
+
                     moodEventDataList.add(moodEvent);
                 }
+                Collections.sort(moodEventDataList);
                 Collections.reverse(moodEventDataList); // sort in reverse order
                 moodEventAdapter.notifyDataSetChanged();
             }
