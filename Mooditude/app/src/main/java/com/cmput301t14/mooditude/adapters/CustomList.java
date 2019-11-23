@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.cmput301t14.mooditude.R;
+import com.cmput301t14.mooditude.models.Person;
 
 import org.w3c.dom.Text;
 
@@ -19,9 +20,9 @@ import java.util.ArrayList;
 /**
  * Create a custom list view that contains user e-mail.
  */
-public class CustomList extends ArrayAdapter<String> {
+public class CustomList extends ArrayAdapter<Person> {
 
-    private ArrayList<String> follows;
+    private ArrayList<Person> follows;
     private Context context;
 
     /**
@@ -29,7 +30,7 @@ public class CustomList extends ArrayAdapter<String> {
      * @param context
      * @param people
      */
-    public CustomList(Context context, ArrayList<String> people){
+    public CustomList(Context context, ArrayList<Person> people){
         super(context,0, people);
         this.follows = people;
         this.context = context;
@@ -54,12 +55,12 @@ public class CustomList extends ArrayAdapter<String> {
             view = LayoutInflater.from(context).inflate(R.layout.content, parent,false);
         }
 
-        String follow = follows.get(position);
+        Person follow = follows.get(position);
 
         TextView followEmail = view.findViewById(R.id.follow_text);
 
 
-        followEmail.setText(follow);
+        followEmail.setText(follow.getName());
 
 
         return view;

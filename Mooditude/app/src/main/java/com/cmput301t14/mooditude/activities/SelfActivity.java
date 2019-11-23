@@ -173,11 +173,9 @@ public class SelfActivity extends AppCompatActivity {
         followerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String require = "Follower";
                 Intent intent = new Intent(SelfActivity.this, DisplayFollow.class);
-                intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                intent.putExtra(EXTRA_MESSAGE_Mode, require);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra(EXTRA_MESSAGE_Mode, DisplayFollow.ListMode.Followers.toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 
             }
@@ -185,13 +183,11 @@ public class SelfActivity extends AppCompatActivity {
         followingTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String require = "Following";
                 Intent intent = new Intent(SelfActivity.this, DisplayFollow.class);
                 intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                intent.putExtra(EXTRA_MESSAGE_Mode, require);
-                // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra(EXTRA_MESSAGE_Mode, DisplayFollow.ListMode.Followings.toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
-
             }
         });
     }
