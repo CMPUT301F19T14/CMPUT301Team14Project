@@ -95,7 +95,7 @@ public class AddActivity extends AppCompatActivity {
 
     private StorageTask mUploadTask;
 
-
+    //variable for camera
     static final int REQUEST_TAKE_PHOTO = 100;
     Uri camPhotoURI;
     String camImageStoragePath;
@@ -125,7 +125,7 @@ public class AddActivity extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference("photo");
 
-
+        //check for camera permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             photoButton.setEnabled(false);
             ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
@@ -203,11 +203,20 @@ public class AddActivity extends AppCompatActivity {
 
 
     private void setUpPhotoViews(){
+        //choose a photo from storage
         photoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //openFireChooser();
+                openFireChooser();
 
+
+            }
+        });
+
+        //take a photo from camera
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 takePictureIntent();
             }
         });
@@ -243,7 +252,8 @@ public class AddActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //xianda
+
+        //choose a photo
         if (requestCode ==PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data!= null && data.getData() != null){
             mImageUri = data.getData();
             Picasso.with(this).load(mImageUri).into(photoImageView);
@@ -251,7 +261,7 @@ public class AddActivity extends AppCompatActivity {
         }
 
 
-        //shixiong
+        //take a photo
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
                 Log.i("cam", "back photo file sucess");
