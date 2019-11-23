@@ -249,7 +249,6 @@ public class User{
 //                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
                     moodEventDataList.add(moodEvent);
                 }
-                Collections.reverse(moodEventDataList); // sort in reverse order
                 filterMoodEventList();
             }
         });
@@ -270,6 +269,7 @@ public class User{
                     }
                 }
             }
+            Collections.sort(filteredSelfMoodEventDataList);
             Collections.reverse(filteredSelfMoodEventDataList);
             this.moodEventAdapter.notifyDataSetChanged();
         }
