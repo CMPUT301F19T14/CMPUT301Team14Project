@@ -3,14 +3,26 @@ package com.cmput301t14.mooditude.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import android.app.Activity;
 
+import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.content.Intent;
 
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -43,6 +55,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.cmput301t14.mooditude.activities.SelfActivity.EXTRA_MESSAGE_Email;
 
@@ -77,6 +95,11 @@ public class AddActivity extends AppCompatActivity {
 
     private StorageTask mUploadTask;
 
+    //variable for camera
+    static final int REQUEST_TAKE_PHOTO = 100;
+    Uri camPhotoURI = null;
+    String camImageStoragePath;
+
 
 
 
@@ -102,6 +125,11 @@ public class AddActivity extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference("photo");
 
+        //check for camera permission
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            photoButton.setEnabled(false);
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+        }
 
 
         setUpMoodSpinner();
@@ -109,6 +137,23 @@ public class AddActivity extends AppCompatActivity {
         setUpPhotoViews();
         setUpSubmitButton();
     }
+
+    /**
+     * Request permission from user
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                photoButton.setEnabled(true);
+            }
+        }
+    }
+
 
     /**
      * setup the mood spinner dropdown menu
@@ -158,10 +203,21 @@ public class AddActivity extends AppCompatActivity {
 
 
     private void setUpPhotoViews(){
+        //choose a photo from storage
         photoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFireChooser();
+
+
+            }
+        });
+
+        //take a photo from camera
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takePictureIntent();
             }
         });
     }
@@ -197,10 +253,32 @@ public class AddActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //choose a photo
         if (requestCode ==PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data!= null && data.getData() != null){
             mImageUri = data.getData();
             Picasso.with(this).load(mImageUri).into(photoImageView);
 
+        }
+
+
+        //take a photo
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode == RESULT_OK) {
+                Log.i("cam", "back photo file sucess");
+                Log.i("cam",String.valueOf(camPhotoURI));
+
+                //Get the photo
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeFile(camImageStoragePath, options);
+                photoImageView.setImageBitmap(bitmap);
+
+                //add to gallery
+                galleryAddPic(getApplicationContext(), camImageStoragePath);
+
+
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -211,6 +289,13 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void uploadFile(){
+
+        if(mImageUri == null){
+            if(camPhotoURI != null){
+                mImageUri = camPhotoURI;
+            }
+        }
+
         if (mImageUri != null){
             final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
@@ -228,7 +313,7 @@ public class AddActivity extends AppCompatActivity {
                                     // getting image uri and converting into string
                                     Uri downloadUrl = uri;
                                     temp = downloadUrl.toString();
-                                    Toast.makeText(AddActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(AddActivity.this, "Photo Upload successful", Toast.LENGTH_LONG).show();
                                     Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
                                     uploadDatabase(temp);
 
@@ -251,7 +336,8 @@ public class AddActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-
+                            Toast.makeText(AddActivity.this, "Photo Upload Failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
                         }
                     });
 //                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -315,4 +401,75 @@ public class AddActivity extends AppCompatActivity {
             finish();
         }
     }
+
+
+    /**
+     * Add camera photo to gallery
+     * @param context
+     * @param filePath
+     */
+    private void galleryAddPic(Context context, String filePath) {
+        Log.i("cam", "photo gallery sucess");
+
+        MediaScannerConnection.scanFile(context,
+                new String[]{filePath}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                    }
+                });
+
+    }
+
+
+
+//  file:///storage/emulated/0/Pictures/CameraDemo/IMG_20191121_172846.jpg
+    private static File createImageFile() throws IOException {
+        Log.i("cam", "create file ");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "CameraDemo");
+
+        if (!mediaStorageDir.exists()){
+            if (!mediaStorageDir.mkdirs()){
+                Log.e("File", "Oops! Failed create ");
+                return null;
+            }
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
+    }
+    
+
+    private void takePictureIntent() {
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Log.i("cam", "photo clikck");
+        File photoFile = null;
+
+        try {
+            photoFile = createImageFile();
+
+        }catch (IOException ex) {
+            Log.i("cam", "photo file failed");
+        }
+
+        if (photoFile != null) {
+            camImageStoragePath = photoFile.getAbsolutePath();
+            camPhotoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", photoFile);
+
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, camPhotoURI);
+            Log.i("cam", "photo file sucess");
+            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+
+        }
+
+
+
+    }
+
+
+
+
+
 }
