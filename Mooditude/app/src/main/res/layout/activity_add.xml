@@ -213,7 +213,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/border_lines"
                         android:padding="10dp"
-                        android:text="Photo"
+                        android:text="Select Photo"
                         android:textColor="#66CCFF"
                         android:textSize="24sp"></TextView>
 

@@ -158,7 +158,7 @@ public class AddActivity extends AppCompatActivity {
 
 
     private void setUpPhotoViews(){
-        photoButton.setOnClickListener(new View.OnClickListener() {
+        photoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFireChooser();
