@@ -1,5 +1,6 @@
 package com.cmput301t14.mooditude.models;
 
+import com.cmput301t14.mooditude.services.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
@@ -61,11 +62,14 @@ public class FollowRequestMessage extends Message {
     public void accept(){
         CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
 
-        // add sender to receiver's Followers collection
-        CollectionReference receiverFollowers = usersCollection.document(this.receiver).collection("Followers");
-        final DocumentReference receiverFollowersEntry= receiverFollowers.document(this.sender);
-        final HashMap<String,Object> followerHash = new HashMap<>();
-        receiverFollowersEntry.set(followerHash);
+//        // add sender to receiver's Followers collection
+////        CollectionReference receiverFollowers = usersCollection.document(this.receiver).collection("Followers");
+////        final DocumentReference receiverFollowersEntry= receiverFollowers.document(this.sender);
+////        final HashMap<String,Object> followerHash = new HashMap<>();
+////        receiverFollowersEntry.set(followerHash);
+        new User().addFollower(this.sender);
+
+
 
         // add receiver to sender's Followings collection
         CollectionReference senderFollowings = usersCollection.document(this.sender).collection("Followings");
@@ -83,6 +87,7 @@ public class FollowRequestMessage extends Message {
                     moodEventHash.put("SocialSituation", doc.get("SocialSituation"));
                     moodEventHash.put("Mood",doc.get("Mood"));
                     moodEventHash.put("Location",doc.getGeoPoint("Location"));
+                    moodEventHash.put("user_name", User.getUserName());
                     senderFollowingsEntry.set(moodEventHash);
                 }
 
