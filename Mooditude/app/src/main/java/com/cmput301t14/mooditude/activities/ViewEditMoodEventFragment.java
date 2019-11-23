@@ -90,7 +90,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                     R.array.mood_string_array, android.R.layout.simple_spinner_item);
             moodArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             moodSpinner.setAdapter(moodArrayAdapter);
-            moodSpinner.setSelection(moodArrayAdapter.getPosition(selectedMoodEvent.getMood().getMood()),true);
+
             // set moodSpinner on item select
             moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -124,6 +124,14 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                     // nothing selected
                 }
             });
+
+            // select the existing mood value in the spinner
+            int positionOfItem = moodArrayAdapter.getPosition(
+                    selectedMoodEvent.getMood().getEmoticon()+selectedMoodEvent.getMood().getMood());
+            moodSpinner.setSelection(positionOfItem, true);
+            View itemView = (View) moodSpinner.getChildAt(positionOfItem);
+            long itemId = moodSpinner.getAdapter().getItemId(positionOfItem);
+            moodSpinner.performItemClick(itemView, positionOfItem, itemId);
 
             // set dropdown socialSituationSpinner Adapter
             ArrayAdapter<CharSequence> socialSituationArrayAdapter = ArrayAdapter.createFromResource(getContext(),
