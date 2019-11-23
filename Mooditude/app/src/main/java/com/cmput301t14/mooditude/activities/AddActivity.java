@@ -468,6 +468,7 @@ public class AddActivity extends AppCompatActivity {
 
             //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             Log.i("cam", "photo file sucess");
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 
         }
