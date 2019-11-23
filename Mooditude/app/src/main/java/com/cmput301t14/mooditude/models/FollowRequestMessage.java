@@ -98,7 +98,7 @@ public class FollowRequestMessage extends Message {
         // delete this message and add new TextMessage to receiver MessageBox collection
         this.delete();
         CollectionReference receiverMsgBox= usersCollection.document(this.receiver).collection("MessageBox");
-        new TextMessage("you accepted "+sender+" successfully",this.sender,this.receiver, Timestamp.now(),TRUE).invoke(receiverMsgBox);
+        new TextMessage("you accepted "+sender+" successfully",this.receiver,this.receiver, Timestamp.now(),TRUE).invoke(receiverMsgBox);
     }
 
     public void reject(){
