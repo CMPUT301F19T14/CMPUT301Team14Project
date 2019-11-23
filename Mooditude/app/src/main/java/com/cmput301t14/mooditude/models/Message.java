@@ -1,5 +1,7 @@
 package com.cmput301t14.mooditude.models;
 
+import android.util.Log;
+
 import com.cmput301t14.mooditude.services.User;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
@@ -87,5 +89,7 @@ public abstract class Message {
         String epochTimeString= String.valueOf(this.datetime.getSeconds());
         final DocumentReference messageEntry=receiverMsgBox.document(epochTimeString);
         messageEntry.delete();
+        Log.i("delete",epochTimeString);
+        Log.i("delete",receiver);
     }
 }

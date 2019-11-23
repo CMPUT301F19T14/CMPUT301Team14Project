@@ -8,20 +8,26 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301t14.mooditude.adapters.CustomList;
 import com.cmput301t14.mooditude.R;
+import com.cmput301t14.mooditude.models.FollowRequestMessage;
 import com.cmput301t14.mooditude.models.Person;
+import com.cmput301t14.mooditude.services.FollowFollowingListOnClickListener;
 import com.cmput301t14.mooditude.services.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -75,6 +81,9 @@ public class DisplayFollow extends AppCompatActivity {
                 .collection(listMode.toString());
 
         refreshList();
+        final Map<ListMode,String> promptMap= new HashMap<>();
+        promptMap.put(ListMode.Followers,"Are you sure that you want to remove this follower?");
+        promptMap.put(ListMode.Followings,"Are you sure that you want to unfollow?");
 
         followList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -98,9 +107,7 @@ public class DisplayFollow extends AppCompatActivity {
                         }
                     }
                 };
-                Map<ListMode,String> promptMap= new HashMap<>();
-                promptMap.put(ListMode.Followers,"Are you sure that you want to remove this follower?");
-                promptMap.put(ListMode.Followings,"Are you sure that you want to unfollow?");
+
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(DisplayFollow.this);
                 alert.setMessage(promptMap.get(listMode))
@@ -110,6 +117,15 @@ public class DisplayFollow extends AppCompatActivity {
                 return true;
             }
         });
+
+        if (listMode == ListMode.Followers){
+            followList.setOnItemClickListener(new FollowFollowingListOnClickListener.Followers(followDataList));
+        }
+
+
+
+
+
 
 
     }

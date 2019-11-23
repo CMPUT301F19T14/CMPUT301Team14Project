@@ -15,6 +15,21 @@
         android:textSize="30sp">
     </TextView>
 
+    <TextView
+        android:id="@+id/messageViewButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="10dp"
+        android:width="10dp"
+        android:gravity="center_vertical|end"
+        android:minWidth="10dp"
+        android:paddingEnd="0dp"
+        android:text="&#8942;"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:visibility="visible" />
+
 
 
 
