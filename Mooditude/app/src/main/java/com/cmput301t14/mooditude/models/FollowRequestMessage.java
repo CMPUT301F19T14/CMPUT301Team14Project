@@ -61,39 +61,31 @@ public class FollowRequestMessage extends Message {
 
     public void accept(){
         CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
-
-//        // add sender to receiver's Followers collection
-////        CollectionReference receiverFollowers = usersCollection.document(this.receiver).collection("Followers");
-////        final DocumentReference receiverFollowersEntry= receiverFollowers.document(this.sender);
-////        final HashMap<String,Object> followerHash = new HashMap<>();
-////        receiverFollowersEntry.set(followerHash);
         new User().addFollower(this.sender);
-
-
 
         // add receiver to sender's Followings collection
         CollectionReference senderFollowings = usersCollection.document(this.sender).collection("Followings");
         final DocumentReference senderFollowingsEntry= senderFollowings.document(this.receiver);
         final HashMap<String,Object> followingHash = new HashMap<>();
-        // TODO: get receiver's most recent MoodEvent and put it in the senderFollowingsEntry
-//        followerHash.put("type", "reject");
+        // put receiver's user_name in the senderFollowingsEntry first
+        followingHash.put("user_name", User.getUserName());
+        senderFollowingsEntry.set(followingHash);
+        // get receiver's most recent MoodEvent，if it exist then put it in the senderFollowingsEntry
         usersCollection.document(receiver).collection("MoodHistory").orderBy("DateTime", Query.Direction.DESCENDING).limit(1).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                HashMap<String,Object> moodEventHash= new HashMap<>();
                 for(DocumentSnapshot doc: queryDocumentSnapshots){
-                    moodEventHash.put("DateTime", doc.getTimestamp("DateTime"));
-                    moodEventHash.put("Comment", doc.getString("Comment"));
-                    moodEventHash.put("SocialSituation", doc.get("SocialSituation"));
-                    moodEventHash.put("Mood",doc.get("Mood"));
-                    moodEventHash.put("Location",doc.getGeoPoint("Location"));
-                    moodEventHash.put("user_name", User.getUserName());
-                    senderFollowingsEntry.set(moodEventHash);
+                    followingHash.put("user_name", User.getUserName());
+                    followingHash.put("DateTime", doc.getTimestamp("DateTime"));
+                    followingHash.put("Comment", doc.getString("Comment"));
+                    followingHash.put("SocialSituation", doc.get("SocialSituation"));
+                    followingHash.put("Mood",doc.get("Mood"));
+                    followingHash.put("Location",doc.getGeoPoint("Location"));
+                    senderFollowingsEntry.set(followingHash);
                 }
 
             }
         });
-        senderFollowingsEntry.set(followingHash);
 
         // send accept message to sender's MessageBox collection
         CollectionReference senderMsgBox= usersCollection.document(this.sender).collection("MessageBox");
