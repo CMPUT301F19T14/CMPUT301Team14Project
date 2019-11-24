@@ -10,8 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
+
 import android.widget.TextView;
+
+import android.widget.Toast;
+
 
 import com.cmput301t14.mooditude.adapters.FollowingMoodEventAdapter;
 import com.cmput301t14.mooditude.services.MenuBar;
@@ -29,6 +34,9 @@ public class HomeActivity extends AppCompatActivity {
     ArrayAdapter<MoodEvent> selfMoodEventAdapter;
     ArrayList<MoodEvent> selfMoodEventDataList;
 
+    ImageButton googleMapButton;
+    User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +47,22 @@ public class HomeActivity extends AppCompatActivity {
         final String messageEmail = thisIntent.getStringExtra(EXTRA_MESSAGE_Email);
         MenuBar menuBar = new MenuBar(HomeActivity.this, messageEmail, 0);
 
+        user = new User();
+
         setUpMoodEventList();
+        googleMapButton = findViewById(R.id.googleMapsImageButton);
+        googleMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Clicked Map Button",Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
+                intent.putExtra("displayOption", "following");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+//                finish();
+            }
+        });
 
     }
 
@@ -56,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
         selfMoodEventList.setAdapter(selfMoodEventAdapter);
 
         // listen to selfMoodEventDataList sync with database
-        User user = new User();
+//        User user = new User();
         user.listenFollowingMoodEvents(selfMoodEventDataList, selfMoodEventAdapter);
 
         // click to view moodEvent

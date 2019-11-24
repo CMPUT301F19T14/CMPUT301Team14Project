@@ -9,9 +9,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.cmput301t14.mooditude.models.Mood;
@@ -54,7 +56,12 @@ public class SelfActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private String messageEmail;
 
+
     private User userService;
+
+    ImageButton googleMapButton;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +105,20 @@ public class SelfActivity extends AppCompatActivity {
         followingTextView = findViewById(R.id.following);
         userNameTextView = findViewById(R.id.userNametextView);
         numberMoodEvents = findViewById(R.id.number_of_mood_events);
+        googleMapButton = findViewById(R.id.googleMapsImageButton);
+
+        googleMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Clicked Map Button",Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(SelfActivity.this, MapsActivity.class);
+                intent.putExtra("displayOption", "self");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+//                finish();
+            }
+        });
 
         // Set up userName listener
         userService.listenUserName(userNameTextView);

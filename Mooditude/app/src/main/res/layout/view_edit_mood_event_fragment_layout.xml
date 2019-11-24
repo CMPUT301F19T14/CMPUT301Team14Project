@@ -46,7 +46,7 @@
                     android:background="@android:color/transparent"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/question_mark" />
+                    android:src="@drawable/question_mark" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                     android:background="@android:color/transparent"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/soicial_situation_icon" />
+                    android:src="@drawable/soicial_situation_icon" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -116,7 +116,9 @@
                     android:background="@android:color/transparent"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
+
                     app:srcCompat="@drawable/comment_notebook" />
+
 
                 <EditText
                     android:id="@+id/frag_comment_edittext"
@@ -146,19 +148,24 @@
                     android:background="@android:color/transparent"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/location_icon" />
+                    android:src="@drawable/location_icon" />
 
-                <TextView
-                    android:id="@+id/frag_location_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
                     android:background="@drawable/border_lines"
-                    android:padding="10dp"
-                    android:text="Location"
-                    android:textColor="#66CCFF"
-                    android:textSize="24sp"></TextView>
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/location_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:spinnerMode="dropdown"></Spinner>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -176,7 +183,7 @@
                     android:background="@android:color/transparent"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/photo_icon" />
+                    android:src="@drawable/photo_icon" />
 
                 <TextView
                     android:id="@+id/frag_photo_textview"

@@ -15,4 +15,15 @@
         <item>CROWD</item>
         </string-array>
 
+    <string-array name="new_mood_event_location_string_array">
+        <item>NO LOCATION</item>
+        <item>INCLUDE LOCATION</item>
+    </string-array>
+
+    <string-array name="edit_mood_event_location_string_array">
+        <item>PREVIOUS LOCATION</item>
+        <item>UPDATE LOCATION</item>
+        <item>REMOVE LOCATION</item>
+    </string-array>
+
 </resources>
