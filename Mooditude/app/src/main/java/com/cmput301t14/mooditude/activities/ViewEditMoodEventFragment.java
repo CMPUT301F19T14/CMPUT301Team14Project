@@ -204,7 +204,12 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                 locationString = parent.getItemAtPosition(position).toString();
                 if (locationString.equals("PREVIOUS LOCATION")){
 
-                    newMoodEventLocation = new Location(selectedMoodEvent.getLocation().getGeopoint().getLatitude(),selectedMoodEvent.getLocation().getGeopoint().getLongitude());
+                    if (selectedMoodEvent.getLocation().getGeopoint() != null) {
+                        newMoodEventLocation = new Location(selectedMoodEvent.getLocation().getGeopoint().getLatitude(), selectedMoodEvent.getLocation().getGeopoint().getLongitude());
+                    }
+                    else {
+                        newMoodEventLocation = new Location();
+                    }
                 }
                 else if (locationString.equals("REMOVE LOCATION")){
                     newMoodEventLocation = new Location();
