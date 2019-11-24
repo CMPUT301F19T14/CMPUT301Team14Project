@@ -52,6 +52,7 @@ public class SelfActivity extends AppCompatActivity {
 
 
     private static final int PICK_IMAGE_REQUEST = 1;
+    static final int REQUEST_TAKE_PHOTO = 100;
 
 
     @Override
@@ -263,6 +264,12 @@ public class SelfActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode ==PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            Fragment yourFragment = getSupportFragmentManager().findFragmentById(R.id.fragment); // same tag while adding fragment for the first time.// same tag while adding fragment for the first time.
+            if (yourFragment != null) {
+                yourFragment.onActivityResult(requestCode, resultCode, data); //calling method that should be defined in your fragment.
+            }
+        }
+        else if(requestCode ==REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             Fragment yourFragment = getSupportFragmentManager().findFragmentById(R.id.fragment); // same tag while adding fragment for the first time.// same tag while adding fragment for the first time.
             if (yourFragment != null) {
                 yourFragment.onActivityResult(requestCode, resultCode, data); //calling method that should be defined in your fragment.
