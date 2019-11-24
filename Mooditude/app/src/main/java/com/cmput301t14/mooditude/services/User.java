@@ -11,6 +11,7 @@ import com.cmput301t14.mooditude.adapters.SearchAdapter;
 import com.cmput301t14.mooditude.models.Location;
 import com.cmput301t14.mooditude.models.Mood;
 import com.cmput301t14.mooditude.models.MoodEvent;
+import com.cmput301t14.mooditude.models.Photo;
 import com.cmput301t14.mooditude.models.SocialSituation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -175,10 +176,13 @@ public class User {
                         Timestamp localDateTime = moodEvent.getDatetime();
 //                        Integer author= moodEvent.getAuthor();
                         Mood mood = moodEvent.getMood();
-                        SocialSituation socialSituation = moodEvent.getSocialSituation();
-                        String textComment = moodEvent.getTextComment();
-                        if (location.getGeopoint() != document.getGeoPoint("Location")) {
-                            moodHash.put("Location", location.getGeopoint());
+
+                        SocialSituation socialSituation= moodEvent.getSocialSituation();
+                        String textComment= moodEvent.getTextComment();
+                        String photoUrl = moodEvent.getPhotoUrl();
+                        if (location.getGeopoint() != document.getGeoPoint("Location")){
+                            moodHash.put("Location",location.getGeopoint());
+
                         }
                         if (mood.getMood() != document.getString("Mood")) {
                             moodHash.put("Mood", mood.getMood());
@@ -195,7 +199,12 @@ public class User {
                         if (socialSituation.getSocialSituation() != document.getString("SocialSituation")) {
                             moodHash.put("SocialSituation", socialSituation.getSocialSituation());
                         }
-                        moodHash.put("DateTime", localDateTime);
+
+                        if(photoUrl !=document.getString("Photograph")){
+                            moodHash.put("Photograph", photoUrl);
+                        }
+                        moodHash.put("DateTime",localDateTime);
+
                         moodEntry.update(moodHash);
                     } else {
                         Log.d("TAG", "Document does not exist!");
@@ -203,15 +212,21 @@ public class User {
                         Timestamp localDateTime = moodEvent.getDatetime();
 //                        Integer author= moodEvent.getAuthor();
                         Mood mood = moodEvent.getMood();
-                        SocialSituation socialSituation = moodEvent.getSocialSituation();
-                        String textComment = moodEvent.getTextComment();
+
+                        SocialSituation socialSituation= moodEvent.getSocialSituation();
+                        String textComment= moodEvent.getTextComment();
+                        String photoUrl = moodEvent.getPhotoUrl();
+
 
                         moodHash.put("Location", location.getGeopoint());
 
-                        moodHash.put("Mood", mood.getMood());
-                        moodHash.put("Comment", textComment);
-                        moodHash.put("DateTime", localDateTime);
-                        moodHash.put("SocialSituation", socialSituation.getSocialSituation());
+                        moodHash.put("Mood",mood.getMood());
+                        moodHash.put("Comment",textComment);
+                        moodHash.put("DateTime",localDateTime);
+                        moodHash.put("SocialSituation",socialSituation.getSocialSituation());
+                        moodHash.put("Photograph", photoUrl);
+
+
 //                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
                         moodEntry.set(moodHash);
                     }
@@ -329,7 +344,10 @@ public class User {
                     Location location = new Location(doc.getGeoPoint("Location"));
 //                    LocalDateTime datetime = LocalDateTime.parse(doc.getString("DateTime"));
                     Timestamp datetime = doc.getTimestamp("DateTime");
-                    MoodEvent moodEvent = new MoodEvent(mood, location, socialSituation, textComment, datetime);
+
+                    String photo = doc.getString("Photograph");
+                    MoodEvent moodEvent=new MoodEvent(mood, location,socialSituation,textComment,datetime, photo);
+
 //                    if(doc.getTimestamp("TIMESTAMP")!=null)
 //                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
                     moodEventDataList.add(moodEvent);
@@ -378,7 +396,10 @@ public class User {
                         SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
                         Location location= new Location(doc.getGeoPoint("Location"));
                         Timestamp datetime = doc.getTimestamp("DateTime");
-                        MoodEvent moodEvent=new MoodEvent(mood, location,socialSituation,textComment,datetime);
+                        
+                        String photo = doc.getString("Photograph");
+                        String author=doc.getId();
+                        MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime,photo);
 
                         LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
                         Marker marker = googleMap.addMarker(new MarkerOptions()
@@ -419,7 +440,13 @@ public class User {
                     String author = doc.getString("user_name");
 
                     String email= doc.getId();
-                    MoodEvent moodEvent = new MoodEvent(author, mood, location, socialSituation, textComment, datetime,email);
+               
+                  
+                    String photo = doc.getString("Photograph");
+                    String author=doc.getId();
+     
+                  
+                    MoodEvent moodEvent = new MoodEvent(author, mood, location, socialSituation, textComment, datetime,email,photo);
 //                    if(doc.getTimestamp("TIMESTAMP")!=null)
 //                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
 
@@ -451,14 +478,20 @@ public class User {
                     SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
                     Location location= new Location(doc.getGeoPoint("Location"));
                     Timestamp datetime = doc.getTimestamp("DateTime");
+                    String photo = doc.getString("Photograph");
                     String author=doc.getId();
-                    MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime);
+
+                    MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime,photo);
+//                    if(doc.getTimestamp("TIMESTAMP")!=null)
+//                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
+                    moodEventDataList.add(moodEvent);
 
                     LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
                     Marker marker = googleMap.addMarker(new MarkerOptions()
                             .position(moodEventLocation)
                             .title(moodEvent.getAuthor()));
                     marker.setTag(moodEvent);
+
                 }
             }
         });

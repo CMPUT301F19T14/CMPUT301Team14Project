@@ -1,7 +1,9 @@
 package com.cmput301t14.mooditude.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -57,10 +59,13 @@ public class SelfActivity extends AppCompatActivity {
     private String messageEmail;
 
 
+
+    private static final int PICK_IMAGE_REQUEST = 1;
+    static final int REQUEST_TAKE_PHOTO = 100;
+
     private User userService;
 
     ImageButton googleMapButton;
-
 
 
     @Override
@@ -308,5 +313,22 @@ public class SelfActivity extends AppCompatActivity {
      */
     public void onConfirmPressed(MoodEvent selectedMoodEvent) {
         userService.deleteMoodEvent(selectedMoodEvent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode ==PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            Fragment yourFragment = getSupportFragmentManager().findFragmentById(R.id.fragment); // same tag while adding fragment for the first time.// same tag while adding fragment for the first time.
+            if (yourFragment != null) {
+                yourFragment.onActivityResult(requestCode, resultCode, data); //calling method that should be defined in your fragment.
+            }
+        }
+        else if(requestCode ==REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            Fragment yourFragment = getSupportFragmentManager().findFragmentById(R.id.fragment); // same tag while adding fragment for the first time.// same tag while adding fragment for the first time.
+            if (yourFragment != null) {
+                yourFragment.onActivityResult(requestCode, resultCode, data); //calling method that should be defined in your fragment.
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

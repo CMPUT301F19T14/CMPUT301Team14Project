@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.AddActivity">
@@ -15,6 +16,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -176,6 +181,7 @@
                 android:padding="10dp">
 
                 <ImageButton
+                    android:id="@+id/frag_camera_button"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="left"
@@ -193,13 +199,31 @@
                     android:layout_weight="1"
                     android:background="@drawable/border_lines"
                     android:padding="10dp"
-                    android:text="Photo"
+                    android:text="Select Photo"
                     android:textColor="#66CCFF"
                     android:textSize="24sp"></TextView>
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/testimage"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1">
+
+                </ImageView>
+            </LinearLayout>
 
         </LinearLayout>
+        </ScrollView>
+
 
     </FrameLayout>
 

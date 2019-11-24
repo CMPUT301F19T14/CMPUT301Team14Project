@@ -1,5 +1,7 @@
 package com.cmput301t14.mooditude.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.content.Context;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -8,17 +10,15 @@ import com.google.firebase.firestore.GeoPoint;
 /**
  * Location class used to store GPS coordinates as GeoPoint
  */
-public class Location {
-    private Double latitude=0.0;
-    private Double longtitude=0.0;
-    private String address ="";
 
-    GeoPoint geopoint;
+public class Location implements Parcelable {
+    private String address;
+    private GeoPoint geopoint;
 
     public Location(){
+        address ="";
         this.geopoint=null;
     }
-
 
     /**
      * Location Constructor
@@ -28,6 +28,7 @@ public class Location {
     public Location(Double latitude, Double longtitude) {
 //        this.latitude = latitude;
 //        this.longtitude = longtitude;
+        address ="";
         geopoint= new GeoPoint(latitude,longtitude);
     }
     /**
@@ -46,6 +47,7 @@ public class Location {
      * @param geopoint
      */
     public Location(GeoPoint geopoint ) {
+        address ="";
         this.geopoint= geopoint;
     }
 
@@ -78,4 +80,36 @@ public class Location {
     }
 
 
+
+    protected Location(Parcel in) {
+        address = in.readString();
+        Double lat = in.readDouble();
+        Double lng = in.readDouble();
+        geopoint = new GeoPoint(lat, lng);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(address);
+        dest.writeDouble(geopoint.getLatitude());
+        dest.writeDouble(geopoint.getLongitude());
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
+        @Override
+        public Location createFromParcel(Parcel in) {
+            return new Location(in);
+        }
+
+        @Override
+        public Location[] newArray(int size) {
+            return new Location[size];
+        }
+    };
 }

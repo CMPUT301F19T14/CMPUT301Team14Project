@@ -1,6 +1,8 @@
 package com.cmput301t14.mooditude.models;
 
 import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
@@ -10,7 +12,7 @@ import java.util.Map;
 /**
  * Model class Mood to store the pre-defined mood and their color, emoticon
  */
-public class Mood {
+public class Mood implements Parcelable {
     private enum MoodEnum {HAPPY, SAD, ANGRY, EXCITED};
 
     private HashMap<MoodEnum, Integer> colorMap;
@@ -69,6 +71,37 @@ public class Mood {
     public String getEmoticon(){
         return this.emoticonMap.get(moodEnum);
     }
+
+    protected Mood(Parcel in) {
+        colorMap = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        emoticonMap = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        moodEnum = (MoodEnum) in.readValue(MoodEnum.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(colorMap);
+        dest.writeValue(emoticonMap);
+        dest.writeValue(moodEnum);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Mood> CREATOR = new Parcelable.Creator<Mood>() {
+        @Override
+        public Mood createFromParcel(Parcel in) {
+            return new Mood(in);
+        }
+
+        @Override
+        public Mood[] newArray(int size) {
+            return new Mood[size];
+        }
+    };
 
     public static Float getMoodMapMarkerColor(Mood mood){
 

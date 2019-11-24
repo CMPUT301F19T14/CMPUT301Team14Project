@@ -1,9 +1,9 @@
 package com.cmput301t14.mooditude.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.Timestamp;
-
-import java.io.Serializable;
-
 
 /**
  * MoodEvent class contains:
@@ -14,7 +14,9 @@ import java.io.Serializable;
  * socialsituation
  * textComment
  */
-public class MoodEvent implements Serializable, Comparable {
+
+public class MoodEvent implements Parcelable, Comparable {
+
 
     private String author;
     private Mood mood;
@@ -22,7 +24,11 @@ public class MoodEvent implements Serializable, Comparable {
     private Location location;
     private SocialSituation socialSituation;
     private String textComment;
+
+    private String photoUrl;
+
     private String email;
+
 //    photoComment: Bitmap
 
     /**
@@ -52,6 +58,17 @@ public class MoodEvent implements Serializable, Comparable {
         this.datetime= Timestamp.now();
     }
 
+    public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, String photoUrl) {
+        this.author = "";
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+        this.photoUrl = photoUrl;
+//        this.datetime=LocalDateTime.now();
+        this.datetime= Timestamp.now();
+    }
+
 
 
     /**
@@ -62,13 +79,15 @@ public class MoodEvent implements Serializable, Comparable {
      * @param textComment
      * @param timestamp
      */
-    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
+    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp, String photoUrl) {
         this.author = author;
         this.mood = mood;
         this.location = location;
         this.socialSituation = socialSituation;
         this.textComment = textComment;
         this.datetime=timestamp;
+        this.photoUrl = photoUrl;
+
     }
 
     public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp , String email) {
@@ -80,11 +99,42 @@ public class MoodEvent implements Serializable, Comparable {
         this.datetime=timestamp;
         this.email = email;
     }
+  
+    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp , String email, String photoUrl) {
+        this.author = author;
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+        this.datetime=timestamp;
+        this.email = email;
+        this.photoUrl = photoUrl;
+    }
 
 
 
     public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
         this.author = "";
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+        this.datetime=timestamp;
+    }
+
+
+    public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp, String photoUrl) {
+        this.author = "";
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+        this.datetime=timestamp;
+        this.photoUrl = photoUrl;
+    }
+
+    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
+        this.author = author;
         this.mood = mood;
         this.location = location;
         this.socialSituation = socialSituation;
@@ -180,6 +230,57 @@ public class MoodEvent implements Serializable, Comparable {
         this.textComment = textComment;
     }
 
+
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    protected MoodEvent(Parcel in) {
+        author = in.readString();
+        mood = (Mood) in.readValue(Mood.class.getClassLoader());
+        datetime = (Timestamp) in.readValue(Timestamp.class.getClassLoader());
+        location = (Location) in.readValue(Location.class.getClassLoader());
+        socialSituation = (SocialSituation) in.readValue(SocialSituation.class.getClassLoader());
+        textComment = in.readString();
+        photoUrl = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(author);
+        dest.writeValue(mood);
+        dest.writeValue(datetime);
+        dest.writeValue(location);
+        dest.writeValue(socialSituation);
+        dest.writeString(textComment);
+        dest.writeString(photoUrl);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<MoodEvent> CREATOR = new Parcelable.Creator<MoodEvent>() {
+        @Override
+        public MoodEvent createFromParcel(Parcel in) {
+            return new MoodEvent(in);
+        }
+
+        @Override
+        public MoodEvent[] newArray(int size) {
+            return new MoodEvent[size];
+        }
+    };
+}
+
     /**
      * Override compareTo method of Comparable interface
      * @param moodEvent the MoodEvent object to compare to
@@ -203,3 +304,4 @@ public class MoodEvent implements Serializable, Comparable {
         return result;
     }
 }
+
