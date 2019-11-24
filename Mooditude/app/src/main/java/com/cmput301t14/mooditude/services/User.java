@@ -481,12 +481,14 @@ public class User {
                     MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime,photo);
 //                    if(doc.getTimestamp("TIMESTAMP")!=null)
 //                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
-                    moodEventDataList.add(moodEvent);
+//                    moodEventDataList.add(moodEvent);
 
                     LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
                     Marker marker = googleMap.addMarker(new MarkerOptions()
                             .position(moodEventLocation)
-                            .title(moodEvent.getAuthor()));
+                            .title(moodEvent.getAuthor())
+                            .alpha((float)0.8)
+                            .icon(BitmapDescriptorFactory.defaultMarker(Mood.getMoodMapMarkerColor(mood))));
                     marker.setTag(moodEvent);
 
                 }
