@@ -69,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MoodEvent selectedMoodEvent = (MoodEvent) marker.getTag();
                 Boolean editable = false;
                 if (displayOption.equals("self")){
-                    editable = true;
+                    editable = false;
                 } else if(displayOption.equals("following")){
                     editable = false;
                 }
