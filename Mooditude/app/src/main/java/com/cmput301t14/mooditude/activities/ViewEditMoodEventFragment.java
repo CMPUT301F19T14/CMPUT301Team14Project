@@ -156,7 +156,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         if (args != null){
 
             selectedMoodEvent = (MoodEvent) args.getParcelable("moodEvent");
-            editable = (Boolean) args.getParcelable("editable");
+            editable = (Boolean) args.getSerializable("editable");
 
         }
 
@@ -348,15 +348,15 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                 locationString = parent.getItemAtPosition(position).toString();
                 if (locationString.equals("PREVIOUS LOCATION")){
 
-                    if (selectedMoodEvent.getLocation().getGeopoint() != null) {
+                    if (selectedMoodEvent.getLocation() != null) {
                         newMoodEventLocation = new Location(selectedMoodEvent.getLocation().getGeopoint().getLatitude(), selectedMoodEvent.getLocation().getGeopoint().getLongitude());
                     }
                     else {
-                        newMoodEventLocation = new Location();
+                        newMoodEventLocation = null;
                     }
                 }
                 else if (locationString.equals("REMOVE LOCATION")){
-                    newMoodEventLocation = new Location();
+                    newMoodEventLocation = null;
                 }
                 else if (locationString.equals("UPDATE LOCATION")){
 //                    newMoodEventLocation = new Location();
@@ -417,7 +417,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent, Boolean editable) {
         Bundle args = new Bundle();
         args.putParcelable("moodEvent", moodEvent);
-        args.putParcelable("editable", editable);
+        args.putSerializable("editable", editable);
 
         ViewEditMoodEventFragment fragment = new ViewEditMoodEventFragment();
         fragment.setArguments(args);
@@ -614,7 +614,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
 
     }
-    private void uploadDatabase(String temp){
+    private void uploadDatabase(String imageUrl){
         boolean valid = true;
 
         Mood mood = MoodEventValidator.checkMood(moodString);
@@ -638,7 +638,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             // TODO: put actual location and photo
             MoodEvent moodEvent = new MoodEvent(mood,
                     newMoodEventLocation,
-                    socialSituation, commentString, selectedMoodEvent.getDatetime(),temp);
+                    socialSituation, commentString, selectedMoodEvent.getDatetime(),imageUrl);
 
             // push the MoodEvent to database
             User user = new User();

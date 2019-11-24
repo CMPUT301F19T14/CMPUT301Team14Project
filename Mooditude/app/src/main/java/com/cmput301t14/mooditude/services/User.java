@@ -35,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+//import com.google.type.LatLng;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -180,9 +181,10 @@ public class User {
                         SocialSituation socialSituation= moodEvent.getSocialSituation();
                         String textComment= moodEvent.getTextComment();
                         String photoUrl = moodEvent.getPhotoUrl();
-                        if (location.getGeopoint() != document.getGeoPoint("Location")){
+                        if (location == null){
+                            moodHash.put("Location",null);
+                        } else if (location.getGeopoint() != document.getGeoPoint("Location")){
                             moodHash.put("Location",location.getGeopoint());
-
                         }
                         if (mood.getMood() != document.getString("Mood")) {
                             moodHash.put("Mood", mood.getMood());
@@ -217,9 +219,12 @@ public class User {
                         String textComment= moodEvent.getTextComment();
                         String photoUrl = moodEvent.getPhotoUrl();
 
-
-                        moodHash.put("Location", location.getGeopoint());
-
+                        if (location == null){
+                            moodHash.put("Location", null);
+                        }
+                        else{
+                            moodHash.put("Location", location.getGeopoint());
+                        }
                         moodHash.put("Mood",mood.getMood());
                         moodHash.put("Comment",textComment);
                         moodHash.put("DateTime",localDateTime);
@@ -341,15 +346,13 @@ public class User {
                     String textComment = doc.getString("Comment");
                     Mood mood = new Mood(doc.getString("Mood"));
                     SocialSituation socialSituation = new SocialSituation(doc.getString("SocialSituation"));
-                    Location location = new Location(doc.getGeoPoint("Location"));
-//                    LocalDateTime datetime = LocalDateTime.parse(doc.getString("DateTime"));
+                    Location location = null;
+                    if (doc.getGeoPoint("Location") != null){
+                        location = new Location(doc.getGeoPoint("Location"));
+                    }
                     Timestamp datetime = doc.getTimestamp("DateTime");
-
                     String photo = doc.getString("Photograph");
                     MoodEvent moodEvent=new MoodEvent(mood, location,socialSituation,textComment,datetime, photo);
-
-//                    if(doc.getTimestamp("TIMESTAMP")!=null)
-//                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
                     moodEventDataList.add(moodEvent);
                 }
                 filterMoodEventList();
@@ -435,21 +438,15 @@ public class User {
                     Mood mood = new Mood(doc.getString("Mood"));
                     String textComment = doc.getString("Comment");
                     SocialSituation socialSituation = new SocialSituation(doc.getString("SocialSituation"));
-                    Location location = new Location(doc.getGeoPoint("Location"));
+                    Location location = null;
+                    if (doc.getGeoPoint("Location") != null){
+                        location = new Location(doc.getGeoPoint("Location"));
+                    }
                     Timestamp datetime = doc.getTimestamp("DateTime");
                     String author = doc.getString("user_name");
-
                     String email= doc.getId();
-               
-                  
                     String photo = doc.getString("Photograph");
-                    String author=doc.getId();
-     
-                  
                     MoodEvent moodEvent = new MoodEvent(author, mood, location, socialSituation, textComment, datetime,email,photo);
-//                    if(doc.getTimestamp("TIMESTAMP")!=null)
-//                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
-
                     moodEventDataList.add(moodEvent);
                 }
                 Collections.sort(moodEventDataList);

@@ -15,11 +15,6 @@ public class Location implements Parcelable {
     private String address;
     private GeoPoint geopoint;
 
-    public Location(){
-        address ="";
-        this.geopoint=null;
-    }
-
     /**
      * Location Constructor
      * @param latitude, longtitude
