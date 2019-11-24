@@ -1,11 +1,14 @@
 package com.cmput301t14.mooditude.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.GeoPoint;
 /**
  * Location class used to store GPS coordinates as GeoPoint
  */
-public class Location {
-//    private Double latitude=0.0;
+public class Location implements Parcelable {
+    //    private Double latitude=0.0;
 //    private Double longtitude=0.0;
     private String address ="";
 
@@ -74,4 +77,33 @@ public class Location {
     }
 
 
+
+    protected Location(Parcel in) {
+        address = in.readString();
+        geopoint = (GeoPoint) in.readValue(GeoPoint.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(address);
+        dest.writeValue(geopoint);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
+        @Override
+        public Location createFromParcel(Parcel in) {
+            return new Location(in);
+        }
+
+        @Override
+        public Location[] newArray(int size) {
+            return new Location[size];
+        }
+    };
 }

@@ -1,9 +1,9 @@
 package com.cmput301t14.mooditude.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.Timestamp;
-
-import java.io.Serializable;
-
 
 /**
  * MoodEvent class contains:
@@ -14,7 +14,7 @@ import java.io.Serializable;
  * socialsituation
  * textComment
  */
-public class MoodEvent implements Serializable {
+public class MoodEvent implements Parcelable {
 
     private String author;
     private Mood mood;
@@ -205,4 +205,43 @@ public class MoodEvent implements Serializable {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
+
+    protected MoodEvent(Parcel in) {
+        author = in.readString();
+        mood = (Mood) in.readValue(Mood.class.getClassLoader());
+        datetime = (Timestamp) in.readValue(Timestamp.class.getClassLoader());
+        location = (Location) in.readValue(Location.class.getClassLoader());
+        socialSituation = (SocialSituation) in.readValue(SocialSituation.class.getClassLoader());
+        textComment = in.readString();
+        photoUrl = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(author);
+        dest.writeValue(mood);
+        dest.writeValue(datetime);
+        dest.writeValue(location);
+        dest.writeValue(socialSituation);
+        dest.writeString(textComment);
+        dest.writeString(photoUrl);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<MoodEvent> CREATOR = new Parcelable.Creator<MoodEvent>() {
+        @Override
+        public MoodEvent createFromParcel(Parcel in) {
+            return new MoodEvent(in);
+        }
+
+        @Override
+        public MoodEvent[] newArray(int size) {
+            return new MoodEvent[size];
+        }
+    };
 }
