@@ -169,17 +169,22 @@
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/location_icon" />
 
-                <TextView
-                    android:id="@+id/location_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
                     android:background="@drawable/border_lines"
-                    android:padding="10dp"
-                    android:text="Location"
-                    android:textColor="#66CCFF"
-                    android:textSize="24sp"></TextView>
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/location_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:spinnerMode="dropdown"></Spinner>
+                </LinearLayout>
 
             </LinearLayout>
 

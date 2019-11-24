@@ -13,6 +13,7 @@ import com.cmput301t14.mooditude.models.MoodEvent;
 import com.cmput301t14.mooditude.models.SocialSituation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -260,7 +261,10 @@ public class User{
                         LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
                         Marker marker = googleMap.addMarker(new MarkerOptions()
                                 .position(moodEventLocation)
-                                .title(doc.getId().toString()));
+                                .title(doc.getId().toString())
+                                .alpha((float)0.8)
+                                .icon(BitmapDescriptorFactory.defaultMarker(Mood.getMoodMapMarkerColor(mood)))
+                        );
                         marker.setTag(moodEvent);
 
 //                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));

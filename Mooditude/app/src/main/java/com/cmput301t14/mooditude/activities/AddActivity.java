@@ -45,12 +45,14 @@ public class AddActivity extends AppCompatActivity {
     Spinner moodSpinner;
     Spinner socialSituationSpinner;
     EditText commentEditText;
-    TextView locationTextView;
+//    TextView locationTextView;
+    Spinner locationSpinner;
     TextView photoTextView;
 
     private String commentString;
     private String moodString;
     private String socialSituationString;
+    private String locationString;
 
     private String messageEmail;
 
@@ -59,6 +61,7 @@ public class AddActivity extends AppCompatActivity {
 
     private Double lat;
     private Double lon;
+    private Location newMoodEventLocation;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -84,14 +87,17 @@ public class AddActivity extends AppCompatActivity {
         moodSpinner = findViewById(R.id.mood_spinner);
         socialSituationSpinner = findViewById(R.id.social_situation_spinner);
         commentEditText = findViewById(R.id.comment_edittext);
-        locationTextView = findViewById(R.id.location_textview);
+        locationSpinner = findViewById(R.id.location_spinner);
+//        locationTextView = findViewById(R.id.location_textview);
         photoTextView = findViewById(R.id.photo_textview);
 
         setUpMoodSpinner();
         setUpSocialSituationSpinner();
+        setUpLocationSpinner();
         setUpSubmitButton();
 
-        getCurrentDeviceLocation();
+
+//        getCurrentDeviceLocation();
     }
 
     /**
@@ -140,6 +146,33 @@ public class AddActivity extends AppCompatActivity {
         });
     }
 
+    private void setUpLocationSpinner(){
+        ArrayAdapter<CharSequence> locationArrayAdapter = ArrayAdapter.createFromResource(this,R.array.new_mood_event_location_string_array, android.R.layout.simple_spinner_item);
+        locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(locationArrayAdapter);
+        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                locationString = parent.getItemAtPosition(position).toString();
+                if (locationString.equals("INCLUDE LOCATION")){
+                    getCurrentDeviceLocation();
+//                    while (lat == null || lon == null){
+//
+//                    }
+//                    newMoodEventLocation = new Location(lat,lon);
+                }
+                else if (locationString.equals("NO LOCATION")){
+                    newMoodEventLocation = new Location();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // nothing selected
+            }
+        });
+    }
+
     /**
      * setup the submit button for submitting the mood event,
      * validate and then push the MoodEvent to the database
@@ -173,7 +206,7 @@ public class AddActivity extends AppCompatActivity {
                 if (valid){
                     // TODO: put actual location and photo
                     MoodEvent moodEvent = new MoodEvent(mood,
-                            new Location(lat,lon),
+                            newMoodEventLocation,
 //                            null,
                             socialSituation, commentString);
 
@@ -202,6 +235,7 @@ public class AddActivity extends AppCompatActivity {
             public void onLocationChanged(android.location.Location location) {
                 lat = location.getLatitude();
                 lon = location.getLongitude();
+                newMoodEventLocation = new Location(lat,lon);
                 Toast.makeText(getApplicationContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
             }
 
