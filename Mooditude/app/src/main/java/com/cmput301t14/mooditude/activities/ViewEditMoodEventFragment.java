@@ -35,6 +35,7 @@ import com.cmput301t14.mooditude.models.SocialSituation;
 import com.cmput301t14.mooditude.services.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
@@ -100,6 +101,8 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         locationTextView = view.findViewById(R.id.frag_location_textview);
         photoTextView = view.findViewById(R.id.frag_photo_textview);
         imageView=view.findViewById(R.id.testimage);
+        mStorageRef = FirebaseStorage.getInstance().getReference("photo");
+
 
 
         Bundle args = getArguments();
