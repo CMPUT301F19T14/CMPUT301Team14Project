@@ -1,19 +1,28 @@
 package com.cmput301t14.mooditude.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,6 +30,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
@@ -35,8 +47,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 
@@ -50,6 +67,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     private EditText commentEditText;
     private TextView locationTextView;
     private TextView photoTextView;
+    private ImageButton cameraButton;
 
     private String commentString;
     private String moodString;
@@ -67,6 +85,12 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
     private StorageTask mUploadTask;
     private static final int PICK_IMAGE_REQUEST = 1;
+
+    //variable for camera
+    static final int REQUEST_TAKE_PHOTO = 100;
+    Uri camPhotoURI = null;
+    String camImageStoragePath;
+
 
 
     /**
@@ -95,6 +119,13 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         locationTextView = view.findViewById(R.id.frag_location_textview);
         photoTextView = view.findViewById(R.id.frag_photo_textview);
         imageView=view.findViewById(R.id.testimage);
+        cameraButton = view.findViewById(R.id.frag_camera_button);
+        //check for camera permission
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            cameraButton.setEnabled(false);
+            ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+        }
+
 
 
         Bundle args = getArguments();
@@ -155,6 +186,15 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                 }
             });
 
+
+
+            cameraButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    takePictureIntent();
+                }
+            });
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             final AlertDialog d = builder.setView(view)
                     .setTitle("MoodEvent")
@@ -212,6 +252,22 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
      return null;
     }
 
+    /**
+     * Request permission from user
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                cameraButton.setEnabled(true);
+            }
+        }
+    }
+
 
     /**
      * Constructor like method, get the parameters passed in as Bundle
@@ -255,5 +311,85 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             Picasso.with(getContext()).load(mImageUri).into(imageView);
 
         }
+
+        //take a photo
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode == RESULT_OK) {
+                Log.i("cam", "back photo file sucess");
+                Log.i("cam",String.valueOf(camPhotoURI));
+
+                //Get the photo
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeFile(camImageStoragePath, options);
+                imageView.setImageBitmap(bitmap);
+
+                //add to gallery
+                galleryAddPic(getActivity().getApplicationContext(), camImageStoragePath);
+
+
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+            }
+        }
     }
+
+    private void takePictureIntent() {
+
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Log.i("cam", "photo clikck");
+        File photoFile = null;
+
+        try {
+            photoFile = createImageFile();
+
+        }catch (IOException ex) {
+            Log.i("cam", "photo file failed");
+        }
+
+        if (photoFile != null) {
+            camImageStoragePath = photoFile.getAbsolutePath();
+            camPhotoURI = FileProvider.getUriForFile(getActivity().getApplicationContext(), getActivity().getApplicationContext().getPackageName() + ".provider", photoFile);
+
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, camPhotoURI);
+            Log.i("cam", "photo file sucess");
+            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+
+        }
+    }
+
+    private static File createImageFile() throws IOException {
+        Log.i("cam", "create file ");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "CameraDemo");
+
+        if (!mediaStorageDir.exists()){
+            if (!mediaStorageDir.mkdirs()){
+                Log.e("File", "Oops! Failed create ");
+                return null;
+            }
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
+    }
+
+    /**
+     * Add camera photo to gallery
+     * @param context
+     * @param filePath
+     */
+    private void galleryAddPic(Context context, String filePath) {
+        Log.i("cam", "photo gallery sucess");
+
+        MediaScannerConnection.scanFile(context,
+                new String[]{filePath}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                    }
+                });
+
+    }
+
 }
