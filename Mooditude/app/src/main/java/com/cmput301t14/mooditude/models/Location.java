@@ -8,16 +8,13 @@ import com.google.firebase.firestore.GeoPoint;
  * Location class used to store GPS coordinates as GeoPoint
  */
 public class Location implements Parcelable {
-    //    private Double latitude=0.0;
-//    private Double longtitude=0.0;
-    private String address ="";
-
-    GeoPoint geopoint;
+    private String address;
+    private GeoPoint geopoint;
 
     public Location(){
+        address ="";
         this.geopoint=null;
     }
-
 
     /**
      * Location Constructor
@@ -27,6 +24,7 @@ public class Location implements Parcelable {
     public Location(Double latitude, Double longtitude) {
 //        this.latitude = latitude;
 //        this.longtitude = longtitude;
+        address ="";
         geopoint= new GeoPoint(latitude,longtitude);
     }
     /**
@@ -45,6 +43,7 @@ public class Location implements Parcelable {
      * @param geopoint
      */
     public Location(GeoPoint geopoint ) {
+        address ="";
         this.geopoint= geopoint;
     }
 
@@ -80,7 +79,9 @@ public class Location implements Parcelable {
 
     protected Location(Parcel in) {
         address = in.readString();
-        geopoint = (GeoPoint) in.readValue(GeoPoint.class.getClassLoader());
+        Double lat = in.readDouble();
+        Double lng = in.readDouble();
+        geopoint = new GeoPoint(lat, lng);
     }
 
     @Override
@@ -91,7 +92,8 @@ public class Location implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(address);
-        dest.writeValue(geopoint);
+        dest.writeDouble(geopoint.getLatitude());
+        dest.writeDouble(geopoint.getLongitude());
     }
 
     @SuppressWarnings("unused")
