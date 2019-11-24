@@ -388,6 +388,11 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             }
         }
 
+        if(mImageUri == null){
+            if(camPhotoURI != null){
+                mImageUri = camPhotoURI;
+            }
+        }
 
         if (mImageUri != null){
             final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
