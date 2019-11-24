@@ -383,6 +383,11 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
     private void uploadFile(){
 
+        if(mImageUri == null){
+            if(camPhotoURI != null){
+                mImageUri = camPhotoURI;
+            }
+        }
 
         if (mImageUri != null){
             final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
