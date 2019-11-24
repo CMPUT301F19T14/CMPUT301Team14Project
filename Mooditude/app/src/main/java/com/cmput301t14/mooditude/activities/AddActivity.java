@@ -1,12 +1,26 @@
 package com.cmput301t14.mooditude.activities;
 
 import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import android.app.Activity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import android.graphics.Color;
+
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
 
 import android.Manifest;
 import android.content.ContentResolver;
@@ -76,7 +90,8 @@ public class AddActivity extends AppCompatActivity {
     Spinner moodSpinner;
     Spinner socialSituationSpinner;
     EditText commentEditText;
-    TextView locationTextView;
+//    TextView locationTextView;
+    Spinner locationSpinner;
     TextView photoTextView;
     ImageView photoImageView;
     ImageButton photoButton;
@@ -84,8 +99,10 @@ public class AddActivity extends AppCompatActivity {
     private String commentString;
     private String moodString;
     private String socialSituationString;
+    private String locationString;
 
     private String messageEmail;
+
 
     private Uri mImageUri;
 
@@ -100,9 +117,31 @@ public class AddActivity extends AppCompatActivity {
     Uri camPhotoURI = null;
     String camImageStoragePath;
 
+    LocationManager locationManager;
+    LocationListener locationListener;
 
+    private Double lat;
+    private Double lon;
+    private Location newMoodEventLocation;
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+      if(requestCode == 1){
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }
+        }
+      }
+      if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                photoButton.setEnabled(true);
+            }
+        }
+      
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +157,8 @@ public class AddActivity extends AppCompatActivity {
         moodSpinner = findViewById(R.id.mood_spinner);
         socialSituationSpinner = findViewById(R.id.social_situation_spinner);
         commentEditText = findViewById(R.id.comment_edittext);
-        locationTextView = findViewById(R.id.location_textview);
+        locationSpinner = findViewById(R.id.location_spinner);
+//        locationTextView = findViewById(R.id.location_textview);
         photoTextView = findViewById(R.id.photo_textview);
         photoImageView = findViewById(R.id.photo_imageview);
         photoButton = findViewById(R.id.photo_button);
@@ -134,28 +174,20 @@ public class AddActivity extends AppCompatActivity {
 
         setUpMoodSpinner();
         setUpSocialSituationSpinner();
+
         setUpPhotoViews();
+
+        setUpLocationSpinner();
         setUpSubmitButton();
-    }
 
-    /**
-     * Request permission from user
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 0) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                photoButton.setEnabled(true);
-            }
-        }
+
+//        getCurrentDeviceLocation();
     }
 
 
+
     /**
+
      * setup the mood spinner dropdown menu
      */
     private void setUpMoodSpinner(){
@@ -168,7 +200,28 @@ public class AddActivity extends AppCompatActivity {
         moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                moodString = parent.getItemAtPosition(position).toString();
+                Mood happy = new Mood("HAPPY");
+                Mood sad = new Mood("SAD");
+                Mood excited = new Mood("EXCITED");
+                Mood angry = new Mood("ANGRY");
+                String spinnerStr = parent.getItemAtPosition(position).toString();
+                if (spinnerStr.equals(happy.getEmoticon() + happy.getMood())){
+                    moodString = happy.getMood();
+                    view.setBackgroundColor(happy.getColor());
+                }
+                else if (spinnerStr.equals(sad.getEmoticon() + sad.getMood())){
+                    moodString = sad.getMood();
+                    view.setBackgroundColor(sad.getColor());
+                }
+                else if (spinnerStr.equals(excited.getEmoticon() + excited.getMood())){
+                    moodString = excited.getMood();
+                    view.setBackgroundColor(excited.getColor());
+                }
+                else if (spinnerStr.equals(angry.getEmoticon() + angry.getMood())){
+                    moodString = angry.getMood();
+                    view.setBackgroundColor(angry.getColor());
+                }
+                view.getBackground().setAlpha(50);
             }
 
             @Override
@@ -202,6 +255,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
+
     private void setUpPhotoViews(){
         //choose a photo from storage
         photoTextView.setOnClickListener(new View.OnClickListener() {
@@ -218,6 +272,33 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 takePictureIntent();
+            }
+        });
+      }
+
+    private void setUpLocationSpinner(){
+        ArrayAdapter<CharSequence> locationArrayAdapter = ArrayAdapter.createFromResource(this,R.array.new_mood_event_location_string_array, android.R.layout.simple_spinner_item);
+        locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(locationArrayAdapter);
+        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                locationString = parent.getItemAtPosition(position).toString();
+                if (locationString.equals("INCLUDE LOCATION")){
+                    getCurrentDeviceLocation();
+//                    while (lat == null || lon == null){
+//
+//                    }
+//                    newMoodEventLocation = new Location(lat,lon);
+                }
+                else if (locationString.equals("NO LOCATION")){
+                    newMoodEventLocation = new Location();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // nothing selected
             }
         });
     }
@@ -281,6 +362,7 @@ public class AddActivity extends AppCompatActivity {
             }
         }
     }
+
 
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
@@ -380,11 +462,10 @@ public class AddActivity extends AppCompatActivity {
         }
 
 
-
-        if (valid){
-            // TODO: put actual location and photo
-            MoodEvent moodEvent = new MoodEvent(mood,
-                    new Location(),
+                if (valid){
+                    // TODO: put actual location and photo
+                    MoodEvent moodEvent = new MoodEvent(mood,
+                            newMoodEventLocation,
 //                            null,
                     socialSituation, commentString, temp);
 
@@ -466,8 +547,41 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
+    public void getCurrentDeviceLocation(){
 
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+                lat = location.getLatitude();
+                lon = location.getLongitude();
+                newMoodEventLocation = new Location(lat,lon);
+                Toast.makeText(getApplicationContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
 
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }
+        else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, locationListener);
+        }
+
+    }
 
 }

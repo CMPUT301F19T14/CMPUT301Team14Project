@@ -7,16 +7,21 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
 
 
+import com.cmput301t14.mooditude.models.Mood;
 import com.cmput301t14.mooditude.services.MenuBar;
 import com.cmput301t14.mooditude.R;
+import com.cmput301t14.mooditude.services.MoodFilterListener;
 import com.cmput301t14.mooditude.services.User;
 
 
@@ -29,6 +34,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a class for user's profile purpose and one part of Main Interface after login.
@@ -44,6 +51,7 @@ public class SelfActivity extends AppCompatActivity {
     ListView selfMoodEventList;
     ArrayAdapter<MoodEvent> selfMoodEventAdapter;
     ArrayList<MoodEvent> selfMoodEventDataList;
+    ArrayList<MoodEvent> filteredSelfMoodEventDataList;
 
     private FirebaseUser user;
     private FirebaseFirestore db;
@@ -51,8 +59,13 @@ public class SelfActivity extends AppCompatActivity {
     private String messageEmail;
 
 
+
     private static final int PICK_IMAGE_REQUEST = 1;
     static final int REQUEST_TAKE_PHOTO = 100;
+
+    private User userService;
+
+    ImageButton googleMapButton;
 
 
     @Override
@@ -75,6 +88,7 @@ public class SelfActivity extends AppCompatActivity {
 
         MenuBar menuBar = new MenuBar(SelfActivity.this, messageEmail, 4);
 
+        userService = new User();
         setUpMoodEventList();
         setUpDeleteMoodEvent();
 
@@ -90,20 +104,33 @@ public class SelfActivity extends AppCompatActivity {
 
         final CollectionReference collectionReference = db.collection("Users");
 
-
         followerTextView = findViewById(R.id.follower);
         numberFollowerTextView = findViewById(R.id.number_of_follower);
         numberFollowingTextView = findViewById(R.id.number_of_following);
         followingTextView = findViewById(R.id.following);
         userNameTextView = findViewById(R.id.userNametextView);
         numberMoodEvents = findViewById(R.id.number_of_mood_events);
+        googleMapButton = findViewById(R.id.googleMapsImageButton);
 
-        User user = new User();
+        googleMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Clicked Map Button",Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(SelfActivity.this, MapsActivity.class);
+                intent.putExtra("displayOption", "self");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+//                finish();
+            }
+        });
+
         // Set up userName listener
-        user.listenUserName(userNameTextView);
-        user.listenFollowerNumber(numberFollowerTextView);
-        user.listenFollowingNumber(numberFollowingTextView);
-        user.listenMoodHistoryNumber(numberMoodEvents);
+        userService.listenUserName(userNameTextView);
+        userService.listenFollowerNumber(numberFollowerTextView);
+        userService.listenFollowingNumber(numberFollowingTextView);
+        userService.listenMoodHistoryNumber(numberMoodEvents);
+
 /**
  *  Moved to User Class with realtime listener
  *  Original functinality:
@@ -172,11 +199,9 @@ public class SelfActivity extends AppCompatActivity {
         followerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String require = "Follower";
                 Intent intent = new Intent(SelfActivity.this, DisplayFollow.class);
-                intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                intent.putExtra(EXTRA_MESSAGE_Mode, require);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra(EXTRA_MESSAGE_Mode, DisplayFollow.ListMode.Followers.toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 
             }
@@ -184,15 +209,43 @@ public class SelfActivity extends AppCompatActivity {
         followingTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String require = "Following";
                 Intent intent = new Intent(SelfActivity.this, DisplayFollow.class);
                 intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                intent.putExtra(EXTRA_MESSAGE_Mode, require);
-                // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra(EXTRA_MESSAGE_Mode, DisplayFollow.ListMode.Followings.toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
-
             }
         });
+    }
+
+    /**
+     * setup the filter views and listeners
+     */
+    private void setUpFilters(){
+        TextView happyTextView = findViewById(R.id.happyTextView);
+        TextView sadTextView = findViewById(R.id.sadTextView);
+        TextView angryTextView = findViewById(R.id.angryTextView);
+        TextView excitedTextView = findViewById(R.id.excitedTextView);
+
+        Map<String,TextView> emotionTextViewList= new HashMap<>();
+        emotionTextViewList.put("HAPPY",happyTextView);
+        emotionTextViewList.put("SAD",sadTextView);
+        emotionTextViewList.put("ANGRY",angryTextView);
+        emotionTextViewList.put("EXCITED",excitedTextView);
+
+        for(String mood: userService.getFilterList().keySet()){
+            TextView v =emotionTextViewList.get(mood);
+            v.setText(new Mood(mood).getEmoticon());
+            if (userService.getFilterList().get(mood)){
+                v.setBackgroundColor(new Mood(mood).getColor());
+                v.getBackground().setAlpha(50);
+            }
+            else{
+                v.setBackgroundColor(Color.GRAY);
+                v.getBackground().setAlpha(50);
+            }
+            v.setOnClickListener(new MoodFilterListener(userService, mood));
+        }
     }
 
     /**
@@ -202,23 +255,25 @@ public class SelfActivity extends AppCompatActivity {
     private void setUpMoodEventList() {
         selfMoodEventList = findViewById(R.id.self_mood_event_list);
         selfMoodEventDataList = new ArrayList<>();
+        filteredSelfMoodEventDataList = new ArrayList<>();
 
-        selfMoodEventAdapter = new SelfMoodEventAdapter(this, selfMoodEventDataList);
+        selfMoodEventAdapter = new SelfMoodEventAdapter(this, filteredSelfMoodEventDataList);
 
         selfMoodEventList.setAdapter(selfMoodEventAdapter);
 
         // listen to selfMoodEventDataList sync with database
-        User user = new User();
-        user.listenSelfMoodEvents(selfMoodEventDataList, selfMoodEventAdapter);
+        userService.listenSelfMoodEvents(filteredSelfMoodEventDataList, selfMoodEventDataList, selfMoodEventAdapter);
 
         // click to view moodEvent
         selfMoodEventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // go to ViewEditMoodEventFragment
                 MoodEvent selectedMoodEvent = (MoodEvent) parent.getItemAtPosition(position);
-                ViewEditMoodEventFragment.newInstance(selectedMoodEvent).show(getSupportFragmentManager(), "MoodEvent");
+                ViewEditMoodEventFragment.newInstance(selectedMoodEvent, true).show(getSupportFragmentManager(), "MoodEvent");
             }
         });
+
+        setUpFilters();
     }
 
     /**
@@ -257,8 +312,7 @@ public class SelfActivity extends AppCompatActivity {
      * When delete is confirmed, remove the moodEvent from the list
      */
     public void onConfirmPressed(MoodEvent selectedMoodEvent) {
-        User user = new User();
-        user.deleteMoodEvent(selectedMoodEvent);
+        userService.deleteMoodEvent(selectedMoodEvent);
     }
 
     @Override

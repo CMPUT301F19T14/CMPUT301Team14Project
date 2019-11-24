@@ -14,7 +14,9 @@ import com.google.firebase.Timestamp;
  * socialsituation
  * textComment
  */
-public class MoodEvent implements Parcelable {
+
+public class MoodEvent implements Parcelable, Comparable {
+
 
     private String author;
     private Mood mood;
@@ -22,7 +24,11 @@ public class MoodEvent implements Parcelable {
     private Location location;
     private SocialSituation socialSituation;
     private String textComment;
+
     private String photoUrl;
+
+    private String email;
+
 //    photoComment: Bitmap
 
     /**
@@ -83,6 +89,30 @@ public class MoodEvent implements Parcelable {
         this.photoUrl = photoUrl;
 
     }
+
+    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp , String email) {
+        this.author = author;
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+        this.datetime=timestamp;
+        this.email = email;
+    }
+  
+    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp , String email, String photoUrl) {
+        this.author = author;
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+        this.datetime=timestamp;
+        this.email = email;
+        this.photoUrl = photoUrl;
+    }
+
+
+
     public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
         this.author = "";
         this.mood = mood;
@@ -91,6 +121,7 @@ public class MoodEvent implements Parcelable {
         this.textComment = textComment;
         this.datetime=timestamp;
     }
+
 
     public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp, String photoUrl) {
         this.author = "";
@@ -109,6 +140,10 @@ public class MoodEvent implements Parcelable {
         this.socialSituation = socialSituation;
         this.textComment = textComment;
         this.datetime=timestamp;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getAuthor() {
@@ -245,3 +280,28 @@ public class MoodEvent implements Parcelable {
         }
     };
 }
+
+    /**
+     * Override compareTo method of Comparable interface
+     * @param moodEvent the MoodEvent object to compare to
+     */
+    @Override
+    public int compareTo(Object moodEvent) {
+        int result = 0;
+        if (moodEvent != null) {
+            if (moodEvent instanceof MoodEvent) {
+                MoodEvent m = (MoodEvent) moodEvent;
+                result = this.getDatetime().compareTo(m.getDatetime());
+            }
+            else{
+                throw new IllegalArgumentException("Invalid input type, must be MoodEvent");
+            }
+        }
+        else{
+            throw new IllegalArgumentException("Input cannot be null, must be MoodEvent");
+        }
+
+        return result;
+    }
+}
+

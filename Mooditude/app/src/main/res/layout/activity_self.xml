@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
     tools:context=".activities.SelfActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -94,12 +95,63 @@
         app:layout_constraintStart_toEndOf="@+id/following"
         app:layout_constraintTop_toBottomOf="@+id/number_of_follower" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/self_mood_event_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/number_of_following">
+
+        <TextView
+            android:id="@+id/happyTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="HAPPY"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/sadTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="SAD"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/angryTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="ANGRY"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/excitedTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="EXCITED"
+            android:textSize="20dp" />
+    </LinearLayout>
+
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/googleMapsImageButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="24dp"
         android:background="#00FFFFFF"
+        android:focusableInTouchMode="false"
         android:scaleType="centerInside"
         android:scaleX="2"
         android:scaleY="2"
@@ -113,6 +165,7 @@
         android:layout_height="48dp"
         android:layout_marginEnd="24dp"
         android:background="#00FFFFFF"
+        android:focusableInTouchMode="false"
         android:scaleType="centerInside"
         android:scaleX="1.2"
         android:scaleY="1.2"
@@ -151,8 +204,8 @@
         android:background="@drawable/border_lines"
         app:layout_constraintBottom_toTopOf="@+id/navigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/number_of_following" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

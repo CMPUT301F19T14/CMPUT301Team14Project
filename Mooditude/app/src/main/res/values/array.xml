@@ -2,10 +2,10 @@
 <resources>
 
     <string-array name="mood_string_array">
-        <item>HAPPY</item>
-        <item>SAD</item>
-        <item>EXCITED</item>
-        <item>ANGRY</item>
+        <item>😃HAPPY</item>
+        <item>🙁SAD</item>
+        <item>😎EXCITED</item>
+        <item>😠ANGRY</item>
         </string-array>
 
     <string-array name="social_situation_string_array">
@@ -14,5 +14,16 @@
         <item>SEVERAL</item>
         <item>CROWD</item>
         </string-array>
+
+    <string-array name="new_mood_event_location_string_array">
+        <item>NO LOCATION</item>
+        <item>INCLUDE LOCATION</item>
+    </string-array>
+
+    <string-array name="edit_mood_event_location_string_array">
+        <item>PREVIOUS LOCATION</item>
+        <item>UPDATE LOCATION</item>
+        <item>REMOVE LOCATION</item>
+    </string-array>
 
 </resources>

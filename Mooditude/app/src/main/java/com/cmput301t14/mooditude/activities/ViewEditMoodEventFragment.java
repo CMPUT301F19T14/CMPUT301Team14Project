@@ -17,6 +17,11 @@ import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.content.pm.PackageManager;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -71,15 +76,24 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     private Spinner moodSpinner;
     private Spinner socialSituationSpinner;
     private EditText commentEditText;
-    private TextView locationTextView;
+    private Spinner locationSpinner;
     private TextView photoTextView;
     private ImageButton cameraButton;
 
     private String commentString;
     private String moodString;
     private String socialSituationString;
+    private String locationString;
 
     private MoodEvent selectedMoodEvent;
+    private Boolean editable;
+
+    LocationManager locationManager;
+    LocationListener locationListener;
+
+    private Double lat;
+    private Double lon;
+    private Location newMoodEventLocation;
 
 
     ImageView imageView;
@@ -122,7 +136,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         moodSpinner = view.findViewById(R.id.frag_mood_spinner);
         socialSituationSpinner = view.findViewById(R.id.frag_social_situation_spinner);
         commentEditText = view.findViewById(R.id.frag_comment_edittext);
-        locationTextView = view.findViewById(R.id.frag_location_textview);
+        locationSpinner = view.findViewById(R.id.location_spinner);
         photoTextView = view.findViewById(R.id.frag_photo_textview);
         imageView=view.findViewById(R.id.testimage);
 
@@ -140,7 +154,10 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
         Bundle args = getArguments();
         if (args != null){
+
             selectedMoodEvent = (MoodEvent) args.getParcelable("moodEvent");
+            editable = (Boolean) args.getParcelable("editable");
+
         }
 
         if (selectedMoodEvent != null) {
@@ -156,12 +173,33 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                     R.array.mood_string_array, android.R.layout.simple_spinner_item);
             moodArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             moodSpinner.setAdapter(moodArrayAdapter);
-            moodSpinner.setSelection(moodArrayAdapter.getPosition(selectedMoodEvent.getMood().getMood()),true);
+
             // set moodSpinner on item select
             moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    moodString = parent.getItemAtPosition(position).toString();
+                    Mood happy = new Mood("HAPPY");
+                    Mood sad = new Mood("SAD");
+                    Mood excited = new Mood("EXCITED");
+                    Mood angry = new Mood("ANGRY");
+                    String spinnerStr = parent.getItemAtPosition(position).toString();
+                    if (spinnerStr.equals(happy.getEmoticon() + happy.getMood())){
+                        moodString = happy.getMood();
+                        view.setBackgroundColor(happy.getColor());
+                    }
+                    else if (spinnerStr.equals(sad.getEmoticon() + sad.getMood())){
+                        moodString = sad.getMood();
+                        view.setBackgroundColor(sad.getColor());
+                    }
+                    else if (spinnerStr.equals(excited.getEmoticon() + excited.getMood())){
+                        moodString = excited.getMood();
+                        view.setBackgroundColor(excited.getColor());
+                    }
+                    else if (spinnerStr.equals(angry.getEmoticon() + angry.getMood())){
+                        moodString = angry.getMood();
+                        view.setBackgroundColor(angry.getColor());
+                    }
+                    view.getBackground().setAlpha(50);
                 }
 
                 @Override
@@ -169,6 +207,14 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                     // nothing selected
                 }
             });
+
+            // select the existing mood value in the spinner
+            int positionOfItem = moodArrayAdapter.getPosition(
+                    selectedMoodEvent.getMood().getEmoticon()+selectedMoodEvent.getMood().getMood());
+            moodSpinner.setSelection(positionOfItem, true);
+            View itemView = (View) moodSpinner.getChildAt(positionOfItem);
+            long itemId = moodSpinner.getAdapter().getItemId(positionOfItem);
+            moodSpinner.performItemClick(itemView, positionOfItem, itemId);
 
             // set dropdown socialSituationSpinner Adapter
             ArrayAdapter<CharSequence> socialSituationArrayAdapter = ArrayAdapter.createFromResource(getContext(),
@@ -189,6 +235,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                 }
             });
 
+
             photoTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -205,11 +252,27 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                 }
             });
 
+            setUpLocationSpinner();
+
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            final AlertDialog d = builder.setView(view)
-                    .setTitle("MoodEvent")
-                    .setNegativeButton("Cancel", null)
-                    .setPositiveButton("OK", null).create();
+            final AlertDialog d;
+            if (editable){
+                // editable, can submit by "OK" and can "Cancel"
+                d = builder.setView(view)
+                        .setTitle("MoodEvent")
+                        .setNegativeButton("Cancel", null)
+                        .setPositiveButton("OK", null).create();
+            }
+            else{
+                // not editable, can only close
+                d = builder.setView(view)
+                        .setTitle("MoodEvent")
+                        .setNegativeButton("Close", null).create();
+
+                // lock the fields
+                this.disableEdit();
+            }
 
             /* Use View.OnclickListener to get manual control of Dialog dismiss, only dismiss
             after all validation passed and value updated , use validator 's
@@ -223,6 +286,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                         public void onClick(View view) {
                             // validate the input fields
                             uploadFile();
+
 
                         }
                     });
@@ -251,14 +315,109 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
 
     /**
+     * lock and disable the editable fields when editable is set to false
+     */
+    private void disableEdit(){
+        // TODO: add real location and photo
+        moodSpinner.setEnabled(false);
+        moodSpinner.setFocusable(false);
+
+        socialSituationSpinner.setEnabled(false);
+        socialSituationSpinner.setFocusable(false);
+
+        commentEditText.setEnabled(false);
+        commentEditText.setInputType(InputType.TYPE_NULL);
+        commentEditText.setFocusable(false);
+
+//        locationTextView.setEnabled(false);
+//        locationTextView.setInputType(InputType.TYPE_NULL);
+//        locationTextView.setFocusable(false);
+
+        photoTextView.setEnabled(false);
+        photoTextView.setInputType(InputType.TYPE_NULL);
+        photoTextView.setFocusable(false);
+    }
+
+    private void setUpLocationSpinner(){
+        ArrayAdapter<CharSequence> locationArrayAdapter = ArrayAdapter.createFromResource(getContext(),R.array.edit_mood_event_location_string_array, android.R.layout.simple_spinner_item);
+        locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(locationArrayAdapter);
+        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                locationString = parent.getItemAtPosition(position).toString();
+                if (locationString.equals("PREVIOUS LOCATION")){
+
+                    if (selectedMoodEvent.getLocation().getGeopoint() != null) {
+                        newMoodEventLocation = new Location(selectedMoodEvent.getLocation().getGeopoint().getLatitude(), selectedMoodEvent.getLocation().getGeopoint().getLongitude());
+                    }
+                    else {
+                        newMoodEventLocation = new Location();
+                    }
+                }
+                else if (locationString.equals("REMOVE LOCATION")){
+                    newMoodEventLocation = new Location();
+                }
+                else if (locationString.equals("UPDATE LOCATION")){
+//                    newMoodEventLocation = new Location();
+                    getCurrentDeviceLocation();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // nothing selected
+            }
+        });
+    }
+
+    public void getCurrentDeviceLocation(){
+
+        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+                lat = location.getLatitude();
+                lon = location.getLongitude();
+                newMoodEventLocation = new Location(lat,lon);
+//                Toast.makeText(getContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
+            }
+
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }
+        else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, locationListener);
+        }
+
+    }
+    /**
      * Constructor like method, get the parameters passed in as Bundle
      * @param moodEvent - the MoodEvent selected in Mood History
      * @return
      */
 
-    static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent) {
+    static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent, Boolean editable) {
         Bundle args = new Bundle();
         args.putParcelable("moodEvent", moodEvent);
+        args.putParcelable("editable", editable);
 
         ViewEditMoodEventFragment fragment = new ViewEditMoodEventFragment();
         fragment.setArguments(args);
@@ -478,7 +637,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         if (valid) {
             // TODO: put actual location and photo
             MoodEvent moodEvent = new MoodEvent(mood,
-                    new Location(0.0, 0.0),
+                    newMoodEventLocation,
                     socialSituation, commentString, selectedMoodEvent.getDatetime(),temp);
 
             // push the MoodEvent to database

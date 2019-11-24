@@ -174,17 +174,38 @@
                         android:scaleType="fitCenter"
                         app:srcCompat="@drawable/location_icon" />
 
-                    <TextView
-                        android:id="@+id/location_textview"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="0"
+                    android:background="@android:color/transparent"
+                    android:padding="10dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/location_icon" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:background="@drawable/border_lines"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/location_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:layout_gravity="right"
                         android:layout_weight="1"
-                        android:background="@drawable/border_lines"
                         android:padding="10dp"
-                        android:text="Location"
-                        android:textColor="#66CCFF"
-                        android:textSize="24sp"></TextView>
+                        android:spinnerMode="dropdown"></Spinner>
+                </LinearLayout>
 
                 </LinearLayout>
 
@@ -205,6 +226,7 @@
                         android:scaleType="fitCenter"
                         app:srcCompat="@drawable/photo_icon" />
 
+
                     <TextView
                         android:id="@+id/photo_textview"
                         android:layout_width="1dp"
@@ -216,6 +238,7 @@
                         android:text="Select Photo"
                         android:textColor="#66CCFF"
                         android:textSize="24sp"></TextView>
+
 
 
                 </LinearLayout>

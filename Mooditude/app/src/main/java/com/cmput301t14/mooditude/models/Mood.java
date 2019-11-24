@@ -4,7 +4,10 @@ import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Model class Mood to store the pre-defined mood and their color, emoticon
@@ -69,7 +72,6 @@ public class Mood implements Parcelable {
         return this.emoticonMap.get(moodEnum);
     }
 
-
     protected Mood(Parcel in) {
         colorMap = (HashMap) in.readValue(HashMap.class.getClassLoader());
         emoticonMap = (HashMap) in.readValue(HashMap.class.getClassLoader());
@@ -100,4 +102,17 @@ public class Mood implements Parcelable {
             return new Mood[size];
         }
     };
+
+    public static Float getMoodMapMarkerColor(Mood mood){
+
+        Map<String,Float> markerColorHashMap = new HashMap<>();
+        markerColorHashMap.put("HAPPY", BitmapDescriptorFactory.HUE_GREEN);
+        markerColorHashMap.put("EXCITED", BitmapDescriptorFactory.HUE_YELLOW);
+        markerColorHashMap.put("SAD", BitmapDescriptorFactory.HUE_VIOLET);
+        markerColorHashMap.put("ANGRY", BitmapDescriptorFactory.HUE_RED);
+
+
+        return markerColorHashMap.get(mood.getMood());
+    }
+
 }

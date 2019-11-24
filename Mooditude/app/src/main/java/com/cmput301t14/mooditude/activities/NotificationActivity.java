@@ -84,42 +84,6 @@ public class NotificationActivity extends AppCompatActivity {
                 recyclerView.setAdapter(messageAdapter);
             }
         });
-//        messageBoxRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-////                        Log.d("TAG", "Document exists!");
-//                        Location location  =moodEvent.getLocation();
-//                        Timestamp localDateTime=moodEvent.getDatetime();
-////                        Integer author= moodEvent.getAuthor();
-//                        Mood mood = moodEvent.getMood();
-//                        SocialSituation socialSituation= moodEvent.getSocialSituation();
-//                        String textComment= moodEvent.getTextComment();
-//                        if (location.getGeopoint() != document.getGeoPoint("Location")){
-//                            moodHash.put("Location",location.getGeopoint());
-//                        }
-//                        if (mood.getMood() != document.getString("Mood")){
-//                            moodHash.put("Mood",mood.getMood());
-//                        }
-//                        if (textComment != document.getString("Comment")){
-//                            moodHash.put("Comment",textComment);
-//                        }
-////                        if (localDateTime != document.getTimestamp("DateTime")){
-//////                            Log.i("TAG1B",document.getTimestamp("DateTime").toString());
-////                            moodHash.put("DateTime",localDateTime);
-//////                            Log.i("TAG1",localDateTime.toString());
-//////                            Log.i("TAG1B",document.getTimestamp("DateTime").toString());
-////                        }
-//                        if (socialSituation.getSocialSituation() != document.getString("SocialSituation")){
-//                            moodHash.put("SocialSituation",socialSituation.getSocialSituation());
-//                        }
-//                        moodHash.put("DateTime",localDateTime);
-//                        moodEntry.update(moodHash);
-//                    }
-//            }
-//        })
 
     }
 }

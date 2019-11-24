@@ -2,11 +2,15 @@ package com.cmput301t14.mooditude.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.content.Context;
+import android.location.LocationListener;
+import android.location.LocationManager;
 
 import com.google.firebase.firestore.GeoPoint;
 /**
  * Location class used to store GPS coordinates as GeoPoint
  */
+
 public class Location implements Parcelable {
     private String address;
     private GeoPoint geopoint;
