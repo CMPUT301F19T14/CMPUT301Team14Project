@@ -156,7 +156,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         if (args != null){
 
             selectedMoodEvent = (MoodEvent) args.getParcelable("moodEvent");
-            editable = (Boolean) args.getParcelable("editable");
+            editable = (Boolean) args.getSerializable("editable");
 
         }
 
@@ -417,7 +417,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent, Boolean editable) {
         Bundle args = new Bundle();
         args.putParcelable("moodEvent", moodEvent);
-        args.putParcelable("editable", editable);
+        args.putSerializable("editable", editable);
 
         ViewEditMoodEventFragment fragment = new ViewEditMoodEventFragment();
         fragment.setArguments(args);
