@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.graphics.Color;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
+
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -100,7 +103,7 @@ public class AddActivity extends AppCompatActivity {
 //        getCurrentDeviceLocation();
     }
 
-    /**
+    /**2
      * setup the mood spinner dropdown menu
      */
     private void setUpMoodSpinner(){
@@ -113,7 +116,28 @@ public class AddActivity extends AppCompatActivity {
         moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                moodString = parent.getItemAtPosition(position).toString();
+                Mood happy = new Mood("HAPPY");
+                Mood sad = new Mood("SAD");
+                Mood excited = new Mood("EXCITED");
+                Mood angry = new Mood("ANGRY");
+                String spinnerStr = parent.getItemAtPosition(position).toString();
+                if (spinnerStr.equals(happy.getEmoticon() + happy.getMood())){
+                    moodString = happy.getMood();
+                    view.setBackgroundColor(happy.getColor());
+                }
+                else if (spinnerStr.equals(sad.getEmoticon() + sad.getMood())){
+                    moodString = sad.getMood();
+                    view.setBackgroundColor(sad.getColor());
+                }
+                else if (spinnerStr.equals(excited.getEmoticon() + excited.getMood())){
+                    moodString = excited.getMood();
+                    view.setBackgroundColor(excited.getColor());
+                }
+                else if (spinnerStr.equals(angry.getEmoticon() + angry.getMood())){
+                    moodString = angry.getMood();
+                    view.setBackgroundColor(angry.getColor());
+                }
+                view.getBackground().setAlpha(50);
             }
 
             @Override

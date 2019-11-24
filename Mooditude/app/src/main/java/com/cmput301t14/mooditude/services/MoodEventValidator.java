@@ -59,12 +59,16 @@ public class MoodEventValidator {
             return true;
 
         StringTokenizer tokens = new StringTokenizer(Comment);
-        if(tokens.countTokens()<=20)
-            return true;
-        else{
-            errorMessage=errorMessage.concat("Message is longer than 20\n");
+        if(tokens.countTokens()>3){
+            errorMessage=errorMessage.concat("Comment Longer than 3 words\n");
             return false;
         }
+        if(Comment.length()>20){
+            errorMessage=errorMessage.concat("Comment is longer than 20 characters \n");
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -5,7 +5,8 @@
     android:id="@+id/mood_event_entry"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingEnd="5dp">
 
 
     <LinearLayout
@@ -14,10 +15,11 @@
         android:layout_gravity="left"
         android:layout_weight="1.5"
         android:orientation="vertical">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/time_textview"
@@ -96,7 +98,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
 
 
     </LinearLayout>

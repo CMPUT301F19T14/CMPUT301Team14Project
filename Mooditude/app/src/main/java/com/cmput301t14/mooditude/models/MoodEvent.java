@@ -14,7 +14,7 @@ import java.io.Serializable;
  * socialsituation
  * textComment
  */
-public class MoodEvent implements Serializable {
+public class MoodEvent implements Serializable, Comparable {
 
     private String author;
     private Mood mood;
@@ -22,6 +22,7 @@ public class MoodEvent implements Serializable {
     private Location location;
     private SocialSituation socialSituation;
     private String textComment;
+    private String email;
 //    photoComment: Bitmap
 
     /**
@@ -69,6 +70,19 @@ public class MoodEvent implements Serializable {
         this.textComment = textComment;
         this.datetime=timestamp;
     }
+
+    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp , String email) {
+        this.author = author;
+        this.mood = mood;
+        this.location = location;
+        this.socialSituation = socialSituation;
+        this.textComment = textComment;
+        this.datetime=timestamp;
+        this.email = email;
+    }
+
+
+
     public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
         this.author = "";
         this.mood = mood;
@@ -76,6 +90,10 @@ public class MoodEvent implements Serializable {
         this.socialSituation = socialSituation;
         this.textComment = textComment;
         this.datetime=timestamp;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getAuthor() {
@@ -160,5 +178,28 @@ public class MoodEvent implements Serializable {
      */
     public void setTextComment(String textComment) {
         this.textComment = textComment;
+    }
+
+    /**
+     * Override compareTo method of Comparable interface
+     * @param moodEvent the MoodEvent object to compare to
+     */
+    @Override
+    public int compareTo(Object moodEvent) {
+        int result = 0;
+        if (moodEvent != null) {
+            if (moodEvent instanceof MoodEvent) {
+                MoodEvent m = (MoodEvent) moodEvent;
+                result = this.getDatetime().compareTo(m.getDatetime());
+            }
+            else{
+                throw new IllegalArgumentException("Invalid input type, must be MoodEvent");
+            }
+        }
+        else{
+            throw new IllegalArgumentException("Input cannot be null, must be MoodEvent");
+        }
+
+        return result;
     }
 }

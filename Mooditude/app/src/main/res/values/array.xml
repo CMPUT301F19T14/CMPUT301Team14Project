@@ -2,10 +2,10 @@
 <resources>
 
     <string-array name="mood_string_array">
-        <item>HAPPY</item>
-        <item>SAD</item>
-        <item>EXCITED</item>
-        <item>ANGRY</item>
+        <item>😃HAPPY</item>
+        <item>🙁SAD</item>
+        <item>😎EXCITED</item>
+        <item>😠ANGRY</item>
         </string-array>
 
     <string-array name="social_situation_string_array">

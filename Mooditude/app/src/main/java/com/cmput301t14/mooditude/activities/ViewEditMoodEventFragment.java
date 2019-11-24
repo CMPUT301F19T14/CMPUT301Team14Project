@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,6 +52,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
     private String locationString;
 
     private MoodEvent selectedMoodEvent;
+    private Boolean editable;
 
     LocationManager locationManager;
     LocationListener locationListener;
@@ -89,6 +91,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
         Bundle args = getArguments();
         if (args != null){
             selectedMoodEvent = (MoodEvent) args.getSerializable("moodEvent");
+            editable = (Boolean) args.getSerializable("editable");
         }
 
         if (selectedMoodEvent != null) {
@@ -102,12 +105,33 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                     R.array.mood_string_array, android.R.layout.simple_spinner_item);
             moodArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             moodSpinner.setAdapter(moodArrayAdapter);
-            moodSpinner.setSelection(moodArrayAdapter.getPosition(selectedMoodEvent.getMood().getMood()),true);
+
             // set moodSpinner on item select
             moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    moodString = parent.getItemAtPosition(position).toString();
+                    Mood happy = new Mood("HAPPY");
+                    Mood sad = new Mood("SAD");
+                    Mood excited = new Mood("EXCITED");
+                    Mood angry = new Mood("ANGRY");
+                    String spinnerStr = parent.getItemAtPosition(position).toString();
+                    if (spinnerStr.equals(happy.getEmoticon() + happy.getMood())){
+                        moodString = happy.getMood();
+                        view.setBackgroundColor(happy.getColor());
+                    }
+                    else if (spinnerStr.equals(sad.getEmoticon() + sad.getMood())){
+                        moodString = sad.getMood();
+                        view.setBackgroundColor(sad.getColor());
+                    }
+                    else if (spinnerStr.equals(excited.getEmoticon() + excited.getMood())){
+                        moodString = excited.getMood();
+                        view.setBackgroundColor(excited.getColor());
+                    }
+                    else if (spinnerStr.equals(angry.getEmoticon() + angry.getMood())){
+                        moodString = angry.getMood();
+                        view.setBackgroundColor(angry.getColor());
+                    }
+                    view.getBackground().setAlpha(50);
                 }
 
                 @Override
@@ -115,6 +139,14 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                     // nothing selected
                 }
             });
+
+            // select the existing mood value in the spinner
+            int positionOfItem = moodArrayAdapter.getPosition(
+                    selectedMoodEvent.getMood().getEmoticon()+selectedMoodEvent.getMood().getMood());
+            moodSpinner.setSelection(positionOfItem, true);
+            View itemView = (View) moodSpinner.getChildAt(positionOfItem);
+            long itemId = moodSpinner.getAdapter().getItemId(positionOfItem);
+            moodSpinner.performItemClick(itemView, positionOfItem, itemId);
 
             // set dropdown socialSituationSpinner Adapter
             ArrayAdapter<CharSequence> socialSituationArrayAdapter = ArrayAdapter.createFromResource(getContext(),
@@ -138,10 +170,23 @@ public class ViewEditMoodEventFragment extends DialogFragment {
             setUpLocationSpinner();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            final AlertDialog d = builder.setView(view)
-                    .setTitle("MoodEvent")
-                    .setNegativeButton("Cancel", null)
-                    .setPositiveButton("OK", null).create();
+            final AlertDialog d;
+            if (editable){
+                // editable, can submit by "OK" and can "Cancel"
+                d = builder.setView(view)
+                        .setTitle("MoodEvent")
+                        .setNegativeButton("Cancel", null)
+                        .setPositiveButton("OK", null).create();
+            }
+            else{
+                // not editable, can only close
+                d = builder.setView(view)
+                        .setTitle("MoodEvent")
+                        .setNegativeButton("Close", null).create();
+
+                // lock the fields
+                this.disableEdit();
+            }
 
             /* Use View.OnclickListener to get manual control of Dialog dismiss, only dismiss
             after all validation passed and value updated , use validator 's
@@ -194,6 +239,31 @@ public class ViewEditMoodEventFragment extends DialogFragment {
      return null;
     }
 
+
+    /**
+     * lock and disable the editable fields when editable is set to false
+     */
+    private void disableEdit(){
+        // TODO: add real location and photo
+        moodSpinner.setEnabled(false);
+        moodSpinner.setFocusable(false);
+
+        socialSituationSpinner.setEnabled(false);
+        socialSituationSpinner.setFocusable(false);
+
+        commentEditText.setEnabled(false);
+        commentEditText.setInputType(InputType.TYPE_NULL);
+        commentEditText.setFocusable(false);
+
+        locationTextView.setEnabled(false);
+        locationTextView.setInputType(InputType.TYPE_NULL);
+        locationTextView.setFocusable(false);
+
+        photoTextView.setEnabled(false);
+        photoTextView.setInputType(InputType.TYPE_NULL);
+        photoTextView.setFocusable(false);
+    }
+
     private void setUpLocationSpinner(){
         ArrayAdapter<CharSequence> locationArrayAdapter = ArrayAdapter.createFromResource(getContext(),R.array.edit_mood_event_location_string_array, android.R.layout.simple_spinner_item);
         locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -239,6 +309,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
 //                Toast.makeText(getContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
             }
 
+
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
 
@@ -269,9 +340,10 @@ public class ViewEditMoodEventFragment extends DialogFragment {
      * @return
      */
 
-    static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent) {
+    static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent, Boolean editable) {
         Bundle args = new Bundle();
         args.putSerializable("moodEvent", moodEvent);
+        args.putSerializable("editable", editable);
 
         ViewEditMoodEventFragment fragment = new ViewEditMoodEventFragment();
         fragment.setArguments(args);

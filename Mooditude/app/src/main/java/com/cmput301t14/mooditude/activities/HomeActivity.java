@@ -2,14 +2,21 @@ package com.cmput301t14.mooditude.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+
+import android.widget.TextView;
+
 import android.widget.Toast;
+
 
 import com.cmput301t14.mooditude.adapters.FollowingMoodEventAdapter;
 import com.cmput301t14.mooditude.services.MenuBar;
@@ -80,9 +87,44 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // go to ViewEditMoodEventFragment
                 MoodEvent selectedMoodEvent = (MoodEvent) parent.getItemAtPosition(position);
-                ViewEditMoodEventFragment.newInstance(selectedMoodEvent).show(getSupportFragmentManager(), "MoodEvent");
+                ViewEditMoodEventFragment.newInstance(selectedMoodEvent, false).show(getSupportFragmentManager(), "MoodEvent");
             }
         });
+
+        selfMoodEventList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                final String email = ((TextView) view.findViewById(R.id.userNameTextView)).getText().toString();
+                final String email = selfMoodEventDataList.get(i).getEmail();
+
+                Log.i("selfMood", "Here:" + email);
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+//                                onConfirmPressed(selectedMoodEvent);
+//                                message.delete();
+                                new User().unfollow(email);
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(HomeActivity.this);
+                alert.setMessage("Are you sure that you want to unfollow?")
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .show();
+                return true;
+
+//                return true;
+            }
+        });
+
+
     }
 
 
