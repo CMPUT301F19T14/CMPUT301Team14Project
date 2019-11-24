@@ -3,6 +3,7 @@ package com.cmput301t14.mooditude.activities;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,8 +45,12 @@ import com.cmput301t14.mooditude.services.MoodEventValidator;
 import com.cmput301t14.mooditude.R;
 import com.cmput301t14.mooditude.models.SocialSituation;
 import com.cmput301t14.mooditude.services.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -119,12 +125,16 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         locationTextView = view.findViewById(R.id.frag_location_textview);
         photoTextView = view.findViewById(R.id.frag_photo_textview);
         imageView=view.findViewById(R.id.testimage);
+
         cameraButton = view.findViewById(R.id.frag_camera_button);
         //check for camera permission
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             cameraButton.setEnabled(false);
             ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
         }
+
+        mStorageRef = FirebaseStorage.getInstance().getReference("photo");
+
 
 
 
@@ -212,37 +222,8 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                         @Override
                         public void onClick(View view) {
                             // validate the input fields
-                            boolean valid = true;
+                            uploadFile();
 
-                            Mood mood = MoodEventValidator.checkMood(moodString);
-                            if (mood == null) {
-                                valid = false;
-                                ((TextView) moodSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
-                            }
-                            SocialSituation socialSituation = MoodEventValidator.checkSocialSituation(socialSituationString);
-                            if (socialSituation == null) {
-                                valid = false;
-                                ((TextView) socialSituationSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
-                            }
-
-                            commentString = commentEditText.getText().toString();
-                            if (!MoodEventValidator.checkComment(commentString)) {
-                                valid = false;
-                                commentEditText.setError(MoodEventValidator.getErrorMessage());
-                            }
-
-                            if (valid) {
-                                // TODO: put actual location and photo
-                                MoodEvent moodEvent = new MoodEvent(mood,
-                                        new Location(0.0, 0.0),
-                                        socialSituation, commentString, selectedMoodEvent.getDatetime());
-
-                                // push the MoodEvent to database
-                                User user = new User();
-                                user.pushMoodEvent(moodEvent);
-//                                moodArrayAdapter.notifyDataSetChanged();
-                                getDialog().dismiss();
-                            }
                         }
                     });
                 }
@@ -358,6 +339,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         }
     }
 
+
     private static File createImageFile() throws IOException {
         Log.i("cam", "create file ");
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
@@ -390,6 +372,110 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                     }
                 });
 
+    }
+
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getActivity().getApplicationContext().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadFile(){
+
+
+        if (mImageUri != null){
+            final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
+                    + "." + getFileExtension(mImageUri));
+            mUploadTask = fileReference.putFile(mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+//                                photoTextView.setText(temp);
+
+
+                            fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    // getting image uri and converting into string
+                                    Uri downloadUrl = uri;
+                                    temp = downloadUrl.toString();
+                                    Toast.makeText(getContext(), temp, Toast.LENGTH_SHORT).show();
+                                    uploadDatabase(temp);
+
+
+                                }
+                            });
+
+
+//                            Toast.makeText(AddActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+////                            photo.setmImageUrl(taskSnapshot.getStorage().getDownloadUrl().toString());
+////                            if(photo.getmImageUrl()!=null){
+////                                temp = photo.getmImageUrl();
+//                            temp=taskSnapshot.getStorage().getDownloadUrl().toString();
+//                                Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
+//                                uploadDatabase(temp);
+
+//                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), temp, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+//                            mProgressBar.setProgress((int) progress);
+//                        }
+//                    });
+
+            if (mUploadTask.isComplete()){
+                Toast.makeText(getContext(), "123", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else{
+            uploadDatabase(temp);
+        }
+
+
+    }
+    private void uploadDatabase(String temp){
+        boolean valid = true;
+
+        Mood mood = MoodEventValidator.checkMood(moodString);
+        if (mood == null) {
+            valid = false;
+            ((TextView) moodSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
+        }
+        SocialSituation socialSituation = MoodEventValidator.checkSocialSituation(socialSituationString);
+        if (socialSituation == null) {
+            valid = false;
+            ((TextView) socialSituationSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
+        }
+
+        commentString = commentEditText.getText().toString();
+        if (!MoodEventValidator.checkComment(commentString)) {
+            valid = false;
+            commentEditText.setError(MoodEventValidator.getErrorMessage());
+        }
+
+        if (valid) {
+            // TODO: put actual location and photo
+            MoodEvent moodEvent = new MoodEvent(mood,
+                    new Location(0.0, 0.0),
+                    socialSituation, commentString, selectedMoodEvent.getDatetime(),temp);
+
+            // push the MoodEvent to database
+            User user = new User();
+            user.pushMoodEvent(moodEvent);
+//                                moodArrayAdapter.notifyDataSetChanged();
+            getDialog().dismiss();
+        }
     }
 
 }

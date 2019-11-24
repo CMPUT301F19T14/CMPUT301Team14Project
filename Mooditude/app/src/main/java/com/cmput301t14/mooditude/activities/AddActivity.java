@@ -463,6 +463,7 @@ public class AddActivity extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 
         }
+
     }
 
 

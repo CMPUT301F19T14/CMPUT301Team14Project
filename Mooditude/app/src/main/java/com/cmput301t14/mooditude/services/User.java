@@ -104,6 +104,7 @@ public class User{
                         Mood mood = moodEvent.getMood();
                         SocialSituation socialSituation= moodEvent.getSocialSituation();
                         String textComment= moodEvent.getTextComment();
+                        String photoUrl = moodEvent.getPhotoUrl();
                         if (location.getGeopoint() != document.getGeoPoint("Location")){
                             moodHash.put("Location",location.getGeopoint());
                         }
@@ -121,6 +122,9 @@ public class User{
 //                        }
                         if (socialSituation.getSocialSituation() != document.getString("SocialSituation")){
                             moodHash.put("SocialSituation",socialSituation.getSocialSituation());
+                        }
+                        if(photoUrl !=document.getString("Photograph")){
+                            moodHash.put("Photograph", photoUrl);
                         }
                         moodHash.put("DateTime",localDateTime);
                         moodEntry.update(moodHash);
