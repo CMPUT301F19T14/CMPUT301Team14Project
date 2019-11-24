@@ -633,7 +633,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         }
 
         if (valid) {
-            // TODO: put actual location and photo
+            // put actual location and photo
             MoodEvent moodEvent = new MoodEvent(mood,
                     newMoodEventLocation,
                     socialSituation, commentString, selectedMoodEvent.getDatetime(),imageUrl);
