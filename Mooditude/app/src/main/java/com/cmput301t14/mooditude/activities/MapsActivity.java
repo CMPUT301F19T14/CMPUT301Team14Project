@@ -69,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 MoodEvent selectedMoodEvent = (MoodEvent) marker.getTag();
 
-                ViewEditMoodEventFragment.newInstance(selectedMoodEvent).show(getSupportFragmentManager(), "MoodEvent");
+                ViewEditMoodEventFragment.newInstance(selectedMoodEvent,false).show(getSupportFragmentManager(), "MoodEvent");
 
 //                Toast.makeText(getApplicationContext(),moodEvent.getTextComment(),Toast.LENGTH_SHORT).show();
                 return false;

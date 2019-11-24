@@ -255,9 +255,9 @@ public class ViewEditMoodEventFragment extends DialogFragment {
         commentEditText.setInputType(InputType.TYPE_NULL);
         commentEditText.setFocusable(false);
 
-        locationTextView.setEnabled(false);
-        locationTextView.setInputType(InputType.TYPE_NULL);
-        locationTextView.setFocusable(false);
+//        locationTextView.setEnabled(false);
+//        locationTextView.setInputType(InputType.TYPE_NULL);
+//        locationTextView.setFocusable(false);
 
         photoTextView.setEnabled(false);
         photoTextView.setInputType(InputType.TYPE_NULL);
