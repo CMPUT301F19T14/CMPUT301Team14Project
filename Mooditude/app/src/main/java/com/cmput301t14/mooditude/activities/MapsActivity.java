@@ -66,12 +66,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-
                 MoodEvent selectedMoodEvent = (MoodEvent) marker.getTag();
-
-                ViewEditMoodEventFragment.newInstance(selectedMoodEvent,false).show(getSupportFragmentManager(), "MoodEvent");
-
-//                Toast.makeText(getApplicationContext(),moodEvent.getTextComment(),Toast.LENGTH_SHORT).show();
+                Boolean editable = false;
+                if (displayOption.equals("self")){
+                    editable = true;
+                } else if(displayOption.equals("following")){
+                    editable = false;
+                }
+                ViewEditMoodEventFragment.newInstance(selectedMoodEvent, editable).show(getSupportFragmentManager(), "MoodEvent");
                 return false;
             }
         });
