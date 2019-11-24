@@ -2,7 +2,10 @@ package com.cmput301t14.mooditude.models;
 
 import android.graphics.Color;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Model class Mood to store the pre-defined mood and their color, emoticon
@@ -65,6 +68,18 @@ public class Mood {
      */
     public String getEmoticon(){
         return this.emoticonMap.get(moodEnum);
+    }
+
+    public static Float getMoodMapMarkerColor(Mood mood){
+
+        Map<String,Float> markerColorHashMap = new HashMap<>();
+        markerColorHashMap.put("HAPPY", BitmapDescriptorFactory.HUE_GREEN);
+        markerColorHashMap.put("EXCITED", BitmapDescriptorFactory.HUE_YELLOW);
+        markerColorHashMap.put("SAD", BitmapDescriptorFactory.HUE_VIOLET);
+        markerColorHashMap.put("ANGRY", BitmapDescriptorFactory.HUE_RED);
+
+
+        return markerColorHashMap.get(mood.getMood());
     }
 
 }

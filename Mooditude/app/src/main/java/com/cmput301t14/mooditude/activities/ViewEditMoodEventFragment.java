@@ -1,9 +1,13 @@
 package com.cmput301t14.mooditude.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.cmput301t14.mooditude.models.Location;
@@ -35,14 +42,22 @@ public class ViewEditMoodEventFragment extends DialogFragment {
     private Spinner moodSpinner;
     private Spinner socialSituationSpinner;
     private EditText commentEditText;
-    private TextView locationTextView;
+    private Spinner locationSpinner;
     private TextView photoTextView;
 
     private String commentString;
     private String moodString;
     private String socialSituationString;
+    private String locationString;
 
     private MoodEvent selectedMoodEvent;
+
+    LocationManager locationManager;
+    LocationListener locationListener;
+
+    private Double lat;
+    private Double lon;
+    private Location newMoodEventLocation;
 
     /**
      * onAttach for the Fragment, using the super's method
@@ -67,7 +82,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
         moodSpinner = view.findViewById(R.id.frag_mood_spinner);
         socialSituationSpinner = view.findViewById(R.id.frag_social_situation_spinner);
         commentEditText = view.findViewById(R.id.frag_comment_edittext);
-        locationTextView = view.findViewById(R.id.frag_location_textview);
+        locationSpinner = view.findViewById(R.id.location_spinner);
         photoTextView = view.findViewById(R.id.frag_photo_textview);
 
 
@@ -120,6 +135,8 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                 }
             });
 
+            setUpLocationSpinner();
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             final AlertDialog d = builder.setView(view)
                     .setTitle("MoodEvent")
@@ -159,7 +176,7 @@ public class ViewEditMoodEventFragment extends DialogFragment {
                             if (valid) {
                                 // TODO: put actual location and photo
                                 MoodEvent moodEvent = new MoodEvent(mood,
-                                        new Location(0.0, 0.0),
+                                        newMoodEventLocation,
                                         socialSituation, commentString, selectedMoodEvent.getDatetime());
 
                                 // push the MoodEvent to database
@@ -177,7 +194,75 @@ public class ViewEditMoodEventFragment extends DialogFragment {
      return null;
     }
 
+    private void setUpLocationSpinner(){
+        ArrayAdapter<CharSequence> locationArrayAdapter = ArrayAdapter.createFromResource(getContext(),R.array.edit_mood_event_location_string_array, android.R.layout.simple_spinner_item);
+        locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(locationArrayAdapter);
+        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                locationString = parent.getItemAtPosition(position).toString();
+                if (locationString.equals("PREVIOUS LOCATION")){
 
+                    if (selectedMoodEvent.getLocation().getGeopoint() != null) {
+                        newMoodEventLocation = new Location(selectedMoodEvent.getLocation().getGeopoint().getLatitude(), selectedMoodEvent.getLocation().getGeopoint().getLongitude());
+                    }
+                    else {
+                        newMoodEventLocation = new Location();
+                    }
+                }
+                else if (locationString.equals("REMOVE LOCATION")){
+                    newMoodEventLocation = new Location();
+                }
+                else if (locationString.equals("UPDATE LOCATION")){
+//                    newMoodEventLocation = new Location();
+                    getCurrentDeviceLocation();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // nothing selected
+            }
+        });
+    }
+
+    public void getCurrentDeviceLocation(){
+
+        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+                lat = location.getLatitude();
+                lon = location.getLongitude();
+                newMoodEventLocation = new Location(lat,lon);
+//                Toast.makeText(getContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }
+        else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, locationListener);
+        }
+
+    }
     /**
      * Constructor like method, get the parameters passed in as Bundle
      * @param moodEvent - the MoodEvent selected in Mood History

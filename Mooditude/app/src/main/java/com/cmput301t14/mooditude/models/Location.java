@@ -1,12 +1,16 @@
 package com.cmput301t14.mooditude.models;
 
+import android.content.Context;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
 import com.google.firebase.firestore.GeoPoint;
 /**
  * Location class used to store GPS coordinates as GeoPoint
  */
 public class Location {
-//    private Double latitude=0.0;
-//    private Double longtitude=0.0;
+    private Double latitude=0.0;
+    private Double longtitude=0.0;
     private String address ="";
 
     GeoPoint geopoint;
