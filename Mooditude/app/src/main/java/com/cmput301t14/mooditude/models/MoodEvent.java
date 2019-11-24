@@ -90,7 +90,7 @@ public class MoodEvent implements Parcelable, Comparable {
 
     }
 
-    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp , String email) {
+    public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, String email,Timestamp timestamp ) {
         this.author = author;
         this.mood = mood;
         this.location = location;
@@ -279,7 +279,7 @@ public class MoodEvent implements Parcelable, Comparable {
             return new MoodEvent[size];
         }
     };
-}
+//}
 
     /**
      * Override compareTo method of Comparable interface

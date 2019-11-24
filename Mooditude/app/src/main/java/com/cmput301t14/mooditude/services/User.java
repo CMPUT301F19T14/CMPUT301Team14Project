@@ -35,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+//import com.google.type.LatLng;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -443,7 +444,7 @@ public class User {
                
                   
                     String photo = doc.getString("Photograph");
-                    String author=doc.getId();
+//                    String author=doc.getId();
      
                   
                     MoodEvent moodEvent = new MoodEvent(author, mood, location, socialSituation, textComment, datetime,email,photo);
