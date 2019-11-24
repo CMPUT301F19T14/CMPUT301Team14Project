@@ -318,7 +318,6 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
      * lock and disable the editable fields when editable is set to false
      */
     private void disableEdit(){
-        // TODO: add real location and photo
         moodSpinner.setEnabled(false);
         moodSpinner.setFocusable(false);
 
@@ -329,9 +328,8 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         commentEditText.setInputType(InputType.TYPE_NULL);
         commentEditText.setFocusable(false);
 
-//        locationTextView.setEnabled(false);
-//        locationTextView.setInputType(InputType.TYPE_NULL);
-//        locationTextView.setFocusable(false);
+        locationSpinner.setEnabled(false);
+        locationSpinner.setFocusable(false);
 
         photoTextView.setEnabled(false);
         photoTextView.setInputType(InputType.TYPE_NULL);
