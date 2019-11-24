@@ -25,6 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -208,34 +209,7 @@ public class User {
 //                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
                         moodEntry.set(moodHash);
                     }
-                    //--
-                    followerCollRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                                String followerEmail = doc.getId().toString();
-                                DocumentReference documentReference = db.collection("Users")
-                                        .document(followerEmail).collection("Followings").document(user.getEmail());
-                                Location location = moodEvent.getLocation();
-                                Timestamp localDateTime = moodEvent.getDatetime();
-//                        Integer author= moodEvent.getAuthor();
-                                Mood mood = moodEvent.getMood();
-                                SocialSituation socialSituation = moodEvent.getSocialSituation();
-                                String textComment = moodEvent.getTextComment();
-
-                                moodHash.put("user_name", User.getUserName());
-                                moodHash.put("Location", location.getGeopoint());
-                                moodHash.put("Mood", mood.getMood());
-                                moodHash.put("Comment", textComment);
-                                moodHash.put("DateTime", localDateTime);
-                                moodHash.put("SocialSituation", socialSituation.getSocialSituation());
-//                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
-                                documentReference.set(moodHash);
-
-                            }
-                        }
-                    });
-
+                    updateMostRecentMoodEvent();
                 } else {
                     Log.d("TAG", "Failed with: ", task.getException());
                 }
@@ -270,6 +244,56 @@ public class User {
                         Log.w("TAG", "Data deletion failed" + e.toString());
                     }
                 });
+        updateMostRecentMoodEvent();
+    }
+
+    /**
+     * call it to update all follower's following collection after delete/edit/add MoodEvent
+     */
+    public void updateMostRecentMoodEvent(){
+        final HashMap<String,Object> followingHash = new HashMap<>();
+        // put receiver's user_name in no matter the most recent MoodEvent exist of not
+        followingHash.put("user_name", User.getUserName());
+        // set the hash into each follower's following collection
+        followerCollRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                    String followerEmail = doc.getId().toString();
+                    DocumentReference documentReference = db.collection("Users")
+                            .document(followerEmail).collection("Followings").document(user.getEmail());
+                    documentReference.set(followingHash);
+                }
+            }
+        });
+        // then, get the most recent MoodEvent
+        moodHistoryCollRef.orderBy("DateTime", Query.Direction.DESCENDING).limit(1).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(DocumentSnapshot doc: queryDocumentSnapshots){
+                    // put the most recent MoodEvent in if it exists
+                    followingHash.put("user_name", User.getUserName());
+                    followingHash.put("DateTime", doc.getTimestamp("DateTime"));
+                    followingHash.put("Comment", doc.getString("Comment"));
+                    followingHash.put("SocialSituation", doc.get("SocialSituation"));
+                    followingHash.put("Mood",doc.get("Mood"));
+                    followingHash.put("Location",doc.getGeoPoint("Location"));
+                    // set the hash into each follower's following collection
+                    followerCollRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                                String followerEmail = doc.getId().toString();
+                                DocumentReference documentReference = db.collection("Users")
+                                        .document(followerEmail).collection("Followings").document(user.getEmail());
+                                documentReference.set(followingHash);
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
     }
 
     /**
