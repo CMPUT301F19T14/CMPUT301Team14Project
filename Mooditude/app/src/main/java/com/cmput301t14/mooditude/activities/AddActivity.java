@@ -292,7 +292,7 @@ public class AddActivity extends AppCompatActivity {
 //                    newMoodEventLocation = new Location(lat,lon);
                 }
                 else if (locationString.equals("NO LOCATION")){
-                    newMoodEventLocation = new Location();
+                    newMoodEventLocation = null;
                 }
             }
 
@@ -441,7 +441,7 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
-    private void uploadDatabase(String temp){
+    private void uploadDatabase(String photoUrl){
         boolean valid = true;
         Mood mood = MoodEventValidator.checkMood(moodString);
         if (mood == null){
@@ -463,11 +463,10 @@ public class AddActivity extends AppCompatActivity {
 
 
                 if (valid){
-                    // TODO: put actual location and photo
+                    // put actual location and photo
                     MoodEvent moodEvent = new MoodEvent(mood,
                             newMoodEventLocation,
-//                            null,
-                    socialSituation, commentString, temp);
+                    socialSituation, commentString, photoUrl);
 
             // push the MoodEvent to database
             User user=  new User();

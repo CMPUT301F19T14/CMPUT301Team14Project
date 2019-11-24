@@ -21,7 +21,7 @@ public class MoodEventIconSetter {
     }
 
     public  void setLocationIcon(ImageView imageView){
-        if (moodEvent.getLocation().getGeopoint() == null) {
+        if (moodEvent.getLocation() == null) {
             imageView.setVisibility(View.GONE);
         } else {
             imageView.setVisibility(View.VISIBLE);

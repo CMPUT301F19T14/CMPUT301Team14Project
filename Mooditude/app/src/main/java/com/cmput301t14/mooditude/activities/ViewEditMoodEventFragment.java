@@ -348,15 +348,15 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                 locationString = parent.getItemAtPosition(position).toString();
                 if (locationString.equals("PREVIOUS LOCATION")){
 
-                    if (selectedMoodEvent.getLocation().getGeopoint() != null) {
+                    if (selectedMoodEvent.getLocation() != null) {
                         newMoodEventLocation = new Location(selectedMoodEvent.getLocation().getGeopoint().getLatitude(), selectedMoodEvent.getLocation().getGeopoint().getLongitude());
                     }
                     else {
-                        newMoodEventLocation = new Location();
+                        newMoodEventLocation = null;
                     }
                 }
                 else if (locationString.equals("REMOVE LOCATION")){
-                    newMoodEventLocation = new Location();
+                    newMoodEventLocation = null;
                 }
                 else if (locationString.equals("UPDATE LOCATION")){
 //                    newMoodEventLocation = new Location();
@@ -614,7 +614,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
 
     }
-    private void uploadDatabase(String temp){
+    private void uploadDatabase(String imageUrl){
         boolean valid = true;
 
         Mood mood = MoodEventValidator.checkMood(moodString);
@@ -638,7 +638,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             // TODO: put actual location and photo
             MoodEvent moodEvent = new MoodEvent(mood,
                     newMoodEventLocation,
-                    socialSituation, commentString, selectedMoodEvent.getDatetime(),temp);
+                    socialSituation, commentString, selectedMoodEvent.getDatetime(),imageUrl);
 
             // push the MoodEvent to database
             User user = new User();
