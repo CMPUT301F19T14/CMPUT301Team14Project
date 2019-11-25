@@ -198,7 +198,9 @@ public class AddActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    deleteImageView();
+                                    photoImageView.setImageDrawable(null);
+                                    mImageUri = null;
+                                    camPhotoURI = null;
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     break;
@@ -220,9 +222,6 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
-    public void deleteImageView() {
-        photoImageView.setImageDrawable(null);
-    }
 
 
     /**

@@ -103,6 +103,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
     private StorageReference mStorageRef;
 
+
     private StorageTask mUploadTask;
     private static final int PICK_IMAGE_REQUEST = 1;
 
@@ -110,6 +111,8 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     static final int REQUEST_TAKE_PHOTO = 100;
     Uri camPhotoURI = null;
     String camImageStoragePath;
+
+    Boolean deletePhotoFlag = false;
 
 
 
@@ -257,7 +260,8 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                 @Override
                 public boolean onLongClick(View view) {
                     if(selectedMoodEvent.getPhotoUrl() != null){
-                        deletePhoto();
+                        deletePhotoFlag = true;
+                        clearPhotoView();
                         return true;
                     }
                     return false;
@@ -299,6 +303,10 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                         @Override
                         public void onClick(View view) {
                             // validate the input fields
+                            if(deletePhotoFlag == true){
+                                selectedMoodEvent.setPhotoUrl(null);
+                            }
+
                             uploadFile();
 
 
@@ -306,16 +314,16 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                     });
                 }
             });
-        return d;
+            return d;
         }
-     return null;
+        return null;
     }
 
 
 
 
 
-    public void deletePhoto() {
+    public void clearPhotoView() {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -325,9 +333,6 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
                         removeDatabaseURI(selectedMoodEvent.getPhotoUrl());
 
-                        //TODO:
-                        //selectedMoodEvent.setPhotoUrl(null);
-
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
@@ -336,13 +341,30 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         };
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setMessage("Want to delete this photo?")
-                .setPositiveButton("Yes", dialogClickListener)
+                .setPositiveButton("Delete", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener)
                 .show();
 
     }
 
     private void removeDatabaseURI(String photoUrl){
+        String photoPath = photoUrl.substring(photoUrl.indexOf("%")+3,photoUrl.indexOf("?"));
+
+        final StorageReference photoRef = mStorageRef.child(photoPath);
+
+        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                Log.d("Delete Photo", "onSuccess: deleted file");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                Log.d("Delete Photo", "onFailure: did not delete file");
+            }
+        });
 
     }
 
@@ -483,6 +505,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         Glide.with(this).load(photoUrl).into(imageView);
         Toast.makeText(getContext(), photoUrl, Toast.LENGTH_LONG).show();
 
+
 //        Picasso.with(getContext()).load(photoUrl).into(imageView);
     }
 
@@ -491,7 +514,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
-        Toast.makeText(getContext(),"after start act result",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),"open folder",Toast.LENGTH_SHORT).show();
 
     }
 
@@ -594,7 +617,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     }
 
     private void uploadFile(){
-        
+
         if(mImageUri == null){
             if(camPhotoURI != null){
                 mImageUri = camPhotoURI;
@@ -687,6 +710,11 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             commentEditText.setError(MoodEventValidator.getErrorMessage());
         }
 
+        //for photo
+        if(imageUrl == null){
+            imageUrl = selectedMoodEvent.getPhotoUrl();
+        }
+
         if (valid) {
             // TODO: put actual location and photo
             MoodEvent moodEvent = new MoodEvent(mood,
@@ -699,6 +727,9 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 //                                moodArrayAdapter.notifyDataSetChanged();
             getDialog().dismiss();
         }
+
+
     }
 
 }
+
