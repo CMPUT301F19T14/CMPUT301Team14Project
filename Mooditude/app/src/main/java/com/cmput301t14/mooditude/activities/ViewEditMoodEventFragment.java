@@ -252,6 +252,20 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                 }
             });
 
+
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if(selectedMoodEvent.getPhotoUrl() != null){
+                        deletePhoto();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+
+
             setUpLocationSpinner();
 
 
@@ -296,6 +310,45 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         }
      return null;
     }
+
+
+
+
+
+    public void deletePhoto() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        imageView.setImageDrawable(null);
+
+                        removeDatabaseURI(selectedMoodEvent.getPhotoUrl());
+
+                        //TODO:
+                        //selectedMoodEvent.setPhotoUrl(null);
+
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        alert.setMessage("Want to delete this photo?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener)
+                .show();
+
+    }
+
+    private void removeDatabaseURI(String photoUrl){
+
+    }
+
+
+
+
 
     /**
      * Request permission from user
