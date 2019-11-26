@@ -68,12 +68,16 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         ImageView locationImage = view.findViewById(R.id.locationImage);
         ImageView commentImage = view.findViewById(R.id.commentImage);
         ImageView socialSituationImage = view.findViewById(R.id.socialSituationImage);
+        ImageView photoImage = view.findViewById(R.id.imageView3);
+
 
         MoodEventIconSetter moodEventIconSetter = new MoodEventIconSetter(moodEvent);
         moodEventIconSetter.setTimeView(timeTextView);
         moodEventIconSetter.setLocationIcon(locationImage);
         moodEventIconSetter.setCommentIcon(commentImage);
         moodEventIconSetter.setSocialSituationIcon(socialSituationImage);
+        moodEventIconSetter.setPhotoIcon(photoImage);
+
 
 
         emoticonTextView.setText(moodEvent.getMood().getEmoticon());

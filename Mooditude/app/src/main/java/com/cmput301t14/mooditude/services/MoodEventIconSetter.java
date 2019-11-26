@@ -69,4 +69,12 @@ public class MoodEventIconSetter {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         textView.setText(sdf.format(new Date(moodEvent.getDatetime().getSeconds() * 1000)));
     }
+
+    public  void setPhotoIcon(ImageView imageView){
+        if (moodEvent.getPhotoUrl() == null) {
+            imageView.setVisibility(View.GONE);
+        } else {
+            imageView.setVisibility(View.VISIBLE);
+        }
+    }
 }
