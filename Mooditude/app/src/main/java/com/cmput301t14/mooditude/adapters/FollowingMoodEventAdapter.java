@@ -55,12 +55,14 @@ public class FollowingMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         ImageView commentImage = view.findViewById(R.id.commentImage);
         ImageView socialSituationImage = view.findViewById(R.id.socialSituationImage);
         TextView userNameTextView= view.findViewById(R.id.userNameTextView);
+        ImageView photoImage = view.findViewById(R.id.imageView3);
 
         MoodEventIconSetter moodEventIconSetter = new MoodEventIconSetter(moodEvent);
         moodEventIconSetter.setTimeView(timeTextView);
         moodEventIconSetter.setLocationIcon(locationImage);
         moodEventIconSetter.setCommentIcon(commentImage);
         moodEventIconSetter.setSocialSituationIcon(socialSituationImage);
+        moodEventIconSetter.setPhotoIcon(photoImage);
 
 
         userNameTextView.setText(moodEvent.getAuthor());

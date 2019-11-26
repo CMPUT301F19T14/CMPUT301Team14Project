@@ -1,5 +1,6 @@
 package com.cmput301t14.mooditude.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -9,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -27,11 +29,15 @@ import com.cmput301t14.mooditude.services.User;
 
 import com.cmput301t14.mooditude.adapters.SelfMoodEventAdapter;
 import com.cmput301t14.mooditude.models.MoodEvent;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -312,7 +318,29 @@ public class SelfActivity extends AppCompatActivity {
      * When delete is confirmed, remove the moodEvent from the list
      */
     public void onConfirmPressed(MoodEvent selectedMoodEvent) {
+        removeDatabaseURI(selectedMoodEvent.getPhotoUrl());
         userService.deleteMoodEvent(selectedMoodEvent);
+    }
+
+    public void removeDatabaseURI(String photoUrl){
+        String photoPath = photoUrl.substring(photoUrl.indexOf("%")+3,photoUrl.indexOf("?"));
+
+        final StorageReference photoRef = FirebaseStorage.getInstance().getReference("photo").child(photoPath);
+
+        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                Log.d("Delete Photo", "onSuccess: deleted file");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                Log.d("Delete Photo", "onFailure: did not delete file");
+            }
+        });
+
     }
 
     @Override

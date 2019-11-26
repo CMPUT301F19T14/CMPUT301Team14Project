@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 
 import android.Manifest;
@@ -179,9 +181,45 @@ public class AddActivity extends AppCompatActivity {
 
         setUpLocationSpinner();
         setUpSubmitButton();
+        setUpDeletePhoto();
 
 
 //        getCurrentDeviceLocation();
+    }
+
+    private void setUpDeletePhoto() {
+        photoImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                if(mImageUri != null || camPhotoURI != null){
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    photoImageView.setImageDrawable(null);
+                                    mImageUri = null;
+                                    camPhotoURI = null;
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
+                            }
+                        }
+                    };
+                    AlertDialog.Builder alert = new AlertDialog.Builder(AddActivity.this);
+                    alert.setMessage("Are you sure that you want to delete this photo?")
+                            .setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener)
+                            .show();
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
+
     }
 
 
