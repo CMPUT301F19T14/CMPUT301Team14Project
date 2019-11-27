@@ -52,24 +52,24 @@ public class SignInActivity extends AppCompatActivity {
 
 
 // Bypass Sign in for testing
-
-        mFirebaseAuth.signInWithEmailAndPassword("test@test.com","tester")
-////        mFirebaseAuth.signInWithEmailAndPassword("test2@test.com","tester")
-
-
-                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"Please Login Failed!",Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
-                            Intent intentHomeActivity = new Intent(getApplicationContext(), HomeActivity.class);
-                            startActivity(intentHomeActivity);
-                        }
-                    }
-                });
+//      mFirebaseAuth.signInWithEmailAndPassword("test2@test.com","tester")
+//        mFirebaseAuth.signInWithEmailAndPassword("test@test.com","tester")
+//
+//
+//
+//                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (!task.isSuccessful()){
+//                            Toast.makeText(getApplicationContext(),"Please Login Failed!",Toast.LENGTH_SHORT).show();
+//                        }
+//                        else {
+//                            Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
+//                            Intent intentHomeActivity = new Intent(getApplicationContext(), HomeActivity.class);
+//                            startActivity(intentHomeActivity);
+//                        }
+//                    }
+//                });
 
 // End bypass sign in for testing
 
