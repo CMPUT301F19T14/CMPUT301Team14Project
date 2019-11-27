@@ -3,10 +3,12 @@ package com.cmput301t14.mooditude.services;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.cmput301t14.mooditude.activities.AddActivity;
 import com.cmput301t14.mooditude.adapters.SearchAdapter;
 import com.cmput301t14.mooditude.models.Location;
 import com.cmput301t14.mooditude.models.Mood;
@@ -392,6 +394,7 @@ public class User {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 googleMap.clear();
                 LatLng cameraLocation = null;
+                MoodEvent recentMoodEvent = null;
                 for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
                         Location location = null;
                         if (doc.getGeoPoint("Location") != null){
@@ -405,10 +408,21 @@ public class User {
                             String author = doc.getString("user_name");
 
                             MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime,photo);
-
-
                             LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
-                            cameraLocation = moodEventLocation;
+
+                            if (recentMoodEvent != null){
+                                int laterEevent = recentMoodEvent.compareTo(moodEvent);
+//                                Log.i("<previous:current>:",recentMoodEvent.getDatetime().toString()+" "+moodEvent.getDatetime().toString()+"Result: "+String.valueOf(laterEevent));
+                                if (laterEevent == -1){
+                                    recentMoodEvent = moodEvent;
+                                    cameraLocation = moodEventLocation;
+                                }
+                            }
+                            else {
+                                recentMoodEvent = moodEvent;
+                                cameraLocation = moodEventLocation;
+                            }
+
 
                             Marker marker = googleMap.addMarker(new MarkerOptions()
                                     .position(moodEventLocation)
@@ -472,6 +486,7 @@ public class User {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 googleMap.clear();
                 LatLng cameraLocation = null;
+                MoodEvent recentMoodEvent = null;
                 for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
 
                     Location location = null;
@@ -486,10 +501,21 @@ public class User {
                         String author = doc.getString("user_name");
 
                         MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime,photo);
-
-
                         LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
                         cameraLocation = moodEventLocation;
+
+                        if (recentMoodEvent != null){
+                            int laterEevent = recentMoodEvent.compareTo(moodEvent);
+//                                Log.i("<previous:current>:",recentMoodEvent.getDatetime().toString()+" "+moodEvent.getDatetime().toString()+"Result: "+String.valueOf(laterEevent));
+                            if (laterEevent == -1){
+                                recentMoodEvent = moodEvent;
+                                cameraLocation = moodEventLocation;
+                            }
+                        }
+                        else {
+                            recentMoodEvent = moodEvent;
+                            cameraLocation = moodEventLocation;
+                        }
 
                         Marker marker = googleMap.addMarker(new MarkerOptions()
                                 .position(moodEventLocation)
