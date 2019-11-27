@@ -324,10 +324,7 @@ public class AddActivity extends AppCompatActivity {
                 locationString = parent.getItemAtPosition(position).toString();
                 if (locationString.equals("INCLUDE LOCATION")){
                     getCurrentDeviceLocation();
-//                    while (lat == null || lon == null){
-//
-//                    }
-//                    newMoodEventLocation = new Location(lat,lon);
+
                 }
                 else if (locationString.equals("NO LOCATION")){
                     newMoodEventLocation = null;
@@ -344,6 +341,7 @@ public class AddActivity extends AppCompatActivity {
     /**
      * setup the submit button for submitting the mood event,
      * validate and then push the MoodEvent to the database
+     * validate and then push the MoodEvent to the database
      */
     private void setUpSubmitButton(){
         // set submit button
@@ -351,7 +349,6 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // validate the input fields
-
                 uploadFile();
 
 
@@ -593,7 +590,7 @@ public class AddActivity extends AppCompatActivity {
                 lat = location.getLatitude();
                 lon = location.getLongitude();
                 newMoodEventLocation = new Location(lat,lon);
-                Toast.makeText(getApplicationContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -619,6 +616,15 @@ public class AddActivity extends AppCompatActivity {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, locationListener);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
     }
 
 }

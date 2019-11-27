@@ -72,6 +72,7 @@ public class SelfActivity extends AppCompatActivity {
     private User userService;
 
     ImageButton googleMapButton;
+    ImageButton signOutButton;
 
 
     @Override
@@ -128,6 +129,17 @@ public class SelfActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 //                finish();
+            }
+        });
+
+        signOutButton = findViewById(R.id.sign_out_button);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(SelfActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -358,5 +370,14 @@ public class SelfActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
     }
 }

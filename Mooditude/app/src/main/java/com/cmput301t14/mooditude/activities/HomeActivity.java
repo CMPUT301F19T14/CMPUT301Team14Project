@@ -50,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
         user = new User();
 
         setUpMoodEventList();
-        googleMapButton = findViewById(R.id.googleMapsImageButton);
+        googleMapButton = findViewById(R.id.home_map_button);
         googleMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +63,8 @@ public class HomeActivity extends AppCompatActivity {
 //                finish();
             }
         });
+
+
 
     }
 
@@ -127,5 +129,12 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+    }
 }

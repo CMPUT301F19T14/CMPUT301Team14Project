@@ -4,20 +4,14 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.cmput301t14.mooditude.R;
 import com.cmput301t14.mooditude.models.MoodEvent;
 import com.cmput301t14.mooditude.services.User;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -53,16 +47,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        Toast.makeText(getApplicationContext(),displayOption,Toast.LENGTH_SHORT).show();
-
         User user = new User();
         if (displayOption.equals("self")){
-        user.listenSelfMoodEventsOnMap(mMap);
+            user.listenSelfMoodEventsOnMap(mMap);
         }
         else if (displayOption.equals("following")){
-        user.listenFollowingMoodEventsOnMap(mMap);
+            user.listenFollowingMoodEventsOnMap(mMap);
         }
 
+        setUpMarkerClickHandler();
+
+    }
+
+    private void setUpMarkerClickHandler(){
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {

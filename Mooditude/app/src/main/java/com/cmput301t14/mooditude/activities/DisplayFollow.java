@@ -118,7 +118,7 @@ public class DisplayFollow extends AppCompatActivity {
             title.setText("Followers");
         }
         if(listMode==ListMode.Followings){
-            title.setText("You are following:");
+            title.setText("Followings");
         }
 
     }
