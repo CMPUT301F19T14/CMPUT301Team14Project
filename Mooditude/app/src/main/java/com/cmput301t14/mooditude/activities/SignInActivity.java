@@ -54,7 +54,7 @@ public class SignInActivity extends AppCompatActivity {
 // Bypass Sign in for testing
 
         mFirebaseAuth.signInWithEmailAndPassword("test@test.com","tester")
-//        mFirebaseAuth.signInWithEmailAndPassword("test2@test.com","tester")
+////        mFirebaseAuth.signInWithEmailAndPassword("test2@test.com","tester")
 
 
                 .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
@@ -104,7 +104,9 @@ public class SignInActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "Login Success!", Toast.LENGTH_SHORT).show();
                                         Intent intentHomeActivity = new Intent(getApplicationContext(),HomeActivity.class);
                                         intentHomeActivity.putExtra(EXTRA_MESSAGE_Email, email);
+//                                        intentHomeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intentHomeActivity);
+//                                        finish();
                                     }
                                 }
                             });

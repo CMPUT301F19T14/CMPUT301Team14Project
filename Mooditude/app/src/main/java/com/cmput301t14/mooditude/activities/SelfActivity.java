@@ -66,6 +66,7 @@ public class SelfActivity extends AppCompatActivity {
     private User userService;
 
     ImageButton googleMapButton;
+    ImageButton signOutButton;
 
 
     @Override
@@ -122,6 +123,17 @@ public class SelfActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 //                finish();
+            }
+        });
+
+        signOutButton = findViewById(R.id.sign_out_button);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(SelfActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
