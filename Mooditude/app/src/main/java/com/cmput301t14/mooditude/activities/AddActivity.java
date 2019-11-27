@@ -286,10 +286,7 @@ public class AddActivity extends AppCompatActivity {
                 locationString = parent.getItemAtPosition(position).toString();
                 if (locationString.equals("INCLUDE LOCATION")){
                     getCurrentDeviceLocation();
-//                    while (lat == null || lon == null){
-//
-//                    }
-//                    newMoodEventLocation = new Location(lat,lon);
+
                 }
                 else if (locationString.equals("NO LOCATION")){
                     newMoodEventLocation = null;
@@ -555,7 +552,7 @@ public class AddActivity extends AppCompatActivity {
                 lat = location.getLatitude();
                 lon = location.getLongitude();
                 newMoodEventLocation = new Location(lat,lon);
-                Toast.makeText(getApplicationContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
