@@ -55,38 +55,37 @@ public class MenuBar {
                 switch (menuItem.getItemId()){
                     case R.id.navigation_home:
                         Intent intent0 = new Intent(activity, HomeActivity.class);
-                        intent0.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent0.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        activity.startActivity(intent0);
+                        finishActivityWithoutAnimation(intent0);
                         break;
                     case R.id.navigation_search:
                         Intent intent1 = new Intent(activity, SearchActivity.class);
-                        intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent1.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        activity.startActivity(intent1);
+                        finishActivityWithoutAnimation(intent1);
                         break;
                     case R.id.navigation_add:
                         Intent intent2 = new Intent(activity, AddActivity.class);
-                        intent2.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        activity.startActivity(intent2);
+                        finishActivityWithoutAnimation(intent2);
                         break;
                     case R.id.navigation_notification:
                         Intent intent3 = new Intent(activity, NotificationActivity.class);
-                        intent3.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent3.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        activity.startActivity(intent3);
+                        finishActivityWithoutAnimation(intent3);
                         break;
                     case R.id.navigation_self:
                         Intent intent4 = new Intent(activity, SelfActivity.class);
-                        intent4.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent4.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        activity.startActivity(intent4);
+                        finishActivityWithoutAnimation(intent4);
                         break;
                 }
                 return false;
 
             }
         });
+    }
+
+    private void finishActivityWithoutAnimation(Intent intent){
+        Intent i = intent;
+        i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        i.putExtra(EXTRA_MESSAGE_Email, messageEmail);
+        activity.startActivity(i);
+        activity.finish();
+        activity.overridePendingTransition(0,0);
     }
 }

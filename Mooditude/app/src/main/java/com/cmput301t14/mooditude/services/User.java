@@ -391,30 +391,36 @@ public class User {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 googleMap.clear();
+                LatLng cameraLocation = null;
                 for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
-                    if (doc.getGeoPoint("Location") != null){
+                        Location location = null;
+                        if (doc.getGeoPoint("Location") != null){
+                            location = new Location(doc.getGeoPoint("Location"));
+                            Mood mood= new Mood(doc.getString("Mood"));
+                            String textComment=doc.getString("Comment");
+                            SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
+                            Timestamp datetime = doc.getTimestamp("DateTime");
+                            String photo = doc.getString("Photograph");
+                            String email=doc.getId();
+                            String author = doc.getString("user_name");
 
-                        String textComment=doc.getString("Comment");
-                        Mood mood= new Mood(doc.getString("Mood"));
-                        SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
-                        Location location= new Location(doc.getGeoPoint("Location"));
-                        Timestamp datetime = doc.getTimestamp("DateTime");
-                        
-                        String photo = doc.getString("Photograph");
-                        String author=doc.getId();
-                        MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime,photo);
+                            MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime,photo);
 
-                        LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
-                        Marker marker = googleMap.addMarker(new MarkerOptions()
-                                .position(moodEventLocation)
-                                .title(doc.getId().toString())
-                                .alpha((float)0.8)
-                                .icon(BitmapDescriptorFactory.defaultMarker(Mood.getMoodMapMarkerColor(mood)))
-                        );
-                        marker.setTag(moodEvent);
 
-//                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-                    }
+                            LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
+                            cameraLocation = moodEventLocation;
+
+                            Marker marker = googleMap.addMarker(new MarkerOptions()
+                                    .position(moodEventLocation)
+                                    .title(mood.getEmoticon())
+                                    .snippet("Author: "+author)
+                                    .alpha((float)0.8)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(Mood.getMoodMapMarkerColor(mood))));
+                            marker.setTag(moodEvent);
+                        }
+                }
+                if (cameraLocation != null){
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 17.0f));
                 }
             }
         });
@@ -465,32 +471,39 @@ public class User {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 googleMap.clear();
+                LatLng cameraLocation = null;
                 for (QueryDocumentSnapshot doc: queryDocumentSnapshots){
-                    Log.i("follow",doc.getId());
-                    String textComment=doc.getString("Comment");
-                    Log.i("follow","Comment:"+ doc.getString("Comment"));
-                    Log.i("follow","Mood:"+ doc.getString("Mood"));
-                    Mood mood= new Mood(doc.getString("Mood"));
 
-                    SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
-                    Location location= new Location(doc.getGeoPoint("Location"));
-                    Timestamp datetime = doc.getTimestamp("DateTime");
-                    String photo = doc.getString("Photograph");
-                    String author=doc.getId();
+                    Location location = null;
+                    if (doc.getGeoPoint("Location") != null){
+                        location = new Location(doc.getGeoPoint("Location"));
+                        Mood mood= new Mood(doc.getString("Mood"));
+                        String textComment=doc.getString("Comment");
+                        SocialSituation socialSituation= new SocialSituation(doc.getString("SocialSituation"));
+                        Timestamp datetime = doc.getTimestamp("DateTime");
+                        String photo = doc.getString("Photograph");
+                        String email=doc.getId();
+                        String author = doc.getString("user_name");
 
-                    MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime,photo);
-//                    if(doc.getTimestamp("TIMESTAMP")!=null)
-//                        Log.i("TAG",doc.getTimestamp("TIMESTAMP").toString());
-//                    moodEventDataList.add(moodEvent);
+                        MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime,photo);
 
-                    LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
-                    Marker marker = googleMap.addMarker(new MarkerOptions()
-                            .position(moodEventLocation)
-                            .title(moodEvent.getAuthor())
-                            .alpha((float)0.8)
-                            .icon(BitmapDescriptorFactory.defaultMarker(Mood.getMoodMapMarkerColor(mood))));
-                    marker.setTag(moodEvent);
 
+                        LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
+                        cameraLocation = moodEventLocation;
+
+                        Marker marker = googleMap.addMarker(new MarkerOptions()
+                                .position(moodEventLocation)
+                                .title(mood.getEmoticon())
+                                .snippet("Author: "+author)
+                                .alpha((float)0.8)
+                                .icon(BitmapDescriptorFactory.defaultMarker(Mood.getMoodMapMarkerColor(mood))));
+                        marker.setTag(moodEvent);
+                    }
+
+
+                }
+                if (cameraLocation != null){
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 17.0f));
                 }
             }
         });
