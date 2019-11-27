@@ -6,23 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".activities.HomeActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/home_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:layout_weight="1"
-        android:padding="10dp"
-        android:text="Find Out What's New!"
-        android:textColor="#66CCFF"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/following_mood_event_list"
-        app:layout_constraintEnd_toStartOf="@+id/googleMapsImageButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="left"-->
+<!--        android:layout_marginStart="24dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_marginBottom="15dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:padding="10dp"-->
+<!--        android:text="Find Out What's New!"-->
+<!--        android:textColor="#66CCFF"-->
+<!--        android:textSize="30sp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/following_mood_event_list"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/googleMapsImageButton"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationView"
@@ -37,34 +45,33 @@
         app:itemBackground="?android:attr/windowBackground"
         app:menu="@menu/bottom_navigation_menu"/>
 
-    <ImageButton
-        android:id="@+id/googleMapsImageButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="15dp"
-        android:background="#00FFFFFF"
-        android:scaleType="centerInside"
-        android:scaleX="2"
-        android:scaleY="2"
-        app:layout_constraintBottom_toTopOf="@+id/following_mood_event_list"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mymap" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/googleMapsImageButton"-->
+<!--        android:layout_width="48dp"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_marginEnd="30dp"-->
+<!--        android:layout_marginBottom="15dp"-->
+<!--        android:background="#00FFFFFF"-->
+<!--        android:scaleType="centerInside"-->
+<!--        android:scaleX="2"-->
+<!--        android:scaleY="2"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/following_mood_event_list"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/textView"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:srcCompat="@drawable/mymap" />-->
 
     <ListView
         android:id="@+id/following_mood_event_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="80dp"
         android:background="@drawable/border_lines"
         app:layout_constraintBottom_toTopOf="@+id/navigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

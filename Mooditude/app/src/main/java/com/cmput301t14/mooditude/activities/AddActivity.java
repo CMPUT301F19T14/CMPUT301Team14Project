@@ -306,6 +306,7 @@ public class AddActivity extends AppCompatActivity {
     /**
      * setup the submit button for submitting the mood event,
      * validate and then push the MoodEvent to the database
+     * validate and then push the MoodEvent to the database
      */
     private void setUpSubmitButton(){
         // set submit button
@@ -313,7 +314,6 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // validate the input fields
-
                 uploadFile();
 
 

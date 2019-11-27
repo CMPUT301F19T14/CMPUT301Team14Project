@@ -50,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
         user = new User();
 
         setUpMoodEventList();
-        googleMapButton = findViewById(R.id.googleMapsImageButton);
+        googleMapButton = findViewById(R.id.home_map_button);
         googleMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
