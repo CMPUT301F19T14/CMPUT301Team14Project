@@ -94,7 +94,7 @@ public class AddActivity extends AppCompatActivity {
     EditText commentEditText;
 //    TextView locationTextView;
     Spinner locationSpinner;
-    Button choosePhotoButton;
+    ImageButton choosePhotoButton;
     ImageView photoImageView;
     ImageButton photoButton;
 
