@@ -20,15 +20,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * adapter class for following's MoodEvent list in home activity
+ */
 public class FollowingMoodEventAdapter extends ArrayAdapter<MoodEvent> {
     private ArrayList<MoodEvent> moodEventList;
     private Context context;
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     /**
      * Constructor for the adapter
      *
-     * @param context
+     * @param context - caller's context
      * @param moodEventList - the data list of moodEvents
      */
     public FollowingMoodEventAdapter(Context context, ArrayList<MoodEvent> moodEventList) {
@@ -37,6 +39,13 @@ public class FollowingMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         this.context = context;
     }
 
+    /**
+     * getView for each item in the list
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return view created
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
