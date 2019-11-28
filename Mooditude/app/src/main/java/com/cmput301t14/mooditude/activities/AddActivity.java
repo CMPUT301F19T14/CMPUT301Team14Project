@@ -92,7 +92,6 @@ public class AddActivity extends AppCompatActivity {
     Spinner moodSpinner;
     Spinner socialSituationSpinner;
     EditText commentEditText;
-//    TextView locationTextView;
     Spinner locationSpinner;
     ImageButton choosePhotoButton;
     ImageView photoImageView;
@@ -575,6 +574,10 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Ask user for the permission of getting the current
+     * device location.
+     */
     public void getCurrentDeviceLocation(){
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);

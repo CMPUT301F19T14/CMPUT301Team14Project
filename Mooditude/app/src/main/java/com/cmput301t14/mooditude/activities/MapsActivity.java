@@ -13,6 +13,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
 
+/**
+ * Map Activity is used to show the google map that has
+ * markers to represent the location of mood events.
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -59,6 +63,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+
+    /**
+     * Let the marker be clickable and show the info of
+     * mood events. The content shown in the fragment is
+     * not editable.
+     */
     private void setUpMarkerClickHandler(){
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
