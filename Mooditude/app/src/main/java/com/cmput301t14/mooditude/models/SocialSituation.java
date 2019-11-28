@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class SocialSituation implements Parcelable {
     private enum socialSituation_enum{
-        ALONE,ONE_PERSON,SEVERAL,CROWD
+        ALONE,WITH_ANOTHER_PERSON,SEVERAL,CROWD
     }
 
     private socialSituation_enum socialSituation;
