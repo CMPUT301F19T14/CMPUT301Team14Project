@@ -474,8 +474,11 @@ public class User {
                     Timestamp datetime = doc.getTimestamp("DateTime");
                     String author = doc.getString("user_name");
                     String email= doc.getId();
-                    String photo = doc.getString("Photograph");
-                    MoodEvent moodEvent = new MoodEvent(author, mood, location, socialSituation, textComment, datetime,email,photo);
+                    String photo = null;
+                    if (doc.getString("Photograph") != null){
+                        photo =doc.getString("Photograph");
+                    }
+                    MoodEvent moodEvent = new MoodEvent(author, mood, location, socialSituation, textComment, datetime,email, photo);
                     moodEventDataList.add(moodEvent);
                 }
                 Collections.sort(moodEventDataList);

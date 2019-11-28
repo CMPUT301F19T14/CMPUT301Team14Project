@@ -81,6 +81,7 @@ public class FollowRequestMessage extends Message {
                     followingHash.put("SocialSituation", doc.get("SocialSituation"));
                     followingHash.put("Mood",doc.get("Mood"));
                     followingHash.put("Location",doc.getGeoPoint("Location"));
+                    followingHash.put("Photograph", doc.getString("Photograph"));
                     senderFollowingsEntry.set(followingHash);
                 }
 
