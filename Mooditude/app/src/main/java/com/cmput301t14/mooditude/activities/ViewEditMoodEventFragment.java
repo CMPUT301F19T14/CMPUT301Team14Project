@@ -410,6 +410,8 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         photoButton.setEnabled(false);
 //        photoButton.setInputType(InputType.TYPE_NULL);
         photoButton.setFocusable(false);
+        cameraButton.setEnabled(false);
+        cameraButton.setFocusable(false);
     }
 
     private void setUpLocationSpinner(){
