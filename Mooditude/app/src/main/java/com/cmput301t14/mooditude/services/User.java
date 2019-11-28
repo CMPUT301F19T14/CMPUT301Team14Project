@@ -204,7 +204,9 @@ public class User {
                             moodHash.put("SocialSituation", socialSituation.getSocialSituation());
                         }
 
-                        if(photoUrl !=document.getString("Photograph")){
+                        if(photoUrl == null){
+                            moodHash.put("Photograph",null);
+                        }else if(photoUrl !=document.getString("Photograph")){
                             moodHash.put("Photograph", photoUrl);
                         }
                         moodHash.put("DateTime",localDateTime);
