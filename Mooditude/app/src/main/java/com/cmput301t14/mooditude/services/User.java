@@ -3,17 +3,14 @@ package com.cmput301t14.mooditude.services;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.cmput301t14.mooditude.activities.AddActivity;
 import com.cmput301t14.mooditude.adapters.SearchAdapter;
 import com.cmput301t14.mooditude.models.Location;
 import com.cmput301t14.mooditude.models.Mood;
 import com.cmput301t14.mooditude.models.MoodEvent;
-import com.cmput301t14.mooditude.models.Photo;
 import com.cmput301t14.mooditude.models.SocialSituation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,7 +37,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 //import com.google.type.LatLng;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

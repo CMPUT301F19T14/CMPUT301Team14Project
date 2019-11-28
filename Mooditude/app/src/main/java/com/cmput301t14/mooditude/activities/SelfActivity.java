@@ -74,7 +74,10 @@ public class SelfActivity extends AppCompatActivity {
     ImageButton googleMapButton;
     ImageButton signOutButton;
 
-
+    /**
+     * On Creation
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

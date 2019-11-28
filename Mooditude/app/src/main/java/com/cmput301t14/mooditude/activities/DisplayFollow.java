@@ -47,10 +47,13 @@ public class DisplayFollow extends AppCompatActivity {
 
     FirebaseFirestore db;
 
-    public enum ListMode {Followers, Followings}
+    public enum ListMode {Followers, Followings};
 
-    ;
 
+    /**
+     * On create activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,7 +126,9 @@ public class DisplayFollow extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Refresh follow and following list.
+     */
     private void refreshList(){
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

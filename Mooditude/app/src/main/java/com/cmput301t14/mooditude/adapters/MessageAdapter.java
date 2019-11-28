@@ -22,11 +22,16 @@ import com.cmput301t14.mooditude.R;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter for message in notification activity
+ */
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
     Context context;
     ArrayList<Message> messageArrayList;
 
-
+    /**
+     * Inner data class to hold message view info
+     */
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         TextView messageDatetimeTextView, messageContentTextView;
@@ -41,22 +46,34 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     }
 
+    /**
+     * Constructor
+     * @param context
+     * @param messageArrayList
+     */
     public MessageAdapter(Context context, ArrayList<Message> messageArrayList) {
         this.context = context;
         this.messageArrayList = messageArrayList;
         Log.i("LOGB", "MessageAdapter: " + String.valueOf(messageArrayList.size()));
     }
 
+    /**
+     * Create View
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public MessageAdapter.MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(context).inflate(R.layout.message_content, parent, false);
-//        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-//                .inflate(R.layout.message_content, parent, false);
-
-//        MessageViewHolder vh = new MessageViewHolder(v);
         return new MessageAdapter.MessageViewHolder(view);
     }
 
+    /**
+     * Bind View with data
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(MessageViewHolder holder, int position) {
         // - get element from your dataset at this position
@@ -160,7 +177,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    // Return the size of  dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
 //        return 1;
