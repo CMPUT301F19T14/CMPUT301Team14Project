@@ -158,7 +158,6 @@ public class SelfActivity extends AppCompatActivity {
         googleMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Clicked Map Button",Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(SelfActivity.this, MapsActivity.class);
                 intent.putExtra("displayOption", "self");
