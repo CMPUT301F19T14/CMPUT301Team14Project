@@ -14,6 +14,9 @@ import com.cmput301t14.mooditude.models.Person;
 
 import java.util.ArrayList;
 
+/**
+ * This class contains the on click listener for follower and following list
+ */
 public class FollowFollowingListOnClickListener {
 
     public static class Followers implements AdapterView.OnItemClickListener {

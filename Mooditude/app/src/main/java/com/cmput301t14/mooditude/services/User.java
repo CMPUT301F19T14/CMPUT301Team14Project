@@ -73,7 +73,9 @@ public class User {
 
     static private String userName = "";
 
-
+    /**
+     * User class in charge of all the information transfer and communicates with database.
+     */
     public User() {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -595,7 +597,6 @@ public class User {
      * Listen followers return result on arrayList.
      * @param arrayList
      */
-
     public void listenFollower(final ArrayList<String> arrayList) {
         followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -642,6 +643,10 @@ public class User {
 
     }
 
+    /**
+     * Listen to number of following people, reflect result on TextView
+     * @param textView
+     */
     public void listenFollowingNumber(final TextView textView) {
         followingCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -652,6 +657,10 @@ public class User {
         });
     }
 
+    /**
+     * Listen to following people, return result to one arrayList
+     * @param arrayList
+     */
     public void listenFollowing(final ArrayList<String> arrayList) {
         followingCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -664,6 +673,10 @@ public class User {
         });
     }
 
+    /**
+     * Listen to number of following people, reflect result on TextView
+     * @param textView
+     */
     public void listenMoodHistoryNumber(final TextView textView) {
         moodHistoryCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -674,6 +687,10 @@ public class User {
         });
     }
 
+    /**
+     * unfollow target people
+     * @param targetUserEmail
+     */
     public void unfollow(String targetUserEmail) {
         followingCollRef.document(targetUserEmail).delete();
         Log.i("unfollow",targetUserEmail);
@@ -682,6 +699,10 @@ public class User {
                 .delete();
     }
 
+    /**
+     * remove follower
+     * @param targetUserEmail
+     */
     public void remove(String targetUserEmail) {
         followerCollRef.document(targetUserEmail).delete();
         db.collection("Users").document(targetUserEmail)
@@ -689,41 +710,12 @@ public class User {
                 .delete();
     }
 
+    /**
+     * filter getter
+     * @return
+     */
     public Map<String, Boolean> getFilterList() {
         return filterList;
     }
-
-    /**
-     * Replaced by listenUserName
-     */
-//    /**
-//     * fetch user name from database.
-//     */
-//    private void fetchUserName(){
-//        DocumentReference docRef = db.collection("Users").document(user.getEmail());
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        userName = document.getData().get("user_name").toString();
-//                    } else {
-//                        Log.d("TAG", "No such document");
-//                    }
-//                } else {
-//                    Log.d("TAG", "get failed with ", task.getException());
-//                }
-//            }
-//        });
-//    }
-//
-//    /**
-//     * return user name to user
-//     * @return
-//     */
-//    public String getUserName(){
-//        return this.userName;
-//    }
 
 }
