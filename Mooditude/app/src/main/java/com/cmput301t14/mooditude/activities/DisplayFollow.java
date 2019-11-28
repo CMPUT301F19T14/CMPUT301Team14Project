@@ -132,6 +132,8 @@ public class DisplayFollow extends AppCompatActivity {
                     followDataList.clear();
                     for (QueryDocumentSnapshot doc : task.getResult()) {
                         followDataList.add(new Person(doc.getId(), doc.getString("user_name")));
+                        Log.i("refreshList",doc.getString("user_name"));
+                        Log.i("doc.getId()",doc.getId());
                     }
                     followAdapter.notifyDataSetChanged();
                 }

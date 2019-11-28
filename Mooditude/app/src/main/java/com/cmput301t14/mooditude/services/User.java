@@ -107,8 +107,21 @@ public class User {
         final DocumentReference receiverFollowersEntry = receiverFollowers.document(followerID);
 
         final HashMap<String, Object> followerHash = new HashMap<>();
-        followerHash.put("user_name", User.getUserName());
-        receiverFollowersEntry.set(followerHash);
+        DocumentReference followerDocument= db.collection("Users").document(followerID);
+        followerDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                if (task.isSuccessful()) {
+                    if (document.exists()) {
+                        String followerName= document.getString("user_name");
+                        followerHash.put("user_name", followerName);
+                        receiverFollowersEntry.set(followerHash);
+                    }
+                }
+            }
+        });
+
 
     }
 
