@@ -28,6 +28,9 @@ import java.util.ArrayList;
 
 import static com.cmput301t14.mooditude.activities.SelfActivity.EXTRA_MESSAGE_Email;
 
+/**
+ * home activity that displays following's most recent MoodEvent and Map button
+ */
 public class HomeActivity extends AppCompatActivity {
 
     ListView selfMoodEventList;

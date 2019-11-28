@@ -28,6 +28,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 
+/**
+ * activity for displaying notification (messages), requests, text messages
+ */
 public class NotificationActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
