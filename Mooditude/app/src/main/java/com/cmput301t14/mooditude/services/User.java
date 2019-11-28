@@ -233,7 +233,13 @@ public class User {
                         moodHash.put("Comment",textComment);
                         moodHash.put("DateTime",localDateTime);
                         moodHash.put("SocialSituation",socialSituation.getSocialSituation());
-                        moodHash.put("Photograph", photoUrl);
+                        if (photoUrl == null){
+                            moodHash.put("Photograph", null);
+                        }
+                        else{
+                            moodHash.put("Photograph", photoUrl);
+                        }
+
 
 
 //                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
@@ -308,6 +314,7 @@ public class User {
                     followingHash.put("SocialSituation", doc.get("SocialSituation"));
                     followingHash.put("Mood",doc.get("Mood"));
                     followingHash.put("Location",doc.getGeoPoint("Location"));
+                    followingHash.put("Photograph",doc.getString("Photograph"));
                     // set the hash into each follower's following collection
                     followerCollRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
