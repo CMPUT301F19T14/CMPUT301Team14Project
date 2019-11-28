@@ -80,6 +80,10 @@ public class MenuBar {
         });
     }
 
+    /**
+     * Switch to new activity and closes current activity without animation
+     * @param intent
+     */
     private void finishActivityWithoutAnimation(Intent intent){
         Intent i = intent;
         i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

@@ -157,11 +157,13 @@ public class SelfActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Opens google map when user clicks map icon
+     */
     public void googleMapHandler(){
         googleMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Clicked Map Button",Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(SelfActivity.this, MapsActivity.class);
                 intent.putExtra("displayOption", "self");

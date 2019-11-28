@@ -31,13 +31,13 @@ import java.util.ArrayList;
 /**
  * User can search other users in the Search Activity
  * by entering others' user names or user e-mails.
+ * And user can follow or unfollow other users.
  */
 public class SearchActivity extends AppCompatActivity {
 
 
     private EditText searchEditTextView;
     private RecyclerView recyclerView;
-    //    private FirebaseAuth mFirebaseAuth;
     private ArrayList<String> userNameList;
     private ArrayList<String> userEmailList;
     private SearchAdapter searchAdapter;

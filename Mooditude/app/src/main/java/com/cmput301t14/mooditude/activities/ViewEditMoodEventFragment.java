@@ -445,6 +445,10 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         });
     }
 
+    /**
+     * Ask user for the permission of getting the current
+     * device location.
+     */
     public void getCurrentDeviceLocation(){
 
         locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
