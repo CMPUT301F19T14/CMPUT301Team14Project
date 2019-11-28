@@ -335,23 +335,25 @@ public class SelfActivity extends AppCompatActivity {
     }
 
     public void removeDatabaseURI(String photoUrl){
-        String photoPath = photoUrl.substring(photoUrl.indexOf("%")+3,photoUrl.indexOf("?"));
+        if(photoUrl != null) {
+            String photoPath = photoUrl.substring(photoUrl.indexOf("%") + 3, photoUrl.indexOf("?"));
 
-        final StorageReference photoRef = FirebaseStorage.getInstance().getReference("photo").child(photoPath);
+            final StorageReference photoRef = FirebaseStorage.getInstance().getReference("photo").child(photoPath);
 
-        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                // File deleted successfully
-                Log.d("Delete Photo", "onSuccess: deleted file");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Uh-oh, an error occurred!
-                Log.d("Delete Photo", "onFailure: did not delete file");
-            }
-        });
+            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    // File deleted successfully
+                    Log.d("Delete Photo", "onSuccess: deleted file");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Uh-oh, an error occurred!
+                    Log.d("Delete Photo", "onFailure: did not delete file");
+                }
+            });
+        }
 
     }
 
