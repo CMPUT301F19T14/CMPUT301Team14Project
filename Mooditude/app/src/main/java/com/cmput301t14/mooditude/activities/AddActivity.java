@@ -92,7 +92,7 @@ public class AddActivity extends AppCompatActivity {
 
     private Uri mImageUri;
 
-    private String temp;
+    private String downloadUrlStr;
 
     private StorageReference mStorageRef;
 
@@ -183,6 +183,7 @@ public class AddActivity extends AppCompatActivity {
 
     /**
      * set up listener on long click on photo to delete
+     * if long press in imageview; clear all previous URI and clear the image view
      */
     private void setUpDeletePhoto() {
         photoImageView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -291,7 +292,9 @@ public class AddActivity extends AppCompatActivity {
 
 
     /**
-     * set up photo button
+     * set up photo button, Two button:
+     * choosePhotoButton is used for uploading the photo from device
+     * photoButton is used for taking a picture from camera
      */
     private void setUpPhotoViews(){
         //choose a photo from storage
@@ -360,7 +363,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
     /**
-     * set up image chooser
+     * set up image chooser, jump to folder content to choose photo file
      */
     private void openFireChooser(){
         Intent intent = new Intent();
@@ -370,6 +373,14 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Coming back from camera intent/folder intent; requestCode could justify different returning activity
+     * if back from file chooser, get the data URI and draw it to imageview
+     * if back from camera, get photo taken URI and draw it to imageview; also add it to gallery
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -403,13 +414,20 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * get the extension from chosen file, passing by its uri
+     * @param uri
+     * @return
+     */
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    /**
+     * After click submit button, upload the photo file to storage, then upload the moodevent to database by call uploadDatabase
+     */
     private void uploadFile(){
 
         if(mImageUri == null){
@@ -426,7 +444,7 @@ public class AddActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-//                                photoTextView.setText(temp);
+//                                photoTextView.setText(downloadUrlStr);
 
 
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -434,23 +452,13 @@ public class AddActivity extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     // getting image uri and converting into string
                                     Uri downloadUrl = uri;
-                                    temp = downloadUrl.toString();
-                                    uploadDatabase(temp);
+                                    downloadUrlStr = downloadUrl.toString();
+                                    uploadDatabase(downloadUrlStr);
 
 
                                 }
                             });
 
-
-//                            Toast.makeText(AddActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-////                            photo.setmImageUrl(taskSnapshot.getStorage().getDownloadUrl().toString());
-////                            if(photo.getmImageUrl()!=null){
-////                                temp = photo.getmImageUrl();
-//                            temp=taskSnapshot.getStorage().getDownloadUrl().toString();
-//                                Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
-//                                uploadDatabase(temp);
-
-//                            }
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -459,22 +467,19 @@ public class AddActivity extends AppCompatActivity {
                             Toast.makeText(AddActivity.this, "Photo Upload Failed", Toast.LENGTH_LONG).show();
                         }
                     });
-//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-//                            mProgressBar.setProgress((int) progress);
-//                        }
-//                    });
 
         }
         else{
-            uploadDatabase(temp);
+            //no photo condition
+            uploadDatabase(downloadUrlStr);
         }
-
-
     }
 
+    /**
+     * upload moodevent to database
+     * check the null conditions for different mood attributes, if null condition, do not update to database
+     * @param photoUrl
+     */
     private void uploadDatabase(String photoUrl){
         boolean valid = true;
         Mood mood = MoodEventValidator.checkMood(moodString);
@@ -535,8 +540,12 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-
-//  file:///storage/emulated/0/Pictures/CameraDemo/IMG_20191121_172846.jpg
+    /**
+     * createImageFile before take photo form camera, use a folder call CameraDemo to store all photoes of this app
+     * the filepath should be file:///storage/emulated/0/Pictures/CameraDemo/IMG_20191121_172846.jpg
+     * @return
+     * @throws IOException
+     */
     private static File createImageFile() throws IOException {
         Log.i("cam", "create file ");
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
@@ -553,8 +562,10 @@ public class AddActivity extends AppCompatActivity {
         return new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_"+ timeStamp + ".jpg");
     }
-    
 
+    /**
+     * Take a photo from camera
+     */
     private void takePictureIntent() {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
