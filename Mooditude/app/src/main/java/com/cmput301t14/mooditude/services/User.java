@@ -73,13 +73,6 @@ public class User {
 
     static private String userName = "";
 
-    /**
-     * and
-     * User Constructor
-     * Initialize db
-     * mAuth
-     * user
-     */
 
     public User() {
         db = FirebaseFirestore.getInstance();
@@ -103,11 +96,8 @@ public class User {
         filterList.put("EXCITED", Boolean.TRUE);
     }
 
-//    public void setupListenOn
-
     /**
-     * Add follower ID to Follower List along with follower's user_name
-     *
+     * Add followerID to followerList
      * @param followerID
      */
     public void addFollower(String followerID) {
@@ -123,8 +113,7 @@ public class User {
     }
 
     /**
-     * Return userName
-     *
+     * Return userName     *
      * @return
      */
     public static String getUserName() {
@@ -132,7 +121,7 @@ public class User {
     }
 
     /**
-     * Refresh userName. Refresh User name as required.
+     * 
      */
     public static void refreshUserName() {
         userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
