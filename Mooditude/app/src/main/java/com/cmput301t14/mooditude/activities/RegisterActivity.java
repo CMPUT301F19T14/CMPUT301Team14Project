@@ -100,6 +100,9 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Passwords not equal!",Toast.LENGTH_SHORT).show();
                     passwordEditText.requestFocus();
                 }
+                else if (password.length() <6 || confrimPassword.length() < 6){
+                    Toast.makeText(getApplicationContext(),"Password needs to be at least 6 characters!",Toast.LENGTH_SHORT).show();
+                }
                 else if (password.equals(confrimPassword)){
 
                     collectionReference
@@ -117,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             userNameExist = true;
                                             String dbUserName = String.valueOf(document.get("user_name"));
-                                            Toast.makeText(getApplicationContext(),"User Name:"+dbUserName +", Exist: "+ userNameExist +" Success",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(),"User Name:"+dbUserName +" Already Exist",Toast.LENGTH_SHORT).show();
                                         }
                                         if (!userNameExist){
                                             mFirebaseAuth.createUserWithEmailAndPassword(email,password)

@@ -436,7 +436,6 @@ public class User {
                             Marker marker = googleMap.addMarker(new MarkerOptions()
                                     .position(moodEventLocation)
                                     .title(mood.getEmoticon())
-                                    .snippet("Author: "+author)
                                     .alpha((float)0.8)
                                     .icon(BitmapDescriptorFactory.defaultMarker(Mood.getMoodMapMarkerColor(mood))));
                             marker.setTag(moodEvent);

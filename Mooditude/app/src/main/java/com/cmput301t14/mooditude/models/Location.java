@@ -82,7 +82,10 @@ public class Location implements Parcelable {
     }
 
 
-
+    /**
+     * Location Constructor From Parcel
+     * @param in
+     */
     protected Location(Parcel in) {
         address = in.readString();
         Double lat = in.readDouble();
