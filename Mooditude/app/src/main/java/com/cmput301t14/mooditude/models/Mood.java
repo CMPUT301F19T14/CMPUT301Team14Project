@@ -103,6 +103,12 @@ public class Mood implements Parcelable {
         }
     };
 
+
+    /**
+     * Get Google Map Marker Color based on Mood
+     * @param mood
+     * @return
+     */
     public static Float getMoodMapMarkerColor(Mood mood){
 
         Map<String,Float> markerColorHashMap = new HashMap<>();

@@ -154,6 +154,9 @@ public class SelfActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Opens google map when user clicks map icon
+     */
     public void googleMapHandler(){
         googleMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
