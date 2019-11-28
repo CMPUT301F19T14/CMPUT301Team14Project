@@ -77,7 +77,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     private Spinner socialSituationSpinner;
     private EditText commentEditText;
     private Spinner locationSpinner;
-    private TextView photoTextView;
+    private ImageButton photoButton;
     private ImageButton cameraButton;
 
     private String commentString;
@@ -140,7 +140,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         socialSituationSpinner = view.findViewById(R.id.frag_social_situation_spinner);
         commentEditText = view.findViewById(R.id.frag_comment_edittext);
         locationSpinner = view.findViewById(R.id.location_spinner);
-        photoTextView = view.findViewById(R.id.frag_photo_textview);
+        photoButton = view.findViewById(R.id.frag_photo_button);
         imageView=view.findViewById(R.id.testimage);
 
         cameraButton = view.findViewById(R.id.frag_camera_button);
@@ -239,7 +239,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             });
 
 
-            photoTextView.setOnClickListener(new View.OnClickListener() {
+            photoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openFireChooser();
@@ -408,9 +408,9 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 //        locationTextView.setInputType(InputType.TYPE_NULL);
 //        locationTextView.setFocusable(false);
 
-        photoTextView.setEnabled(false);
-        photoTextView.setInputType(InputType.TYPE_NULL);
-        photoTextView.setFocusable(false);
+        photoButton.setEnabled(false);
+//        photoButton.setInputType(InputType.TYPE_NULL);
+        photoButton.setFocusable(false);
     }
 
     private void setUpLocationSpinner(){
