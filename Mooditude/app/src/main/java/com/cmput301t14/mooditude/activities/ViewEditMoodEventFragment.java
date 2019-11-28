@@ -329,7 +329,8 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        imageView.setImageDrawable(null);
+                        //imageView.setImageDrawable(null);
+                        imageView.setImageBitmap(null);
 
                         removeDatabaseURI(selectedMoodEvent.getPhotoUrl());
 
@@ -533,9 +534,11 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                 Log.i("cam",String.valueOf(camPhotoURI));
 
                 //Get the photo
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                Bitmap bitmap = BitmapFactory.decodeFile(camImageStoragePath, options);
-                imageView.setImageBitmap(bitmap);
+//                BitmapFactory.Options options = new BitmapFactory.Options();
+//                Bitmap bitmap = BitmapFactory.decodeFile(camImageStoragePath, options);
+//                imageView.setImageBitmap(bitmap);
+//                mImageUri = data.getData();
+                Picasso.with(getContext()).load(camPhotoURI).into(imageView);
 
                 //add to gallery
                 galleryAddPic(getActivity().getApplicationContext(), camImageStoragePath);
