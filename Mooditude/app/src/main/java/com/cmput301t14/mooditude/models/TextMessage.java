@@ -8,47 +8,41 @@ import java.util.HashMap;
 
 import static java.lang.Boolean.TRUE;
 
+/**
+ * The Message class that only contains text to display
+ */
 public class TextMessage extends Message {
 
     private String text;
 
-    public TextMessage(String text, String receiver) {
-        super(receiver);
-        this.text = text;
-        this.type = "text";
-    }
-
+    /**
+     * Text Message Constructor
+     * @param text the string to display
+     * @param sender the sender user of the message
+     * @param receiver the receiver user of the message
+     * @param datetime the timestamp of the message
+     * @param newMessage flag for read/unread
+     */
     public TextMessage(String text, String sender, String receiver, Timestamp datetime, boolean newMessage) {
         super(sender, receiver, datetime, newMessage);
         this.text = text;
         this.type="text";
     }
 
-    public TextMessage(String text, String sender, String receiver, Timestamp datetime) {
-        super(sender, receiver, datetime);
-        this.text = text;
-        this.type="text";
-    }
-
-    public TextMessage(String text, String sender, String receiver, boolean newMessage) {
-        super(sender, receiver, newMessage);
-        this.text = text;
-        this.type="text";
-    }
-
-    public TextMessage(String text, String sender, String receiver) {
-        super(sender, receiver);
-        this.text = text;
-        this.type="text";
-    }
-
+    /**
+     * get the string representation of the message
+     * @return message string
+     */
     @Override
     public String toStringContent() {
         return this.text;
     }
 
+    /**
+     * upload the message into the given messageBox db collection reference
+     * @param messageBox db collection reference
+     */
     public void  invoke(CollectionReference messageBox){
-//        CollectionReference senderMsgBox= usersCollection.document(this.sender).collection("MessageBox");
         Timestamp timestamp= this.datetime;
         String epochTimeString= String.valueOf(timestamp.getSeconds());
         DocumentReference messageEntry=messageBox.document(epochTimeString);
