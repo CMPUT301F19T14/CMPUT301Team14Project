@@ -174,7 +174,6 @@
                 </LinearLayout>
 
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -186,28 +185,25 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="left"
-                        android:layout_weight="0"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
-                        android:padding="10dp"
                         android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/photo_icon" />
+                        android:src="@drawable/photo_icon" />
 
 
-                    <TextView
-                        android:id="@+id/photo_textview"
-                        android:layout_width="1dp"
+                    <ImageButton
+                        android:id="@+id/photo_button2"
+                        android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="right"
                         android:layout_weight="1"
-                        android:background="@drawable/border_lines"
-                        android:padding="10dp"
-                        android:text="Select Photo"
-                        android:textColor="#66CCFF"
-                        android:textSize="24sp"></TextView>
-
+                        android:scaleType="fitCenter"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/pick_image"></ImageButton>
 
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

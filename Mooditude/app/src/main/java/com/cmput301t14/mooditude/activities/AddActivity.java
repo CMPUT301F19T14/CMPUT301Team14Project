@@ -94,7 +94,7 @@ public class AddActivity extends AppCompatActivity {
     EditText commentEditText;
 //    TextView locationTextView;
     Spinner locationSpinner;
-    TextView photoTextView;
+    ImageButton choosePhotoButton;
     ImageView photoImageView;
     ImageButton photoButton;
 
@@ -161,7 +161,7 @@ public class AddActivity extends AppCompatActivity {
         commentEditText = findViewById(R.id.comment_edittext);
         locationSpinner = findViewById(R.id.location_spinner);
 //        locationTextView = findViewById(R.id.location_textview);
-        photoTextView = findViewById(R.id.photo_textview);
+        choosePhotoButton = findViewById(R.id.photo_button2);
         photoImageView = findViewById(R.id.photo_imageview);
         photoButton = findViewById(R.id.photo_button);
 
@@ -296,7 +296,7 @@ public class AddActivity extends AppCompatActivity {
 
     private void setUpPhotoViews(){
         //choose a photo from storage
-        photoTextView.setOnClickListener(new View.OnClickListener() {
+        choosePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFireChooser();
