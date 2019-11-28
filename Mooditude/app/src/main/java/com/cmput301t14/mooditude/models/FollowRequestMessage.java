@@ -14,37 +14,40 @@ import java.util.HashMap;
 
 import static java.lang.Boolean.TRUE;
 
+/**
+ * Messeage sent whnen one user try to follow another one
+ */
 public class FollowRequestMessage extends Message {
+    /**
+     * Constructor
+     * @param receiver
+     */
     public FollowRequestMessage(String receiver) {
         super(receiver);
         this.type="followRequest";
     }
 
+    /**
+     * Constructor
+     * @param sender
+     * @param receiver
+     * @param datetime
+     * @param newMessage
+     */
     public FollowRequestMessage(String sender, String receiver, Timestamp datetime, boolean newMessage) {
         super(sender, receiver, datetime, newMessage);
         this.type="followRequest";
     }
 
-    public FollowRequestMessage(String sender, String receiver, Timestamp datetime) {
-        super(sender, receiver, datetime);
-        this.type="followRequest";
-    }
-
-    public FollowRequestMessage(String sender, String receiver, boolean newMessage) {
-        super(sender, receiver, newMessage);
-        this.type="followRequest";
-    }
-
-    public FollowRequestMessage(String sender, String receiver) {
-        super(sender, receiver);
-        this.type="followRequest";
-    }
 
     @Override
     public String toStringContent() {
         return this.sender+" wants to follow you";
     }
 
+    /**
+     * Invoke message send from one end to another
+     */
     public void invoke() {
         CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
         CollectionReference receiverMsgBox= usersCollection.document(receiver).collection("MessageBox");
@@ -59,6 +62,9 @@ public class FollowRequestMessage extends Message {
         messageEntry.set(messageHash);
     }
 
+    /**
+     * reaction when receivers agree to be followed
+     */
     public void accept(){
         CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
         new User().addFollower(this.sender);
@@ -102,35 +108,19 @@ public class FollowRequestMessage extends Message {
         new TextMessage("you accepted "+sender+" successfully",this.receiver,this.receiver, Timestamp.now(),TRUE).invoke(receiverMsgBox);
     }
 
+    /**
+     * reaction when user declines follow request
+     */
     public void reject(){
         // send reject message to sender's MessageBox collection
         CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
         CollectionReference senderMsgBox= usersCollection.document(this.sender).collection("MessageBox");
-//        String epochTimeString= String.valueOf(Timestamp.now().getSeconds());
-//        DocumentReference messageEntry=senderMsgBox.document(epochTimeString);
-//        HashMap<String,Object> messageHash = new HashMap<>();
-//        messageHash.put("text", receiver+" rejected you to follow");
-//        messageHash.put("sender",this.receiver);
-//        messageHash.put("receiver",this.sender);
-//        messageHash.put("newMessage", TRUE);
-//        messageHash.put("datetime", Timestamp.now());
-//        messageHash.put("type", "text");
-//        messageEntry.set(messageHash);
 
         new TextMessage(receiver+" rejected you to follow",this.receiver,this.sender, Timestamp.now(),TRUE).invoke(senderMsgBox);
         // delete this message and add new TextMessage to receiver MessageBox collection
         this.delete();
         CollectionReference receiverMsgBox= usersCollection.document(this.receiver).collection("MessageBox");
-//        epochTimeString= String.valueOf(Timestamp.now().getSeconds());
-//        messageEntry = receiverMsgBox.document(epochTimeString);
-//        messageHash = new HashMap<>();
-//        messageHash.put("text", "you rejected "+sender+" successfully");
-//        messageHash.put("sender",this.sender);
-//        messageHash.put("receiver",this.receiver);
-//        messageHash.put("newMessage", TRUE);
-//        messageHash.put("datetime", Timestamp.now());
-//        messageHash.put("type", "text");
-//        messageEntry.set(messageHash);
+
         new TextMessage("you rejected "+sender+" successfully",this.sender,this.receiver, Timestamp.now(),TRUE).invoke(receiverMsgBox);
     }
 }

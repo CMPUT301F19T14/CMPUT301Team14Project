@@ -11,15 +11,24 @@ import com.cmput301t14.mooditude.models.MoodEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-// This is one class dedicated to set different icons for different mood events
+/**
+ * This is one class dedicated to set different icons for different mood events
+ */
 public class MoodEventIconSetter {
     private MoodEvent moodEvent;
 
-
+    /**
+     * constructor
+     * @param moodEvent
+     */
     public MoodEventIconSetter(MoodEvent moodEvent) {
         this.moodEvent = moodEvent;
     }
 
+    /**
+     * set icon for image
+     * @param imageView
+     */
     public  void setLocationIcon(ImageView imageView){
         if (moodEvent.getLocation() == null) {
             imageView.setVisibility(View.GONE);
@@ -28,6 +37,10 @@ public class MoodEventIconSetter {
         }
     }
 
+    /**
+     * set comment icon
+     * @param imageView
+     */
     public  void setCommentIcon(ImageView imageView){
         if (moodEvent.getTextComment().isEmpty() || moodEvent.getTextComment() == null) {
 //            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
@@ -38,6 +51,10 @@ public class MoodEventIconSetter {
         }
     }
 
+    /**
+     * set social situation icon
+     * @param imageView
+     */
     public  void setSocialSituationIcon(ImageView imageView){
         if (moodEvent.getSocialSituation()== null) {
 //            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
@@ -65,11 +82,19 @@ public class MoodEventIconSetter {
         }
     }
 
+    /**
+     * set time
+     * @param textView
+     */
     public  void setTimeView(TextView textView){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         textView.setText(sdf.format(new Date(moodEvent.getDatetime().getSeconds() * 1000)));
     }
 
+    /**
+     * set time icon
+     * @param imageView
+     */
     public  void setPhotoIcon(ImageView imageView){
         if (moodEvent.getPhotoUrl() == null) {
             imageView.setVisibility(View.GONE);

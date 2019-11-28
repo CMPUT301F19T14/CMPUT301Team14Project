@@ -7,15 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import android.app.Activity;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 
 import android.Manifest;
 import android.content.Context;
@@ -24,10 +18,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 
 
-import android.Manifest;
 import android.content.ContentResolver;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
@@ -37,24 +28,20 @@ import android.os.Bundle;
 import android.content.Intent;
 
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301t14.mooditude.models.Location;
-import com.cmput301t14.mooditude.models.Photo;
 import com.cmput301t14.mooditude.services.MenuBar;
 import com.cmput301t14.mooditude.models.Mood;
 import com.cmput301t14.mooditude.models.MoodEvent;
@@ -64,16 +51,13 @@ import com.cmput301t14.mooditude.models.SocialSituation;
 import com.cmput301t14.mooditude.services.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -126,6 +110,12 @@ public class AddActivity extends AppCompatActivity {
     private Double lon;
     private Location newMoodEventLocation;
 
+    /**
+     * Ask permission to access GPS
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -145,6 +135,10 @@ public class AddActivity extends AppCompatActivity {
       
     }
 
+    /**
+     * Activity on create
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,6 +181,9 @@ public class AddActivity extends AppCompatActivity {
 //        getCurrentDeviceLocation();
     }
 
+    /**
+     * set up listener on long click on photo to delete
+     */
     private void setUpDeletePhoto() {
         photoImageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -293,7 +290,9 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * set up photo button
+     */
     private void setUpPhotoViews(){
         //choose a photo from storage
         choosePhotoButton.setOnClickListener(new View.OnClickListener() {
@@ -314,6 +313,9 @@ public class AddActivity extends AppCompatActivity {
         });
       }
 
+    /**
+     * set up location spinner
+     */
     private void setUpLocationSpinner(){
         ArrayAdapter<CharSequence> locationArrayAdapter = ArrayAdapter.createFromResource(this,R.array.new_mood_event_location_string_array, android.R.layout.simple_spinner_item);
         locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -357,6 +359,9 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * set up image chooser
+     */
     private void openFireChooser(){
         Intent intent = new Intent();
         intent.setType("image/*");

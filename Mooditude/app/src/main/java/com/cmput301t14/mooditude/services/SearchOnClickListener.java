@@ -11,8 +11,14 @@ import android.widget.Toast;
 import com.cmput301t14.mooditude.R;
 import com.cmput301t14.mooditude.models.FollowRequestMessage;
 
+/**
+ * Define several on click listener on search list.
+ * Different type of user will return different on click listener
+ */
 public class SearchOnClickListener {
-
+    /**
+     * OnClickListener that for neither follower nor following
+     */
     public static class OtherUser implements View.OnClickListener {
         Context context;
 
@@ -48,6 +54,9 @@ public class SearchOnClickListener {
         }
     }
 
+    /**
+     * OnClickListener that for  follower
+     */
     public static class Follower implements View.OnClickListener {
         Context context;
 
@@ -87,6 +96,9 @@ public class SearchOnClickListener {
         }
     }
 
+    /**
+     * OnClickListener that  following
+     */
     public static class Following implements View.OnClickListener {
         Context context;
 
@@ -123,6 +135,9 @@ public class SearchOnClickListener {
         }
     }
 
+    /**
+     * OnClickListener that for friends
+     */
     public static class Friend implements View.OnClickListener {
         Context context;
 

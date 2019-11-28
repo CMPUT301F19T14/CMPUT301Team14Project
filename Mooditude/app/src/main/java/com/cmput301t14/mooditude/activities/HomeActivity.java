@@ -51,21 +51,11 @@ public class HomeActivity extends AppCompatActivity {
         MenuBar menuBar = new MenuBar(HomeActivity.this, messageEmail, 0);
 
         user = new User();
+        googleMapButton = findViewById(R.id.home_map_button);
 
         setUpMoodEventList();
-        googleMapButton = findViewById(R.id.home_map_button);
-        googleMapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Clicked Map Button",Toast.LENGTH_SHORT).show();
+        googleMapHandler();
 
-                Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
-                intent.putExtra("displayOption", "following");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-//                finish();
-            }
-        });
 
 
 
@@ -130,6 +120,19 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void googleMapHandler(){
+        googleMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
+                intent.putExtra("displayOption", "following");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -74,7 +74,10 @@ public class SelfActivity extends AppCompatActivity {
     ImageButton googleMapButton;
     ImageButton signOutButton;
 
-
+    /**
+     * On Creation
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,30 +121,11 @@ public class SelfActivity extends AppCompatActivity {
         userNameTextView = findViewById(R.id.userNametextView);
         numberMoodEvents = findViewById(R.id.number_of_mood_events);
         googleMapButton = findViewById(R.id.googleMapsImageButton);
-
-        googleMapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Clicked Map Button",Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(SelfActivity.this, MapsActivity.class);
-                intent.putExtra("displayOption", "self");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-//                finish();
-            }
-        });
-
         signOutButton = findViewById(R.id.sign_out_button);
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(SelfActivity.this,MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+
+        googleMapHandler();
+        setSignOutHandler();
+
 
         // Set up userName listener
         userService.listenUserName(userNameTextView);
@@ -149,69 +133,6 @@ public class SelfActivity extends AppCompatActivity {
         userService.listenFollowingNumber(numberFollowingTextView);
         userService.listenMoodHistoryNumber(numberMoodEvents);
 
-/**
- *  Moved to User Class with realtime listener
- *  Original functinality:
- *  Follower Number
- *  Following Number
- *  Number of Moodevents
- */
-//        final DocumentReference documentReference = collectionReference.document(messageEmail);
-        //get the total number of followers/following
-//        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
-//
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot doc = task.getResult();
-//
-//                    if(!doc.contains("MoodHistory")){
-//                        CollectionReference moodHistory = documentReference.collection("MoodHistory");
-//                        moodHistory.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                if (task.isSuccessful()) {
-//                                    Log.d("TAG", task.getResult().size() + "");
-//                                    numberMoodEvents.setText(String.valueOf(task.getResult().size()));
-//                                } else {
-//                                    Log.d(TAG, "Error getting documents: ", task.getException());
-//                                }
-//                            }
-//                        });
-//
-//                    }
-//                    else{
-//                        numberMoodEvents.setText("0");
-//
-//                    }
-//
-//                    userNameTextView.setText(String.valueOf(doc.get("user_name")));
-//
-//                    ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
-//                    if(followerList==null){
-//                        numberFollowerTextView.setText("0");
-//                    }
-//                    else{
-//                        numberFollowerTextView.setText(String.valueOf(followerList.size()));
-//                    }
-//
-//                    ArrayList<String> followingList = (ArrayList<String>) doc.get("following");
-//                    if(followerList==null){
-//                        numberFollowingTextView.setText("0");
-//                    }
-//                    else{
-//                        numberFollowingTextView.setText(String.valueOf(followingList.size()));
-//                    }
-//
-//                }
-//            }
-//        })
-//        .addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         //if click on item, go to DisplayFollow activity to show the summary list
         followerTextView.setOnClickListener(new View.OnClickListener() {
@@ -232,6 +153,32 @@ public class SelfActivity extends AppCompatActivity {
                 intent.putExtra(EXTRA_MESSAGE_Mode, DisplayFollow.ListMode.Followings.toString());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
+            }
+        });
+    }
+
+    public void googleMapHandler(){
+        googleMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Clicked Map Button",Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(SelfActivity.this, MapsActivity.class);
+                intent.putExtra("displayOption", "self");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void setSignOutHandler(){
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(SelfActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
