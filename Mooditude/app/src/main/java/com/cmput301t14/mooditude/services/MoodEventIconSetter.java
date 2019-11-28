@@ -47,11 +47,11 @@ public class MoodEventIconSetter {
             Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageResource(R.drawable.ic_alone);
-        } else if(moodEvent.getSocialSituation().getSocialSituation().equals("ONE_PERSON")) {
+        } else if(moodEvent.getSocialSituation().getSocialSituation().equals("WITH_ANOTHER_PERSON")) {
 //            commentImage.clearColorFilter();
             Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
             imageView.setVisibility(View.VISIBLE);
-            imageView.setImageResource(R.drawable.ic_with_one_person);
+            imageView.setImageResource(R.drawable.ic_with_another_person);
         } else if(moodEvent.getSocialSituation().getSocialSituation().equals("SEVERAL")) {
 //            commentImage.clearColorFilter();
             Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
