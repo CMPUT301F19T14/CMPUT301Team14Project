@@ -121,7 +121,7 @@ public class User {
     }
 
     /**
-     * 
+     * refresh user name
      */
     public static void refreshUserName() {
         userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -138,16 +138,18 @@ public class User {
         Log.i("refreshUserName", User.userName);
     }
 
+    /**
+     * return user email
+     * @return
+     */
     public String getEmail() {
         return user.getEmail();
     }
 
     /**
      * push Mood Event to database.
-     *
      * @param moodEvent
      */
-
     public void pushMoodEvent(final MoodEvent moodEvent) {
         CollectionReference moodHistory = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
@@ -228,9 +230,6 @@ public class User {
                         else{
                             moodHash.put("Photograph", photoUrl);
                         }
-
-
-
 //                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
                         moodEntry.set(moodHash);
                     }
@@ -245,7 +244,6 @@ public class User {
 
     /**
      * delete Mood Event from server.
-     *
      * @param selectedMoodEvent
      */
     public void deleteMoodEvent(MoodEvent selectedMoodEvent) {
@@ -323,8 +321,7 @@ public class User {
     }
 
     /**
-     * Connect Array Adapter to database to retrieve online information from database.
-     *
+     * Connect Array Adapter to database to retrieve online information from database.     *
      * @param moodEventDataList
      * @param moodEventAdapter
      */
@@ -382,7 +379,10 @@ public class User {
         }
     }
 
-
+    /**
+     * Listen moodEvents and reflects results on map.
+     * @param googleMap
+     */
     public void listenSelfMoodEventsOnMap(final GoogleMap googleMap){
         CollectionReference collectionReference = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
@@ -438,6 +438,11 @@ public class User {
         });
     }
 
+    /**
+     * Listen mood events than update on Home Acticity
+     * @param moodEventDataList
+     * @param moodEventAdapter
+     */
     public void listenFollowingMoodEvents(final ArrayList<MoodEvent> moodEventDataList, final ArrayAdapter<MoodEvent> moodEventAdapter){
 
         CollectionReference collectionReference = db.collection("Users")
@@ -477,7 +482,10 @@ public class User {
         });
     }
 
-
+    /**
+     * Listen following moodEvents and reflects results on map.
+     * @param googleMap
+     */
     public void listenFollowingMoodEventsOnMap(final GoogleMap googleMap){
         CollectionReference collectionReference = db.collection("Users")
                 .document(user.getEmail()).collection("Followings");
@@ -536,6 +544,10 @@ public class User {
         });
     }
 
+    /**
+     * Listen user name and reflect result on textView
+     * @param textView
+     */
     public void listenUserName(final TextView textView){
 
 //        DocumentReference docRef = db.collection("Users").document(user.getEmail());
@@ -552,6 +564,10 @@ public class User {
         });
     }
 
+    /**
+     * Listen number of followers and reflects results on textView.
+     * @param textView
+     */
     public void listenFollowerNumber(final TextView textView) {
         followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -561,6 +577,11 @@ public class User {
             }
         });
     }
+
+    /**
+     * Listen followers return result on arrayList.
+     * @param arrayList
+     */
 
     public void listenFollower(final ArrayList<String> arrayList) {
         followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
