@@ -430,8 +430,6 @@ public class AddActivity extends AppCompatActivity {
                                     // getting image uri and converting into string
                                     Uri downloadUrl = uri;
                                     temp = downloadUrl.toString();
-                                    Toast.makeText(AddActivity.this, "Photo Upload successful", Toast.LENGTH_LONG).show();
-                                    Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
                                     uploadDatabase(temp);
 
 
@@ -454,7 +452,6 @@ public class AddActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(AddActivity.this, "Photo Upload Failed", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
                         }
                     });
 //                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -465,9 +462,6 @@ public class AddActivity extends AppCompatActivity {
 //                        }
 //                    });
 
-            if (mUploadTask.isComplete()){
-                Toast.makeText(getApplicationContext(), "123", Toast.LENGTH_SHORT).show();
-            }
         }
         else{
             uploadDatabase(temp);

@@ -502,8 +502,6 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     private void showimage(String photoUrl){
 //        String url = "com.google.android.gms.tasks.zzu@3042b78";
         Glide.with(this).load(photoUrl).into(imageView);
-        Toast.makeText(getContext(), photoUrl, Toast.LENGTH_LONG).show();
-
 
 //        Picasso.with(getContext()).load(photoUrl).into(imageView);
     }
@@ -513,8 +511,6 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
-        Toast.makeText(getContext(),"open folder",Toast.LENGTH_SHORT).show();
-
     }
 
 
@@ -648,7 +644,6 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                                     // getting image uri and converting into string
                                     Uri downloadUrl = uri;
                                     temp = downloadUrl.toString();
-                                    Toast.makeText(getContext(), temp, Toast.LENGTH_SHORT).show();
                                     uploadDatabase(temp);
 
 
@@ -670,7 +665,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getContext(), temp, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "failed to upload", Toast.LENGTH_SHORT).show();
                         }
                     });
 //                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -681,9 +676,6 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 //                        }
 //                    });
 
-            if (mUploadTask.isComplete()){
-                Toast.makeText(getContext(), "123", Toast.LENGTH_SHORT).show();
-            }
         }
         else{
             uploadDatabase(temp);
