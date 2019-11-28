@@ -55,7 +55,8 @@
                     android:layout_weight="1.2"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="Name" />
+                    android:text="Name"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/emoticon_textview"
