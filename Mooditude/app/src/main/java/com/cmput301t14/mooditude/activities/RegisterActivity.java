@@ -117,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             userNameExist = true;
                                             String dbUserName = String.valueOf(document.get("user_name"));
-                                            Toast.makeText(getApplicationContext(),"User Name:"+dbUserName +", Exist: "+ userNameExist +" Success",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(),"User Name:"+dbUserName +" Already Exist",Toast.LENGTH_SHORT).show();
                                         }
                                         if (!userNameExist){
                                             mFirebaseAuth.createUserWithEmailAndPassword(email,password)
