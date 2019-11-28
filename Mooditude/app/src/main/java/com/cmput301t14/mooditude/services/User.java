@@ -73,7 +73,9 @@ public class User {
 
     static private String userName = "";
 
-
+    /**
+     * User class in charge of all the information transfer and communicates with database.
+     */
     public User() {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -107,8 +109,21 @@ public class User {
         final DocumentReference receiverFollowersEntry = receiverFollowers.document(followerID);
 
         final HashMap<String, Object> followerHash = new HashMap<>();
-        followerHash.put("user_name", User.getUserName());
-        receiverFollowersEntry.set(followerHash);
+        DocumentReference followerDocument= db.collection("Users").document(followerID);
+        followerDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                if (task.isSuccessful()) {
+                    if (document.exists()) {
+                        String followerName= document.getString("user_name");
+                        followerHash.put("user_name", followerName);
+                        receiverFollowersEntry.set(followerHash);
+                    }
+                }
+            }
+        });
+
 
     }
 
@@ -121,7 +136,7 @@ public class User {
     }
 
     /**
-     * 
+     * refresh user name
      */
     public static void refreshUserName() {
         userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -138,16 +153,18 @@ public class User {
         Log.i("refreshUserName", User.userName);
     }
 
+    /**
+     * return user email
+     * @return
+     */
     public String getEmail() {
         return user.getEmail();
     }
 
     /**
      * push Mood Event to database.
-     *
      * @param moodEvent
      */
-
     public void pushMoodEvent(final MoodEvent moodEvent) {
         CollectionReference moodHistory = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
@@ -228,9 +245,6 @@ public class User {
                         else{
                             moodHash.put("Photograph", photoUrl);
                         }
-
-
-
 //                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
                         moodEntry.set(moodHash);
                     }
@@ -245,7 +259,6 @@ public class User {
 
     /**
      * delete Mood Event from server.
-     *
      * @param selectedMoodEvent
      */
     public void deleteMoodEvent(MoodEvent selectedMoodEvent) {
@@ -323,8 +336,7 @@ public class User {
     }
 
     /**
-     * Connect Array Adapter to database to retrieve online information from database.
-     *
+     * Connect Array Adapter to database to retrieve online information from database.     *
      * @param moodEventDataList
      * @param moodEventAdapter
      */
@@ -382,7 +394,10 @@ public class User {
         }
     }
 
-
+    /**
+     * Listen moodEvents and reflects results on map.
+     * @param googleMap
+     */
     public void listenSelfMoodEventsOnMap(final GoogleMap googleMap){
         CollectionReference collectionReference = db.collection("Users")
                 .document(user.getEmail()).collection("MoodHistory");
@@ -438,6 +453,11 @@ public class User {
         });
     }
 
+    /**
+     * Listen mood events than update on Home Acticity
+     * @param moodEventDataList
+     * @param moodEventAdapter
+     */
     public void listenFollowingMoodEvents(final ArrayList<MoodEvent> moodEventDataList, final ArrayAdapter<MoodEvent> moodEventAdapter){
 
         CollectionReference collectionReference = db.collection("Users")
@@ -477,7 +497,10 @@ public class User {
         });
     }
 
-
+    /**
+     * Listen following moodEvents and reflects results on map.
+     * @param googleMap
+     */
     public void listenFollowingMoodEventsOnMap(final GoogleMap googleMap){
         CollectionReference collectionReference = db.collection("Users")
                 .document(user.getEmail()).collection("Followings");
@@ -536,6 +559,10 @@ public class User {
         });
     }
 
+    /**
+     * Listen user name and reflect result on textView
+     * @param textView
+     */
     public void listenUserName(final TextView textView){
 
 //        DocumentReference docRef = db.collection("Users").document(user.getEmail());
@@ -552,6 +579,10 @@ public class User {
         });
     }
 
+    /**
+     * Listen number of followers and reflects results on textView.
+     * @param textView
+     */
     public void listenFollowerNumber(final TextView textView) {
         followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -562,6 +593,10 @@ public class User {
         });
     }
 
+    /**
+     * Listen followers return result on arrayList.
+     * @param arrayList
+     */
     public void listenFollower(final ArrayList<String> arrayList) {
         followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -608,6 +643,10 @@ public class User {
 
     }
 
+    /**
+     * Listen to number of following people, reflect result on TextView
+     * @param textView
+     */
     public void listenFollowingNumber(final TextView textView) {
         followingCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -618,6 +657,10 @@ public class User {
         });
     }
 
+    /**
+     * Listen to following people, return result to one arrayList
+     * @param arrayList
+     */
     public void listenFollowing(final ArrayList<String> arrayList) {
         followingCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -630,6 +673,10 @@ public class User {
         });
     }
 
+    /**
+     * Listen to number of following people, reflect result on TextView
+     * @param textView
+     */
     public void listenMoodHistoryNumber(final TextView textView) {
         moodHistoryCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -640,6 +687,10 @@ public class User {
         });
     }
 
+    /**
+     * unfollow target people
+     * @param targetUserEmail
+     */
     public void unfollow(String targetUserEmail) {
         followingCollRef.document(targetUserEmail).delete();
         Log.i("unfollow",targetUserEmail);
@@ -648,6 +699,10 @@ public class User {
                 .delete();
     }
 
+    /**
+     * remove follower
+     * @param targetUserEmail
+     */
     public void remove(String targetUserEmail) {
         followerCollRef.document(targetUserEmail).delete();
         db.collection("Users").document(targetUserEmail)
@@ -655,41 +710,12 @@ public class User {
                 .delete();
     }
 
+    /**
+     * filter getter
+     * @return
+     */
     public Map<String, Boolean> getFilterList() {
         return filterList;
     }
-
-    /**
-     * Replaced by listenUserName
-     */
-//    /**
-//     * fetch user name from database.
-//     */
-//    private void fetchUserName(){
-//        DocumentReference docRef = db.collection("Users").document(user.getEmail());
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        userName = document.getData().get("user_name").toString();
-//                    } else {
-//                        Log.d("TAG", "No such document");
-//                    }
-//                } else {
-//                    Log.d("TAG", "get failed with ", task.getException());
-//                }
-//            }
-//        });
-//    }
-//
-//    /**
-//     * return user name to user
-//     * @return
-//     */
-//    public String getUserName(){
-//        return this.userName;
-//    }
 
 }
