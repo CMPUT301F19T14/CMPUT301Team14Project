@@ -421,7 +421,6 @@ public class User {
 
                             if (recentMoodEvent != null){
                                 int laterEevent = recentMoodEvent.compareTo(moodEvent);
-//                                Log.i("<previous:current>:",recentMoodEvent.getDatetime().toString()+" "+moodEvent.getDatetime().toString()+"Result: "+String.valueOf(laterEevent));
                                 if (laterEevent == -1){
                                     recentMoodEvent = moodEvent;
                                     cameraLocation = moodEventLocation;
@@ -521,11 +520,9 @@ public class User {
 
                         MoodEvent moodEvent=new MoodEvent(author,mood, location,socialSituation,textComment,datetime,photo);
                         LatLng moodEventLocation = new LatLng(location.getGeopoint().getLatitude(), location.getGeopoint().getLongitude());
-                        cameraLocation = moodEventLocation;
 
                         if (recentMoodEvent != null){
                             int laterEevent = recentMoodEvent.compareTo(moodEvent);
-//                                Log.i("<previous:current>:",recentMoodEvent.getDatetime().toString()+" "+moodEvent.getDatetime().toString()+"Result: "+String.valueOf(laterEevent));
                             if (laterEevent == -1){
                                 recentMoodEvent = moodEvent;
                                 cameraLocation = moodEventLocation;
