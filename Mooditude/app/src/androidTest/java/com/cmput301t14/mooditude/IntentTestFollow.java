@@ -40,8 +40,8 @@ public class IntentTestFollow {
         solo.assertCurrentActivity("Wrong Activity", SignInActivity.class);
 
 
-        String userName="xianda";
-        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text),userName+"@gmail.com");
+        String userName="ui";
+        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text),userName+"@test.com");
         solo.enterText((EditText) solo.getView(R.id.signin_password_edit_text),"123456");
 
         solo.clickOnButton("Sign In");
