@@ -21,3 +21,4 @@
 ### Known Issues:
 
 - Firebase connection may be **Unstable** When Running on Android Emulators. If Login or Register Failed, please try **Uninstall** the APP and **Reinstall** APP 
+- Camera function works well between API 26-28
