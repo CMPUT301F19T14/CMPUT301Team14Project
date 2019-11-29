@@ -2,11 +2,10 @@ package com.cmput301t14.mooditude;
 
 import android.app.Activity;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
-
-import com.cmput301t14.mooditude.activities.DisplayFollow;
+import com.cmput301t14.mooditude.activities.AddActivity;
 import com.cmput301t14.mooditude.activities.HomeActivity;
 import com.cmput301t14.mooditude.activities.MainActivity;
 import com.cmput301t14.mooditude.activities.SelfActivity;
@@ -17,11 +16,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
 
-public class IntentTestFollow {
+public class IntentTestAddMoodEvent {
     private Solo solo;
 
     @Rule
@@ -60,39 +58,43 @@ public class IntentTestFollow {
     }
 
     @Test
-    public void getFollower(){
+    public void addMoodEventWithCheck(){
+
+        solo.clickOnView(solo.getView(R.id.navigation_add));
+        solo.waitForActivity(AddActivity.class);
+
+        solo.clickOnView(solo.getView(Spinner.class, 0));
+        solo.scrollToTop();
+        solo.clickOnText("ANGRY");
+
+        solo.clickOnView(solo.getView(Spinner.class, 1));
+        solo.scrollToTop();
+        solo.clickOnText("WITH_ANOTHER_PERSON");
+
+        solo.enterText((EditText) solo.getView(R.id.comment_edittext),"ui@test.com ADD");
+
+
+        solo.clickOnView(solo.getView(Spinner.class, 2));
+        solo.scrollToTop();
+        solo.clickOnText("INCLUDE LOCATION");
+
+
+        solo.clickOnView(solo.getView(R.id.submit_button));
+        solo.sleep(100);
+
         solo.clickOnView(solo.getView(R.id.navigation_self));
+        solo.waitForActivity(SelfActivity.class);
 
         solo.waitForActivity(SelfActivity.class);
-        solo.waitForText("2");
+        solo.clickInList(0);
+        solo.waitForFragmentById(R.id.frag_frame_add,1000);
 
-
-        solo.clickOnView(solo.getView(R.id.follower));
-
-        solo.waitForActivity(DisplayFollow.class);
-
-        solo.waitForText("ui2@test.com");
-        solo.waitForText("wangye@warning.com");
-
+        solo.waitForText("ANGRY");
+        solo.waitForText("WITH_ANOTHER_PERSON");
+        solo.waitForText("ui@test.com ADD");
     }
 
-    @Test
-    public void getFollowing(){
-        solo.clickOnView(solo.getView(R.id.navigation_self));
-
-        solo.waitForActivity(SelfActivity.class);
-        solo.waitForText("2");
 
 
-        solo.clickOnView(solo.getView(R.id.following));
-
-        solo.waitForActivity(DisplayFollow.class);
-
-        solo.waitForText("ui2@test.com");
-        solo.waitForText("wangye@warning.com");
-
-
-
-    }
 
 }

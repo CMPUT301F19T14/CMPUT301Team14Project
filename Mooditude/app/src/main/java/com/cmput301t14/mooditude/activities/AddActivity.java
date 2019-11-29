@@ -151,9 +151,9 @@ public class AddActivity extends AppCompatActivity {
         socialSituationSpinner = findViewById(R.id.social_situation_spinner);
         commentEditText = findViewById(R.id.comment_edittext);
         locationSpinner = findViewById(R.id.location_spinner);
-        choosePhotoButton = findViewById(R.id.photo_button2);
+        choosePhotoButton = findViewById(R.id.upload_photo_button);
         photoImageView = findViewById(R.id.photo_imageview);
-        photoButton = findViewById(R.id.photo_button);
+        photoButton = findViewById(R.id.camera_button);
 
         mStorageRef = FirebaseStorage.getInstance().getReference("photo");
 

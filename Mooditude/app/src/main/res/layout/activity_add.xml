@@ -181,7 +181,7 @@
                     android:padding="10dp">
 
                     <ImageButton
-                        android:id="@+id/photo_button"
+                        android:id="@+id/camera_button"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="left"
@@ -192,7 +192,7 @@
 
 
                     <ImageButton
-                        android:id="@+id/photo_button2"
+                        android:id="@+id/upload_photo_button"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="right"

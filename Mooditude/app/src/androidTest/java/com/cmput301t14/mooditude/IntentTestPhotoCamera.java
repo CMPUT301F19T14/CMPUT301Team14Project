@@ -1,15 +1,16 @@
 package com.cmput301t14.mooditude;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.provider.MediaStore;
 import android.widget.EditText;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.cmput301t14.mooditude.activities.DisplayFollow;
+import com.cmput301t14.mooditude.activities.AddActivity;
 import com.cmput301t14.mooditude.activities.HomeActivity;
 import com.cmput301t14.mooditude.activities.MainActivity;
-import com.cmput301t14.mooditude.activities.SelfActivity;
 import com.cmput301t14.mooditude.activities.SignInActivity;
 import com.robotium.solo.Solo;
 
@@ -17,11 +18,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
 
-public class IntentTestFollow {
+public class IntentTestPhotoCamera {
     private Solo solo;
 
     @Rule
@@ -59,40 +57,41 @@ public class IntentTestFollow {
 
     }
 
-    @Test
-    public void getFollower(){
-        solo.clickOnView(solo.getView(R.id.navigation_self));
-
-        solo.waitForActivity(SelfActivity.class);
-        solo.waitForText("2");
-
-
-        solo.clickOnView(solo.getView(R.id.follower));
-
-        solo.waitForActivity(DisplayFollow.class);
-
-        solo.waitForText("ui2@test.com");
-        solo.waitForText("wangye@warning.com");
-
-    }
 
     @Test
-    public void getFollowing(){
-        solo.clickOnView(solo.getView(R.id.navigation_self));
+    public void addCamera(){
+        solo.clickOnView(solo.getView(R.id.navigation_add));
 
-        solo.waitForActivity(SelfActivity.class);
-        solo.waitForText("2");
+        solo.waitForActivity(AddActivity.class);
 
+        solo.clickOnView(solo.getView(R.id.camera_button));
 
-        solo.clickOnView(solo.getView(R.id.following));
+        solo.waitForActivity(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        solo.waitForActivity(DisplayFollow.class);
+        solo.sleep(500);
 
-        solo.waitForText("ui2@test.com");
-        solo.waitForText("wangye@warning.com");
+        solo.assertCurrentActivity("Wrong Activity", MediaStore.ACTION_IMAGE_CAPTURE);
 
 
 
     }
+    @Test
+    public void choosePhoto(){
+        solo.clickOnView(solo.getView(R.id.navigation_add));
+
+        solo.waitForActivity(AddActivity.class);
+
+        solo.clickOnView(solo.getView(R.id.upload_photo_button));
+
+        solo.waitForActivity(Intent.ACTION_GET_CONTENT);
+
+        solo.sleep(500);
+
+        solo.assertCurrentActivity("Wrong Activity", Intent.ACTION_GET_CONTENT);
+
+
+    }
+
+
 
 }
