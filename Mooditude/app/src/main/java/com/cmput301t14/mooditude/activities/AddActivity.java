@@ -72,16 +72,15 @@ public class AddActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
-    ImageButton submitButton;
-    Spinner moodSpinner;
-    Spinner socialSituationSpinner;
-    EditText commentEditText;
-    Spinner locationSpinner;
-    ImageButton choosePhotoButton;
-    ImageView photoImageView;
-    ImageButton photoButton;
+    private ImageButton submitButton;
+    private Spinner moodSpinner;
+    private Spinner socialSituationSpinner;
+    private EditText commentEditText;
+    private Spinner locationSpinner;
+    private ImageButton choosePhotoButton;
+    private ImageView photoImageView;
+    private ImageButton photoButton;
 
-    private String commentString;
     private String moodString;
     private String socialSituationString;
     private String locationString;
@@ -95,15 +94,13 @@ public class AddActivity extends AppCompatActivity {
 
     private StorageReference mStorageRef;
 
-    private StorageTask mUploadTask;
-
     //variable for camera
     static final int REQUEST_TAKE_PHOTO = 100;
-    Uri camPhotoURI = null;
-    String camImageStoragePath;
+    private Uri camPhotoURI = null;
+    private String camImageStoragePath;
 
-    LocationManager locationManager;
-    LocationListener locationListener;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     private Double lat;
     private Double lon;
@@ -111,9 +108,9 @@ public class AddActivity extends AppCompatActivity {
 
     /**
      * Ask permission to access GPS
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
+     * @param requestCode The request code passed in requestPermissions
+     * @param permissions The requested permissions. Never null
+     * @param grantResults The grant results for the corresponding permissions
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -153,7 +150,6 @@ public class AddActivity extends AppCompatActivity {
         socialSituationSpinner = findViewById(R.id.social_situation_spinner);
         commentEditText = findViewById(R.id.comment_edittext);
         locationSpinner = findViewById(R.id.location_spinner);
-//        locationTextView = findViewById(R.id.location_textview);
         choosePhotoButton = findViewById(R.id.photo_button2);
         photoImageView = findViewById(R.id.photo_imageview);
         photoButton = findViewById(R.id.photo_button);
@@ -376,9 +372,9 @@ public class AddActivity extends AppCompatActivity {
      * Coming back from camera intent/folder intent; requestCode could justify different returning activity
      * if back from file chooser, get the data URI and draw it to imageview
      * if back from camera, get photo taken URI and draw it to imageview; also add it to gallery
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode - The request code you passed to startActivityForResult()
+     * @param resultCode - A result code specified by the second activity
+     * @param data - an intent that carries the result data
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -415,8 +411,8 @@ public class AddActivity extends AppCompatActivity {
 
     /**
      * get the extension from chosen file, passing by its uri
-     * @param uri
-     * @return
+     * @param uri - photo uri
+     * @return - mime.getExtensionFromMimeType(cR.getType(uri))
      */
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
@@ -438,20 +434,17 @@ public class AddActivity extends AppCompatActivity {
         if (mImageUri != null){
             final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
-            mUploadTask = fileReference.putFile(mImageUri)
+            // getting image uri and converting into string
+            StorageTask mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-//                                photoTextView.setText(downloadUrlStr);
-
-
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     // getting image uri and converting into string
-                                    Uri downloadUrl = uri;
-                                    downloadUrlStr = downloadUrl.toString();
+//                                    Uri downloadUrl = uri;
+                                    downloadUrlStr = uri.toString();
                                     uploadDatabase(downloadUrlStr);
 
 
@@ -477,7 +470,7 @@ public class AddActivity extends AppCompatActivity {
     /**
      * upload moodevent to database
      * check the null conditions for different mood attributes, if null condition, do not update to database
-     * @param photoUrl
+     * @param photoUrl - photo download url
      */
     private void uploadDatabase(String photoUrl){
         boolean valid = true;
@@ -493,7 +486,7 @@ public class AddActivity extends AppCompatActivity {
             ((TextView)socialSituationSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
         }
 
-        commentString = commentEditText.getText().toString();
+        String commentString = commentEditText.getText().toString();
         if (!MoodEventValidator.checkComment(commentString)){
             valid = false;
             commentEditText.setError(MoodEventValidator.getErrorMessage());
@@ -523,8 +516,8 @@ public class AddActivity extends AppCompatActivity {
 
     /**
      * Add camera photo to gallery
-     * @param context
-     * @param filePath
+     * @param context - application context
+     * @param filePath - the path of file
      */
     private void galleryAddPic(Context context, String filePath) {
         Log.i("cam", "photo gallery sucess");
@@ -540,9 +533,9 @@ public class AddActivity extends AppCompatActivity {
 
 
     /**
-     * createImageFile before take photo form camera, use a folder call CameraDemo to store all photoes of this app
+     * createImageFile before take photo form camera, use a folder call CameraDemo to store all photos of this app
      * the filepath should be file:///storage/emulated/0/Pictures/CameraDemo/IMG_20191121_172846.jpg
-     * @return
+     * @return if media storage does not exist, return null. Otherwise, return a new photo file
      * @throws IOException
      */
     private static File createImageFile() throws IOException {
