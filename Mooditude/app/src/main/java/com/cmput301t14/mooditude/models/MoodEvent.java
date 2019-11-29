@@ -3,6 +3,8 @@ package com.cmput301t14.mooditude.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.Timestamp;
 
 /**
@@ -115,7 +117,7 @@ public class MoodEvent implements Parcelable, Comparable {
      * @param textComment comment of the mood event
      * @param timestamp time of the mood event
      * @param email email of the mood event
-     * @param photoUrl photor url of the mood evnt
+     * @param photoUrl photo url of the mood evnt
      */
     public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp , String email, String photoUrl) {
         this.author = author;
@@ -340,7 +342,7 @@ public class MoodEvent implements Parcelable, Comparable {
      * @param moodEvent the MoodEvent object to compare to
      */
     @Override
-    public int compareTo(Object moodEvent) {
+    public int compareTo(@NonNull Object moodEvent) {
         int result = 0;
         if (moodEvent != null) {
             if (moodEvent instanceof MoodEvent) {

@@ -43,39 +43,32 @@ public class MoodEventIconSetter {
      */
     public  void setCommentIcon(ImageView imageView){
         if (moodEvent.getTextComment().isEmpty() || moodEvent.getTextComment() == null) {
-//            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
             imageView.setVisibility(View.GONE);
         } else {
-//            commentImage.clearColorFilter();
             imageView.setVisibility(View.VISIBLE);
         }
     }
 
     /**
      * set social situation icon
-     * @param imageView socialsituation icon image view
+     * @param imageView social situation icon image view
      */
     public  void setSocialSituationIcon(ImageView imageView){
         if (moodEvent.getSocialSituation()== null) {
-//            commentImage.setColorFilter(colorGreyIcon, PorterDuff.Mode.SRC_ATOP);
             imageView.setVisibility(View.GONE);
         } else if(moodEvent.getSocialSituation().getSocialSituation().equals("ALONE")) {
-//            commentImage.clearColorFilter();
             Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageResource(R.drawable.ic_alone);
         } else if(moodEvent.getSocialSituation().getSocialSituation().equals("WITH_ANOTHER_PERSON")) {
-//            commentImage.clearColorFilter();
             Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageResource(R.drawable.ic_with_another_person);
         } else if(moodEvent.getSocialSituation().getSocialSituation().equals("SEVERAL")) {
-//            commentImage.clearColorFilter();
             Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageResource(R.drawable.ic_several);
         }else if(moodEvent.getSocialSituation().getSocialSituation().equals("CROWD")) {
-//            commentImage.clearColorFilter();
             Log.i("Self",moodEvent.getSocialSituation().getSocialSituation());
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageResource(R.drawable.ic_group);

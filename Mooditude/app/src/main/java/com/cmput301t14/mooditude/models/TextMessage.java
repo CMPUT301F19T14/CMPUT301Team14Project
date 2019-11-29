@@ -40,7 +40,7 @@ public class TextMessage extends Message {
      * upload the message into the given messageBox db collection reference
      * @param messageBox db collection reference
      */
-    public void  invoke(CollectionReference messageBox){
+    public void invoke(CollectionReference messageBox){
         Timestamp timestamp= this.datetime;
         String epochTimeString= String.valueOf(timestamp.getSeconds());
         DocumentReference messageEntry=messageBox.document(epochTimeString);

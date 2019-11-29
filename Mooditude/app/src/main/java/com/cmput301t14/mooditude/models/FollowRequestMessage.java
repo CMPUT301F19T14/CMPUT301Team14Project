@@ -15,7 +15,7 @@ import java.util.HashMap;
 import static java.lang.Boolean.TRUE;
 
 /**
- * Messeage sent whnen one user try to follow another one
+ * Message sent when one user try to follow another one
  */
 public class FollowRequestMessage extends Message {
     /**
