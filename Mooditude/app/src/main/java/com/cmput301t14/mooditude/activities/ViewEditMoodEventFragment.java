@@ -8,19 +8,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,7 +94,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     ImageView imageView;
     private Uri mImageUri;
 
-    private String temp;
+    private String downloadUrlStr;
 
     private StorageReference mStorageRef;
 
@@ -410,6 +405,8 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         photoButton.setEnabled(false);
 //        photoButton.setInputType(InputType.TYPE_NULL);
         photoButton.setFocusable(false);
+        cameraButton.setEnabled(false);
+        cameraButton.setFocusable(false);
     }
 
     private void setUpLocationSpinner(){
@@ -502,14 +499,19 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         return fragment;
     }
 
-
+    /**
+     * display the image in the imageView.
+     * @param photoUrl
+     */
     private void showimage(String photoUrl){
-//        String url = "com.google.android.gms.tasks.zzu@3042b78";
         Glide.with(this).load(photoUrl).into(imageView);
 
-//        Picasso.with(getContext()).load(photoUrl).into(imageView);
     }
 
+    /**
+     * open the activity for choosing file from folder, and waiting for return result
+     * to be received with request code.
+     */
     private void openFireChooser(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -517,7 +519,14 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
-
+    /**
+     * callback method when the subsequent activity is done, and the result returns
+     * the intent carries the result data app can identify the result and determine
+     * how to handle it by request code.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     public void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -533,11 +542,6 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                 Log.i("cam", "back photo file sucess");
                 Log.i("cam",String.valueOf(camPhotoURI));
 
-                //Get the photo
-//                BitmapFactory.Options options = new BitmapFactory.Options();
-//                Bitmap bitmap = BitmapFactory.decodeFile(camImageStoragePath, options);
-//                imageView.setImageBitmap(bitmap);
-//                mImageUri = data.getData();
                 Picasso.with(getContext()).load(camPhotoURI).into(imageView);
 
                 //add to gallery
@@ -610,13 +614,22 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
     }
 
-
+    /**
+     * get the extension for the image file by photo uri.
+     * @param uri
+     * @return the extension of file type
+     */
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getActivity().getApplicationContext().getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    /**
+     * upload the image file to the firebase storage
+     * with its unique uri and file name.
+     * get and save the download url of specific picture to database
+     */
     private void uploadFile(){
 
         if(mImageUri == null){
@@ -639,7 +652,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-//                                photoTextView.setText(temp);
+//                                photoTextView.setText(downloadUrlStr);
 
 
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -647,23 +660,12 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                                 public void onSuccess(Uri uri) {
                                     // getting image uri and converting into string
                                     Uri downloadUrl = uri;
-                                    temp = downloadUrl.toString();
-                                    uploadDatabase(temp);
+                                    downloadUrlStr = downloadUrl.toString();
+                                    uploadDatabase(downloadUrlStr);
 
 
                                 }
                             });
-
-
-//                            Toast.makeText(AddActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-////                            photo.setmImageUrl(taskSnapshot.getStorage().getDownloadUrl().toString());
-////                            if(photo.getmImageUrl()!=null){
-////                                temp = photo.getmImageUrl();
-//                            temp=taskSnapshot.getStorage().getDownloadUrl().toString();
-//                                Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
-//                                uploadDatabase(temp);
-
-//                            }
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -672,21 +674,20 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                             Toast.makeText(getContext(), "failed to upload", Toast.LENGTH_SHORT).show();
                         }
                     });
-//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-//                            mProgressBar.setProgress((int) progress);
-//                        }
-//                    });
+
 
         }
         else{
-            uploadDatabase(temp);
+            uploadDatabase(downloadUrlStr);
         }
 
 
     }
+
+    /**
+     * update the moodevent to database for fields
+     * @param imageUrl
+     */
     private void uploadDatabase(String imageUrl){
         boolean valid = true;
 
