@@ -61,6 +61,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static com.cmput301t14.mooditude.activities.SelfActivity.EXTRA_MESSAGE_Email;
 
@@ -536,7 +537,6 @@ public class AddActivity extends AppCompatActivity {
      * createImageFile before take photo form camera, use a folder call CameraDemo to store all photos of this app
      * the filepath should be file:///storage/emulated/0/Pictures/CameraDemo/IMG_20191121_172846.jpg
      * @return if media storage does not exist, return null. Otherwise, return a new photo file
-     * @throws IOException
      */
     private static File createImageFile() throws IOException {
         Log.i("cam", "create file ");
@@ -550,7 +550,8 @@ public class AddActivity extends AppCompatActivity {
             }
         }
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp;
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CANADA).format(new Date());
         return new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_"+ timeStamp + ".jpg");
     }
@@ -561,8 +562,9 @@ public class AddActivity extends AppCompatActivity {
     private void takePictureIntent() {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Log.i("cam", "photo clikck");
-        File photoFile = null;
+        Log.i("cam", "photo click");
+        File photoFile;
+        photoFile = null;
 
         try {
             photoFile = createImageFile();
@@ -576,7 +578,7 @@ public class AddActivity extends AppCompatActivity {
             camPhotoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", photoFile);
 
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, camPhotoURI);
-            Log.i("cam", "photo file sucess");
+            Log.i("cam", "photo file success");
             startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 
         }
@@ -626,7 +628,6 @@ public class AddActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
