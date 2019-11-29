@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.cmput301t14.mooditude.activities.AddActivity;
 import com.cmput301t14.mooditude.activities.HomeActivity;
 import com.cmput301t14.mooditude.activities.MainActivity;
 import com.cmput301t14.mooditude.activities.SelfActivity;
@@ -17,6 +18,7 @@ import org.junit.Test;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 public class IntentTestDeleteMoodEvent {
@@ -63,6 +65,7 @@ public class IntentTestDeleteMoodEvent {
     public void addMoodEvent(){
 
         solo.clickOnView(solo.getView(R.id.navigation_add));
+        solo.waitForActivity(AddActivity.class);
 
         solo.clickOnView(solo.getView(Spinner.class, 0));
         solo.scrollToTop();
@@ -72,7 +75,7 @@ public class IntentTestDeleteMoodEvent {
         solo.scrollToTop();
         solo.clickOnText("WITH_ANOTHER_PERSON");
 
-        solo.enterText((EditText) solo.getView(R.id.comment_edittext),"ui@test.com ADD");
+        solo.enterText((EditText) solo.getView(R.id.comment_edittext),"ui@test.com DELETE");
 
 
         solo.clickOnView(solo.getView(Spinner.class, 2));
@@ -85,8 +88,9 @@ public class IntentTestDeleteMoodEvent {
 
 
     @Test
-    public void deleteMood(){
+    public void deleteMoodWithCheck(){
         solo.clickOnView(solo.getView(R.id.navigation_self));
+        solo.waitForActivity(SelfActivity.class);
 
         solo.waitForActivity(SelfActivity.class);
 
@@ -97,21 +101,15 @@ public class IntentTestDeleteMoodEvent {
 
         solo.clickOnText("Yes");
 
-    }
 
-    @Test
-    public void checkDelete(){
-        solo.clickOnView(solo.getView(R.id.navigation_self));
 
         solo.waitForActivity(SelfActivity.class);
         solo.clickInList(0);
 
         solo.waitForFragmentById(R.id.frag_frame_add,1000);
-        assertTrue(solo.waitForText("ANGRY"));
-
-
-
+        assertFalse(solo.waitForText("ui@test.com DELETE"));
     }
+
 
 
 

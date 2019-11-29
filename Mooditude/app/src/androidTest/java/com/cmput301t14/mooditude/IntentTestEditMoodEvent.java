@@ -63,16 +63,16 @@ public class IntentTestEditMoodEvent {
 
 
     @Test
-    public void editMood(){
+    public void editMoodWithCheck(){
         solo.clickOnView(solo.getView(R.id.navigation_self));
-
         solo.waitForActivity(SelfActivity.class);
+
 
         solo.clickInList(0);
 
+
         solo.waitForFragmentById(R.id.frag_frame_add,1000);
-//        solo.waitForText("ALLOW",1,500);
-//        solo.clickOnText("ALLOW");
+
 
         solo.clickOnView(solo.getView(Spinner.class, 0));
         solo.scrollToTop();
@@ -82,6 +82,8 @@ public class IntentTestEditMoodEvent {
         solo.scrollToTop();
         solo.clickOnText("CROWD");
 
+        solo.enterText((EditText) solo.getView(R.id.frag_comment_edittext),"");
+
         solo.enterText((EditText) solo.getView(R.id.frag_comment_edittext),"ui@test.com Edit");
 
 
@@ -90,12 +92,10 @@ public class IntentTestEditMoodEvent {
         solo.clickOnText("UPDATE LOCATION");
 
         solo.clickOnText("OK");
+        solo.sleep(100);
 
-    }
-
-    @Test
-    public void checkEdit(){
         solo.clickOnView(solo.getView(R.id.navigation_self));
+        solo.waitForActivity(SelfActivity.class);
 
         solo.waitForActivity(SelfActivity.class);
         solo.clickInList(0);
@@ -106,9 +106,9 @@ public class IntentTestEditMoodEvent {
         solo.waitForText("CROWD");
         solo.waitForText("ui@test.com Edit");
 
-
-
     }
+
+
 
 
 

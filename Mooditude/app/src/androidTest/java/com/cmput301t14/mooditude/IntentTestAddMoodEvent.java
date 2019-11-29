@@ -5,6 +5,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.cmput301t14.mooditude.activities.AddActivity;
 import com.cmput301t14.mooditude.activities.HomeActivity;
 import com.cmput301t14.mooditude.activities.MainActivity;
 import com.cmput301t14.mooditude.activities.SelfActivity;
@@ -57,9 +58,10 @@ public class IntentTestAddMoodEvent {
     }
 
     @Test
-    public void addMoodEvent(){
+    public void addMoodEventWithCheck(){
 
         solo.clickOnView(solo.getView(R.id.navigation_add));
+        solo.waitForActivity(AddActivity.class);
 
         solo.clickOnView(solo.getView(Spinner.class, 0));
         solo.scrollToTop();
@@ -78,24 +80,21 @@ public class IntentTestAddMoodEvent {
 
 
         solo.clickOnView(solo.getView(R.id.submit_button));
-    }
+        solo.sleep(100);
 
-    @Test
-    public void checkAdd(){
         solo.clickOnView(solo.getView(R.id.navigation_self));
+        solo.waitForActivity(SelfActivity.class);
 
         solo.waitForActivity(SelfActivity.class);
         solo.clickInList(0);
-
         solo.waitForFragmentById(R.id.frag_frame_add,1000);
-        solo.waitForText("ANGRY");
 
+        solo.waitForText("ANGRY");
         solo.waitForText("WITH_ANOTHER_PERSON");
         solo.waitForText("ui@test.com ADD");
-
-
-
     }
+
+
 
 
 }
