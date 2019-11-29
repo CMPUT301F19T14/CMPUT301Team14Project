@@ -14,6 +14,9 @@ import com.cmput301t14.mooditude.models.Person;
 
 import java.util.ArrayList;
 
+/**
+ * This class contains the on click listener for follower and following list
+ */
 public class FollowFollowingListOnClickListener {
 
     public static class Followers implements AdapterView.OnItemClickListener {
@@ -27,14 +30,11 @@ public class FollowFollowingListOnClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            //                final String receiverEmail = ((TextView) view.findViewById(R.id.searchList_user_email_textView)).getText().toString();
-//                final String receiverEmail = "testString";
             final String receiverEmail = followDataList.get(i).getEmail();
             final String userName = followDataList.get(i).getName();
-//                Toast.makeText(view.getContext(), receiverEmail, Toast.LENGTH_LONG).show();
             //creating a popup menu
             final Context context = view.getContext();
-            PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.RIGHT);
+            PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.END);
             //inflating menu from xml resource
             popup.inflate(R.menu.popmenu_follower);
             //adding click listener
@@ -44,7 +44,6 @@ public class FollowFollowingListOnClickListener {
                     switch (item.getItemId()) {
                         case R.id.popmenu_follower_follow:
                             //handle menu1 click
-//                            new FollowRequestMessage(receiverEmail).invoke();
                             new FollowRequestMessage(receiverEmail).invoke();
                             Toast.makeText(context, "Follow request to \"" + userName + "\" sent", Toast.LENGTH_LONG).show();
                             return true;

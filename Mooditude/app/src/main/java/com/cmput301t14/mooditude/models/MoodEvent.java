@@ -3,6 +3,8 @@ package com.cmput301t14.mooditude.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.Timestamp;
 
 /**
@@ -29,14 +31,13 @@ public class MoodEvent implements Parcelable, Comparable {
 
     private String email;
 
-//    photoComment: Bitmap
 
     /**
      * MoodEvent constructor
-     * @param mood
-     * @param location
-     * @param socialSituation
-     * @param textComment
+     * @param mood different mood
+     * @param location location of mood event
+     * @param socialSituation social situation
+     * @param textComment comment of mood event
      */
     public MoodEvent(String author,Mood mood, Location location, SocialSituation socialSituation, String textComment) {
         this.author = author;
@@ -44,7 +45,6 @@ public class MoodEvent implements Parcelable, Comparable {
         this.location = location;
         this.socialSituation = socialSituation;
         this.textComment = textComment;
-//        this.datetime=LocalDateTime.now();
         this.datetime= Timestamp.now();
     }
 
@@ -54,7 +54,6 @@ public class MoodEvent implements Parcelable, Comparable {
         this.location = location;
         this.socialSituation = socialSituation;
         this.textComment = textComment;
-//        this.datetime=LocalDateTime.now();
         this.datetime= Timestamp.now();
     }
 
@@ -65,7 +64,6 @@ public class MoodEvent implements Parcelable, Comparable {
         this.socialSituation = socialSituation;
         this.textComment = textComment;
         this.photoUrl = photoUrl;
-//        this.datetime=LocalDateTime.now();
         this.datetime= Timestamp.now();
     }
 
@@ -73,11 +71,11 @@ public class MoodEvent implements Parcelable, Comparable {
 
     /**
      * MoodEvent constructor
-     * @param mood
-     * @param location
-     * @param socialSituation
-     * @param textComment
-     * @param timestamp
+     * @param mood mood
+     * @param location location of the mood event
+     * @param socialSituation social situation of the mood event
+     * @param textComment comment of the mood event
+     * @param timestamp time of the post mood event
      */
     public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp, String photoUrl) {
         this.author = author;
@@ -90,6 +88,16 @@ public class MoodEvent implements Parcelable, Comparable {
 
     }
 
+    /**
+     * Constructor
+     * @param author user name of the mood post
+     * @param mood mood
+     * @param location location of the mood event
+     * @param socialSituation social situation of the mood event
+     * @param textComment comment of the mood event
+     * @param email email of the author
+     * @param timestamp time of the mood event
+     */
     public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, String email,Timestamp timestamp ) {
         this.author = author;
         this.mood = mood;
@@ -99,7 +107,18 @@ public class MoodEvent implements Parcelable, Comparable {
         this.datetime=timestamp;
         this.email = email;
     }
-  
+
+    /**
+     * Constructor
+     * @param author user name of the mood post
+     * @param mood mood
+     * @param location location of the mood event
+     * @param socialSituation social situation of mood event
+     * @param textComment comment of the mood event
+     * @param timestamp time of the mood event
+     * @param email email of the mood event
+     * @param photoUrl photo url of the mood evnt
+     */
     public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp , String email, String photoUrl) {
         this.author = author;
         this.mood = mood;
@@ -112,7 +131,14 @@ public class MoodEvent implements Parcelable, Comparable {
     }
 
 
-
+    /**
+     * Contructor
+     * @param mood mood
+     * @param location location
+     * @param socialSituation social situation
+     * @param textComment comment
+     * @param timestamp time
+     */
     public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
         this.author = "";
         this.mood = mood;
@@ -122,7 +148,15 @@ public class MoodEvent implements Parcelable, Comparable {
         this.datetime=timestamp;
     }
 
-
+    /**
+     * Constructor
+     * @param mood mood
+     * @param location location
+     * @param socialSituation social situation
+     * @param textComment comment
+     * @param timestamp time
+     * @param photoUrl photo url
+     */
     public MoodEvent(Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp, String photoUrl) {
         this.author = "";
         this.mood = mood;
@@ -133,6 +167,15 @@ public class MoodEvent implements Parcelable, Comparable {
         this.photoUrl = photoUrl;
     }
 
+    /**
+     * Constructor
+     * @param author author
+     * @param mood mood
+     * @param location location
+     * @param socialSituation social situation
+     * @param textComment comment
+     * @param timestamp time
+     */
     public MoodEvent(String author, Mood mood, Location location, SocialSituation socialSituation, String textComment, Timestamp timestamp) {
         this.author = author;
         this.mood = mood;
@@ -142,17 +185,25 @@ public class MoodEvent implements Parcelable, Comparable {
         this.datetime=timestamp;
     }
 
+    /**
+     * get email
+     * @return email address
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * get author
+     * @return author
+     */
     public String getAuthor() {
         return author;
     }
 
     /**
      * Mood getter
-     * @return
+     * @return mood
      */
     public Mood getMood() {
         return this.mood;
@@ -160,7 +211,7 @@ public class MoodEvent implements Parcelable, Comparable {
 
     /**
      * mood setter
-     * @param mood
+     * @param mood mood event
      */
     public void setMood(Mood mood) {
         this.mood = mood;
@@ -168,7 +219,7 @@ public class MoodEvent implements Parcelable, Comparable {
 
     /**
      * datetime getter
-     * @return
+     * @return time
      */
     public Timestamp getDatetime() {
         return datetime;
@@ -176,7 +227,7 @@ public class MoodEvent implements Parcelable, Comparable {
 
     /**
      * datetime setter
-     * @param datetime
+     * @param datetime time
      */
     public void setDatetime(Timestamp datetime) {
         this.datetime = datetime;
@@ -184,7 +235,7 @@ public class MoodEvent implements Parcelable, Comparable {
 
     /**
      * location getter
-     * @return
+     * @return location
      */
     public Location getLocation() {
         return location;
@@ -192,7 +243,7 @@ public class MoodEvent implements Parcelable, Comparable {
 
     /**
      * location setter
-     * @param location
+     * @param location location
      */
     public void setLocation(Location location) {
         this.location = location;
@@ -200,7 +251,7 @@ public class MoodEvent implements Parcelable, Comparable {
 
     /**
      * SocialSituation getter
-     * @return
+     * @return social situation
      */
     public SocialSituation getSocialSituation() {
         return socialSituation;
@@ -208,7 +259,7 @@ public class MoodEvent implements Parcelable, Comparable {
 
     /**
      *  SocialSituation setter
-     * @param socialSituation
+     * @param socialSituation social situation
      */
     public void setSocialSituation(SocialSituation socialSituation) {
         this.socialSituation = socialSituation;
@@ -216,7 +267,7 @@ public class MoodEvent implements Parcelable, Comparable {
 
     /**
      * textComment getter
-     * @return
+     * @return comment
      */
     public String getTextComment() {
         return textComment;
@@ -224,19 +275,25 @@ public class MoodEvent implements Parcelable, Comparable {
 
     /**
      * textComment setter
-     * @param textComment
+     * @param textComment comment
      */
     public void setTextComment(String textComment) {
         this.textComment = textComment;
     }
 
 
-
+    /**
+     * get Photo
+     * @return photo url
+     */
     public String getPhotoUrl() {
         return photoUrl;
     }
 
-
+    /**
+     * set photo
+     * @param photoUrl photo url
+     */
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
@@ -279,14 +336,13 @@ public class MoodEvent implements Parcelable, Comparable {
             return new MoodEvent[size];
         }
     };
-//}
 
     /**
      * Override compareTo method of Comparable interface
      * @param moodEvent the MoodEvent object to compare to
      */
     @Override
-    public int compareTo(Object moodEvent) {
+    public int compareTo(@NonNull Object moodEvent) {
         int result = 0;
         if (moodEvent != null) {
             if (moodEvent instanceof MoodEvent) {

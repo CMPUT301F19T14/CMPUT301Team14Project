@@ -23,15 +23,10 @@ public class MainActivity extends AppCompatActivity {
         final Button signInBtn = findViewById(R.id.starter_sign_in_button);
         final Button joinNowBtn = findViewById(R.id.stater_join_now_button);
 
-//        Testing Code
-        Intent intentSignIn = new Intent(MainActivity.this, SignInActivity.class);
-        startActivity(intentSignIn);
-//        Testing End
-
         signInBtn.setOnClickListener(new View.OnClickListener() {
             /**
              * Click on signIn button will go to the SignIn Activity.
-             * @param v
+             * @param v - view
              */
             @Override
             public void onClick(View v) {
@@ -43,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         joinNowBtn.setOnClickListener(new View.OnClickListener() {
             /**
              * Click on joinNow button will go the Register Activity.
-             * @param v
+             * @param v - view
              */
             @Override
             public void onClick(View v) {

@@ -22,7 +22,7 @@ public class Mood implements Parcelable {
 
     /**
      * Mood Constructor
-     * @param moodString
+     * @param moodString mood representation
      */
     public Mood(String moodString){
         this.moodEnum = MoodEnum.valueOf(moodString);
@@ -42,7 +42,7 @@ public class Mood implements Parcelable {
 
     /**
      * get Mood as a string
-     * @return
+     * @return mood string representation
      */
     public String getMood(){
         return this.moodEnum.toString();
@@ -58,7 +58,7 @@ public class Mood implements Parcelable {
 
     /**
      * get the Color for the mood
-     * @return
+     * @return color of mood event
      */
     public int getColor(){
         return this.colorMap.get(moodEnum);
@@ -66,7 +66,7 @@ public class Mood implements Parcelable {
 
     /**
      * get the Emoticon for the mood
-     * @return
+     * @return emoticon of mood event
      */
     public String getEmoticon(){
         return this.emoticonMap.get(moodEnum);
@@ -103,6 +103,12 @@ public class Mood implements Parcelable {
         }
     };
 
+
+    /**
+     * Get Google Map Marker Color based on Mood
+     * @param mood mood
+     * @return color hash map of marker on map
+     */
     public static Float getMoodMapMarkerColor(Mood mood){
 
         Map<String,Float> markerColorHashMap = new HashMap<>();

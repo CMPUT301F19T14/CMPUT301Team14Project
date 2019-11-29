@@ -45,7 +45,7 @@ public class MenuBar {
      */
     private void setUpMenuBar(){
         // set navigation menu bar
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) activity.findViewById(R.id.navigationView);
+        BottomNavigationView bottomNavigationView = activity.findViewById(R.id.navigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(menuBarIndex);
         menuItem.setChecked(true);
@@ -54,39 +54,41 @@ public class MenuBar {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case R.id.navigation_home:
-                        Intent intent0 = new Intent(activity, HomeActivity.class);
-                        intent0.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent0.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        activity.startActivity(intent0);
+                        Intent homeIntent = new Intent(activity, HomeActivity.class);
+                        finishActivityWithoutAnimation(homeIntent);
                         break;
                     case R.id.navigation_search:
-                        Intent intent1 = new Intent(activity, SearchActivity.class);
-                        intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent1.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        activity.startActivity(intent1);
+                        Intent searchIntent = new Intent(activity, SearchActivity.class);
+                        finishActivityWithoutAnimation(searchIntent);
                         break;
                     case R.id.navigation_add:
-                        Intent intent2 = new Intent(activity, AddActivity.class);
-                        intent2.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        activity.startActivity(intent2);
+                        Intent addIntent = new Intent(activity, AddActivity.class);
+                        finishActivityWithoutAnimation(addIntent);
                         break;
                     case R.id.navigation_notification:
-                        Intent intent3 = new Intent(activity, NotificationActivity.class);
-                        intent3.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent3.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        activity.startActivity(intent3);
+                        Intent notificationIntent = new Intent(activity, NotificationActivity.class);
+                        finishActivityWithoutAnimation(notificationIntent);
                         break;
                     case R.id.navigation_self:
-                        Intent intent4 = new Intent(activity, SelfActivity.class);
-                        intent4.putExtra(EXTRA_MESSAGE_Email, messageEmail);
-                        intent4.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        activity.startActivity(intent4);
+                        Intent selfIntent = new Intent(activity, SelfActivity.class);
+                        finishActivityWithoutAnimation(selfIntent);
                         break;
                 }
                 return false;
 
             }
         });
+    }
+
+    /**
+     * Switch to new activity and closes current activity without animation
+     * @param intent the corresponding intent
+     */
+    private void finishActivityWithoutAnimation(Intent intent){
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.putExtra(EXTRA_MESSAGE_Email, messageEmail);
+        activity.startActivity(intent);
+        activity.finish();
+        activity.overridePendingTransition(0,0);
     }
 }

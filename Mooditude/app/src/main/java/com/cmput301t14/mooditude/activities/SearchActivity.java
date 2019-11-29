@@ -1,5 +1,6 @@
 package com.cmput301t14.mooditude.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,20 +30,18 @@ import java.util.ArrayList;
 /**
  * User can search other users in the Search Activity
  * by entering others' user names or user e-mails.
+ * And user can follow or unfollow other users.
  */
 public class SearchActivity extends AppCompatActivity {
 
 
-    private EditText searchEditTextView;
     private RecyclerView recyclerView;
-    //    private FirebaseAuth mFirebaseAuth;
     private ArrayList<String> userNameList;
     private ArrayList<String> userEmailList;
     private SearchAdapter searchAdapter;
 
     private User user;
     private CollectionReference usersCollection;
-    private ArrayList<String> followerList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +60,8 @@ public class SearchActivity extends AppCompatActivity {
         user.listenFollower(User.followerList);
         user.listenFollowing(User.followingList);
 
-        searchEditTextView = findViewById(R.id.search_edit_text);
+        EditText searchEditTextView = findViewById(R.id.search_edit_text);
         recyclerView = findViewById(R.id.search_list);
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -81,7 +79,7 @@ public class SearchActivity extends AppCompatActivity {
             /**
              * check the search text field whether is changed,
              * and clear the lists after finishing every search.
-             * @param editable
+             * @param editable - check whether the mood event can be edited
              */
             @Override
             public void afterTextChanged(Editable editable) {
@@ -105,8 +103,8 @@ public class SearchActivity extends AppCompatActivity {
      * searched string. And the maximum size for the adapter is
      * 15.
      *
-     * @param searchedString
-     * @param collectionReference
+     * @param searchedString - the string user wants to search
+     * @param collectionReference -
      */
     private void setAdapter(final String searchedString, CollectionReference collectionReference) {
         userNameList.clear();
@@ -129,7 +127,6 @@ public class SearchActivity extends AppCompatActivity {
                         userEmailList.add(user_email);
                         counter++;
                     }
-                    // Why?   -- Enson
                     if (counter == 15) {
                         break;
                     }
@@ -140,6 +137,14 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
     }
 
 }

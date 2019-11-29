@@ -13,6 +13,9 @@ import java.util.Date;
 
 import static java.lang.Boolean.TRUE;
 
+/**
+ * abstract message class, provide super class for other types of message classes
+ */
 public abstract class Message {
     protected String sender;
     protected String receiver;
@@ -21,6 +24,10 @@ public abstract class Message {
     protected String type;
     protected static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
+    /**
+     * constructor for Message
+     * @param receiver the receiver user string for this msg
+     */
     public Message(String receiver) {
         this.receiver = receiver;
         this.sender = new User().getEmail();
@@ -28,6 +35,13 @@ public abstract class Message {
         this.newMessage=TRUE;
     }
 
+    /**
+     * constructor for Message
+     * @param sender sender user string
+     * @param receiver receiver user string
+     * @param datetime timestamp of the message
+     * @param newMessage read/unread boolean flag
+     */
     public Message(String sender, String receiver, Timestamp datetime, Boolean newMessage) {
         this.sender = sender;
         this.receiver = receiver;
@@ -35,36 +49,25 @@ public abstract class Message {
         this.newMessage = newMessage;
     }
 
-    public Message(String sender, String receiver, Timestamp datetime) {
-        this.sender = sender;
-        this.receiver = receiver;
-        this.datetime = datetime;
-        this.newMessage=TRUE;
-    }
-
-    public Message(String sender, String receiver, Boolean newMessage) {
-        this.sender = sender;
-        this.receiver = receiver;
-        this.newMessage = newMessage;
-        this.datetime= Timestamp.now();
-    }
-
-    public Message(String sender, String receiver) {
-        this.sender = sender;
-        this.receiver = receiver;
-        this.datetime= Timestamp.now();
-        this.newMessage=TRUE;
-    }
-
-
+    /**
+     * return type of message
+     * @return message type
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * return if message is read/unread
+     * @return true-unread, false-read
+     */
     public Boolean isNewMessage() {
         return newMessage;
     }
 
+    /**
+     * push the newMessage to the db
+     */
     public void setNewMessage( ) {
         CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
         CollectionReference receiverMsgBox= usersCollection.document(receiver).collection("MessageBox");
@@ -73,16 +76,23 @@ public abstract class Message {
         messageEntry.update("newMessage",false);
     }
 
-    public Timestamp getDatetime() {
-        return datetime;
-    }
-
+    /**
+     * abstract method, should return the string representation of the message
+     * @return string representation of the message
+     */
     public abstract String toStringContent();
 
+    /**
+     * get formatted timestamp String
+     * @return string of date time
+     */
     public String toStringDatetime() {
         return sdf.format(new Date(this.datetime.getSeconds() * 1000));
     }
 
+    /**
+     * delete the message from database
+     */
     public void delete(){
         CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
         CollectionReference receiverMsgBox= usersCollection.document(receiver).collection("MessageBox");

@@ -3,21 +3,19 @@ package com.cmput301t14.mooditude.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-
 /**
  * One class to define social situation
  */
 public class SocialSituation implements Parcelable {
     private enum socialSituation_enum{
-        ALONE,ONE_PERSON,SEVERAL,CROWD
+        ALONE,WITH_ANOTHER_PERSON,SEVERAL,CROWD
     }
 
     private socialSituation_enum socialSituation;
 
     /**
      * SocialSituation constructor
-     * @param argv
+     * @param argv social situation
      */
     public SocialSituation(String argv) {
         this.socialSituation = socialSituation_enum.valueOf(argv);
@@ -25,21 +23,21 @@ public class SocialSituation implements Parcelable {
 
     /**
      * SocialSituation getter
-     * @return
+     * @return social situation to get
      */
     public String getSocialSituation( ) {
         return this.socialSituation.toString();
     }
 
     /**
-     * SocialSituation getter
-     * @param argv
+     * SocialSituation setter
+     * @param argv social situation to set
      */
     public void setSocialSituation(String argv) {
         this.socialSituation = socialSituation_enum.valueOf(argv);
     }
 
-    protected SocialSituation(Parcel in) {
+    private SocialSituation(Parcel in) {
         socialSituation = (socialSituation_enum) in.readValue(socialSituation_enum.class.getClassLoader());
     }
 

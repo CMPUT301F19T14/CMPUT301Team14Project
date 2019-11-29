@@ -40,8 +40,8 @@ public class IntentTestFollow {
         solo.assertCurrentActivity("Wrong Activity", SignInActivity.class);
 
 
-        String userName="xianda";
-        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text),userName+"@gmail.com");
+        String userName="ui";
+        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text),userName+"@test.com");
         solo.enterText((EditText) solo.getView(R.id.signin_password_edit_text),"123456");
 
         solo.clickOnButton("Sign In");
@@ -64,12 +64,15 @@ public class IntentTestFollow {
         solo.clickOnView(solo.getView(R.id.navigation_self));
 
         solo.waitForActivity(SelfActivity.class);
-        solo.waitForText("3");
+        solo.waitForText("2");
 
 
         solo.clickOnView(solo.getView(R.id.follower));
 
         solo.waitForActivity(DisplayFollow.class);
+
+        solo.waitForText("ui2@test.com");
+        solo.waitForText("wangye@warning.com");
 
     }
 
@@ -84,6 +87,9 @@ public class IntentTestFollow {
         solo.clickOnView(solo.getView(R.id.following));
 
         solo.waitForActivity(DisplayFollow.class);
+
+        solo.waitForText("ui2@test.com");
+        solo.waitForText("wangye@warning.com");
 
 
 

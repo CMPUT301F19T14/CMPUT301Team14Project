@@ -18,13 +18,15 @@
             android:layout_height="wrap_content"
             android:padding="0dp"
             android:text="Follow"
+            android:textColor="#000000"
             android:textSize="30sp"></TextView>
 
         <TextView
             android:id="@+id/follow_following_list_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textColor="#000000" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,7 +47,7 @@
             android:paddingEnd="0dp"
             android:text="&#8942;"
             android:textAppearance="?android:textAppearanceLarge"
-            android:visibility="visible" />
+            android:visibility="invisible" />
     </LinearLayout>
 
 

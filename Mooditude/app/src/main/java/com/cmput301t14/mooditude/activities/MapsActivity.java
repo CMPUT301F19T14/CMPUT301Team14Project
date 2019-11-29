@@ -4,21 +4,19 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.cmput301t14.mooditude.R;
 import com.cmput301t14.mooditude.models.MoodEvent;
 import com.cmput301t14.mooditude.services.User;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
-
+/**
+ * Map Activity is used to show the google map that has
+ * markers to represent the location of mood events.
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -53,25 +51,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        Toast.makeText(getApplicationContext(),displayOption,Toast.LENGTH_SHORT).show();
-
         User user = new User();
         if (displayOption.equals("self")){
-        user.listenSelfMoodEventsOnMap(mMap);
+            user.listenSelfMoodEventsOnMap(mMap);
         }
         else if (displayOption.equals("following")){
-        user.listenFollowingMoodEventsOnMap(mMap);
+            user.listenFollowingMoodEventsOnMap(mMap);
         }
 
+        setUpMarkerClickHandler();
+
+    }
+
+
+    /**
+     * Let the marker be clickable and show the info of
+     * mood events. The content shown in the fragment is
+     * not editable.
+     */
+    private void setUpMarkerClickHandler(){
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-
                 MoodEvent selectedMoodEvent = (MoodEvent) marker.getTag();
-
-                ViewEditMoodEventFragment.newInstance(selectedMoodEvent,false).show(getSupportFragmentManager(), "MoodEvent");
-
-//                Toast.makeText(getApplicationContext(),moodEvent.getTextComment(),Toast.LENGTH_SHORT).show();
+                boolean editable;
+                if (displayOption.equals("self")){
+                    editable = true;
+                } else {
+                    editable = false;
+                }
+                ViewEditMoodEventFragment.newInstance(selectedMoodEvent, editable).show(getSupportFragmentManager(), "MoodEvent");
                 return false;
             }
         });

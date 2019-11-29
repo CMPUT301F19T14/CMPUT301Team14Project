@@ -7,6 +7,15 @@
     android:descendantFocusability="blocksDescendants"
     tools:context=".activities.SelfActivity">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/self_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationView"
         android:layout_width="0dp"
@@ -20,93 +29,152 @@
         app:itemBackground="?android:attr/windowBackground"
         app:menu="@menu/bottom_navigation_menu"/>
 
-    <TextView
-        android:id="@+id/moodEvents"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="16dp"
-        android:text="Mood Events:"
-        android:textColor="#666666"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/circle_button"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-    <TextView
-        android:id="@+id/number_of_mood_events"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
-        android:background="#66CCFF"
-        android:hint="number"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/moodEvents"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:id="@+id/googleMapsImageButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="28dp"
+            android:background="#00FFFFFF"
+            android:focusableInTouchMode="false"
+            android:scaleType="centerInside"
+            android:scaleX="2"
+            android:scaleY="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/google_map_blue"
+            tools:layout_editor_absoluteY="68dp" />
 
-    <TextView
-        android:id="@+id/follower"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="4dp"
-        android:text="follower:"
-        android:textColor="#666666"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/circle_button"
-        app:layout_constraintTop_toBottomOf="@+id/moodEvents" />
+        <ImageButton
+            android:id="@+id/circle_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/user_icon"
+            android:padding="12dp" />
 
-    <TextView
-        android:id="@+id/number_of_follower"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="4dp"
-        android:background="#66CCFF"
-        android:hint="number"
-        android:textSize="16sp"
-        android:textColor="#FFFFFF"
-        app:layout_constraintStart_toEndOf="@+id/follower"
-        app:layout_constraintTop_toBottomOf="@+id/number_of_mood_events" />
+        <TextView
+            android:id="@+id/userNametextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/circle_button"
+            android:layout_marginStart="12dp"
+            android:gravity="center_horizontal"
+            android:hint="user ID"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/following"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="4dp"
-        android:text="following:"
-        android:textColor="#666666"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/circle_button"
-        app:layout_constraintTop_toBottomOf="@+id/follower" />
+        <TextView
+            android:id="@+id/moodEvents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_toEndOf="@+id/circle_button"
+            android:layout_toRightOf="@id/circle_button"
+            android:text="Events"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/number_of_following"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="4dp"
-        android:background="#66CCFF"
-        android:hint="number"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/following"
-        app:layout_constraintTop_toBottomOf="@+id/number_of_follower" />
+        <TextView
+            android:id="@+id/number_of_mood_events"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/moodEvents"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="0dp"
+            android:layout_toEndOf="@+id/circle_button"
+            android:gravity="center_horizontal"
+            android:hint="number"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
+
+
+        <TextView
+            android:id="@+id/follower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_toEndOf="@+id/moodEvents"
+            android:layout_toRightOf="@id/moodEvents"
+            android:text="Followers"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/number_of_follower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/follower"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_toEndOf="@+id/number_of_mood_events"
+            android:layout_toRightOf="@id/moodEvents"
+            android:gravity="center_horizontal"
+            android:hint="number"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/following"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_toEndOf="@+id/follower"
+            android:layout_toRightOf="@id/follower"
+            android:text="Followings"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/number_of_following"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/moodEvents"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="0dp"
+            android:layout_toEndOf="@+id/number_of_follower"
+            android:gravity="center_horizontal"
+            android:hint="number"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/self_mood_event_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/number_of_following">
+        app:layout_constraintTop_toBottomOf="@id/linearLayout1">
 
         <TextView
             android:id="@+id/happyTextView"
@@ -145,57 +213,6 @@
             android:textSize="20dp" />
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/googleMapsImageButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="24dp"
-        android:background="#00FFFFFF"
-        android:focusableInTouchMode="false"
-        android:scaleType="centerInside"
-        android:scaleX="2"
-        android:scaleY="2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
-        app:srcCompat="@drawable/mymap" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="24dp"
-        android:background="#00FFFFFF"
-        android:focusableInTouchMode="false"
-        android:scaleType="centerInside"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back" />
-
-    <Button
-        android:id="@+id/circle_button"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/head"
-        android:padding="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/userNametextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:background="#66CCFF"
-        android:hint="user ID"
-        android:textColor="#FFFFFF"
-        android:textSize="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circle_button" />
-
 
     <ListView
         android:id="@+id/self_mood_event_list"
@@ -206,6 +223,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

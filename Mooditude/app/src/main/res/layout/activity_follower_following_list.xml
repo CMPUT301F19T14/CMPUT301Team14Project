@@ -6,27 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".activities.DisplayFollow">
 
-    <TextView
-        android:id="@+id/followMode"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/follow_list_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Follow Title"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintTop_toTopOf="parent">
+
         <ListView
             android:id="@+id/followList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         </ListView>
 

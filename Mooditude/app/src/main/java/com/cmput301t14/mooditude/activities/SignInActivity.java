@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301t14.mooditude.R;
@@ -28,11 +27,8 @@ import static com.cmput301t14.mooditude.activities.SelfActivity.EXTRA_MESSAGE_Em
  */
 public class SignInActivity extends AppCompatActivity {
 
-    private EditText emaiEditText,passwordEditText;
-    private Button signInBtn;
-    private TextView signUpLink;
+    private EditText emailEditText,passwordEditText;
     private FirebaseAuth mFirebaseAuth;
-//    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,32 +40,28 @@ public class SignInActivity extends AppCompatActivity {
 
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        emaiEditText = findViewById(R.id.signin_email_edit_text);
+        emailEditText = findViewById(R.id.signin_email_edit_text);
         passwordEditText = findViewById(R.id.signin_password_edit_text);
-        signInBtn = findViewById(R.id.signin_sign_in_button);
+        Button signInBtn = findViewById(R.id.signin_sign_in_button);
 
 
 
 
 // Bypass Sign in for testing
-
-        mFirebaseAuth.signInWithEmailAndPassword("test@test.com","tester")
-//        mFirebaseAuth.signInWithEmailAndPassword("test2@test.com","tester")
-
-
-                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"Please Login Failed!",Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
-                            Intent intentHomeActivity = new Intent(getApplicationContext(), HomeActivity.class);
-                            startActivity(intentHomeActivity);
-                        }
-                    }
-                });
+//      mFirebaseAuth.signInWithEmailAndPassword("wangye@warning.com","123456")
+//                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (!task.isSuccessful()){
+//                            Toast.makeText(getApplicationContext(),"Please Login Failed!",Toast.LENGTH_SHORT).show();
+//                        }
+//                        else {
+//                            Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
+//                            Intent intentHomeActivity = new Intent(getApplicationContext(), HomeActivity.class);
+//                            startActivity(intentHomeActivity);
+//                        }
+//                    }
+//                });
 
 // End bypass sign in for testing
 
@@ -78,21 +70,21 @@ public class SignInActivity extends AppCompatActivity {
              * Validate the user input information. If the input
              * information is matched to the requirement, user
              * will be allowed to log in.
-             * @param view
+             * @param view - view
              */
             @Override
             public void onClick(View view) {
-                final String email = emaiEditText.getText().toString();
+                final String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 if (email.isEmpty()){
-                    emaiEditText.setError("Please enter email!");
-                    emaiEditText.requestFocus();
+                    emailEditText.setError("Please enter email!");
+                    emailEditText.requestFocus();
                 }
                 else if (password.isEmpty()){
                     passwordEditText.setError("Please enter password!");
                     passwordEditText.requestFocus();
                 }
-                else if (!(email.isEmpty() && password.isEmpty())){
+                else {
                     mFirebaseAuth.signInWithEmailAndPassword(email,password)
                             .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -108,9 +100,6 @@ public class SignInActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Error Occured!",Toast.LENGTH_SHORT).show();
                 }
             }
         });

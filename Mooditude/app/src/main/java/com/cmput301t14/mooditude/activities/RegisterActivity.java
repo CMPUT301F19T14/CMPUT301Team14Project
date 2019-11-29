@@ -38,11 +38,11 @@ import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText emaiEditText,userNameEditText, passwordEditText,passwordConfirmEditText;
+    private EditText emailEditText,userNameEditText, passwordEditText,passwordConfirmEditText;
     private FirebaseAuth mFirebaseAuth;
 
     private String email, userName, password, confrimPassword;
-    boolean userNameExist;
+    private boolean userNameExist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         userNameEditText = findViewById(R.id.register_username);
-        emaiEditText = findViewById(R.id.register_email);
+        emailEditText = findViewById(R.id.register_email);
         passwordEditText = findViewById(R.id.register_password);
         passwordConfirmEditText = findViewById(R.id.register_password_2);
 
@@ -68,11 +68,11 @@ public class RegisterActivity extends AppCompatActivity {
              * Validate the user input information. If information
              * is matched to the requirement. The user information
              * will be uploaded to the firestore firebase.
-             * @param view
+             * @param view - view
              */
             @Override
             public void onClick(View view) {
-                email = emaiEditText.getText().toString();
+                email = emailEditText.getText().toString();
                 userName = userNameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
                 confrimPassword = passwordConfirmEditText.getText().toString();
@@ -81,8 +81,8 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                 if (email.isEmpty()){
-                    emaiEditText.setError("Please enter email!");
-                    emaiEditText.requestFocus();
+                    emailEditText.setError("Please enter email!");
+                    emailEditText.requestFocus();
                 }
                 else if(userName.isEmpty()){
                     userNameEditText.setError("Please enter username!");
@@ -100,8 +100,10 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Passwords not equal!",Toast.LENGTH_SHORT).show();
                     passwordEditText.requestFocus();
                 }
-                else if (password.equals(confrimPassword)){
-
+                else if (password.length() <6){
+                    Toast.makeText(getApplicationContext(),"Password needs to be at least 6 characters!",Toast.LENGTH_SHORT).show();
+                }
+                else{
                     collectionReference
                             .whereEqualTo("user_name",userName)
                             .get()
@@ -117,7 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             userNameExist = true;
                                             String dbUserName = String.valueOf(document.get("user_name"));
-                                            Toast.makeText(getApplicationContext(),"User Name:"+dbUserName +", Exist: "+ userNameExist +" Success",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(),"User Name:"+dbUserName +" Already Exist",Toast.LENGTH_SHORT).show();
                                         }
                                         if (!userNameExist){
                                             mFirebaseAuth.createUserWithEmailAndPassword(email,password)
@@ -165,9 +167,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Error Occured!",Toast.LENGTH_SHORT).show();
                 }
             }
         });

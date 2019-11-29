@@ -8,19 +8,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +58,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -77,10 +73,9 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     private Spinner socialSituationSpinner;
     private EditText commentEditText;
     private Spinner locationSpinner;
-    private TextView photoTextView;
+    private ImageButton photoButton;
     private ImageButton cameraButton;
 
-    private String commentString;
     private String moodString;
     private String socialSituationString;
     private String locationString;
@@ -88,28 +83,28 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     private MoodEvent selectedMoodEvent;
     private Boolean editable;
 
-    LocationManager locationManager;
-    LocationListener locationListener;
-
     private Double lat;
     private Double lon;
     private Location newMoodEventLocation;
 
 
-    ImageView imageView;
+    private ImageView imageView;
     private Uri mImageUri;
 
-    private String temp;
+    private String downloadUrlStr;
 
     private StorageReference mStorageRef;
 
-    private StorageTask mUploadTask;
+
     private static final int PICK_IMAGE_REQUEST = 1;
 
     //variable for camera
-    static final int REQUEST_TAKE_PHOTO = 100;
-    Uri camPhotoURI = null;
-    String camImageStoragePath;
+    private static final int REQUEST_TAKE_PHOTO = 100;
+    private Uri camPhotoURI = null;
+    private String camImageStoragePath;
+
+    private Boolean deletePhotoFlag = false;
+    private boolean includeLocation;
 
 
 
@@ -137,7 +132,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         socialSituationSpinner = view.findViewById(R.id.frag_social_situation_spinner);
         commentEditText = view.findViewById(R.id.frag_comment_edittext);
         locationSpinner = view.findViewById(R.id.location_spinner);
-        photoTextView = view.findViewById(R.id.frag_photo_textview);
+        photoButton = view.findViewById(R.id.frag_photo_button);
         imageView=view.findViewById(R.id.testimage);
 
         cameraButton = view.findViewById(R.id.frag_camera_button);
@@ -155,7 +150,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         Bundle args = getArguments();
         if (args != null){
 
-            selectedMoodEvent = (MoodEvent) args.getParcelable("moodEvent");
+            selectedMoodEvent = args.getParcelable("moodEvent");
             editable = (Boolean) args.getSerializable("editable");
 
         }
@@ -166,7 +161,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             socialSituationString = selectedMoodEvent.getSocialSituation().getSocialSituation();
             commentEditText.setText(selectedMoodEvent.getTextComment());
 
-            showimage(selectedMoodEvent.getPhotoUrl());
+            showImage(selectedMoodEvent.getPhotoUrl());
 
             // set dropdown moodSpinner Adapter
             final ArrayAdapter<CharSequence> moodArrayAdapter = ArrayAdapter.createFromResource(getContext(),
@@ -212,7 +207,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             int positionOfItem = moodArrayAdapter.getPosition(
                     selectedMoodEvent.getMood().getEmoticon()+selectedMoodEvent.getMood().getMood());
             moodSpinner.setSelection(positionOfItem, true);
-            View itemView = (View) moodSpinner.getChildAt(positionOfItem);
+            View itemView = moodSpinner.getChildAt(positionOfItem);
             long itemId = moodSpinner.getAdapter().getItemId(positionOfItem);
             moodSpinner.performItemClick(itemView, positionOfItem, itemId);
 
@@ -236,7 +231,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             });
 
 
-            photoTextView.setOnClickListener(new View.OnClickListener() {
+            photoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openFireChooser();
@@ -251,6 +246,21 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                     takePictureIntent();
                 }
             });
+
+
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if(selectedMoodEvent.getPhotoUrl() != null){
+                        deletePhotoFlag = true;
+                        clearPhotoView();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+
 
             setUpLocationSpinner();
 
@@ -285,6 +295,10 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                         @Override
                         public void onClick(View view) {
                             // validate the input fields
+                            if(deletePhotoFlag){
+                                selectedMoodEvent.setPhotoUrl(null);
+                            }
+
                             uploadFile();
 
 
@@ -292,16 +306,69 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                     });
                 }
             });
-        return d;
+            return d;
         }
-     return null;
+        return null;
     }
+
+
+
+
+
+    private void clearPhotoView() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        imageView.setImageBitmap(null);
+
+                        removeDatabaseURI(selectedMoodEvent.getPhotoUrl());
+
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        alert.setMessage("Want to delete this photo?")
+                .setPositiveButton("Delete", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener)
+                .show();
+
+    }
+
+    private void removeDatabaseURI(String photoUrl){
+        String photoPath = photoUrl.substring(photoUrl.indexOf("%")+3,photoUrl.indexOf("?"));
+
+        final StorageReference photoRef = mStorageRef.child(photoPath);
+
+        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                Log.d("Delete Photo", "onSuccess: deleted file");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                Log.d("Delete Photo", "onFailure: did not delete file");
+            }
+        });
+
+    }
+
+
+
+
 
     /**
      * Request permission from user
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
+     * @param requestCode - The request code passed in requestPermissions
+     * @param permissions - The requested permissions
+     * @param grantResults - The grant results for the corresponding permissions
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -318,7 +385,6 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
      * lock and disable the editable fields when editable is set to false
      */
     private void disableEdit(){
-        // TODO: add real location and photo
         moodSpinner.setEnabled(false);
         moodSpinner.setFocusable(false);
 
@@ -329,15 +395,19 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         commentEditText.setInputType(InputType.TYPE_NULL);
         commentEditText.setFocusable(false);
 
-//        locationTextView.setEnabled(false);
-//        locationTextView.setInputType(InputType.TYPE_NULL);
-//        locationTextView.setFocusable(false);
+        locationSpinner.setEnabled(false);
+        locationSpinner.setFocusable(false);
 
-        photoTextView.setEnabled(false);
-        photoTextView.setInputType(InputType.TYPE_NULL);
-        photoTextView.setFocusable(false);
+        photoButton.setEnabled(false);
+        photoButton.setFocusable(false);
+        cameraButton.setEnabled(false);
+        cameraButton.setFocusable(false);
     }
 
+    /**
+     * Create the location spinner that allows user to
+     * change, keep or remove location of mood event.
+     */
     private void setUpLocationSpinner(){
         ArrayAdapter<CharSequence> locationArrayAdapter = ArrayAdapter.createFromResource(getContext(),R.array.edit_mood_event_location_string_array, android.R.layout.simple_spinner_item);
         locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -346,21 +416,21 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 locationString = parent.getItemAtPosition(position).toString();
-                if (locationString.equals("PREVIOUS LOCATION")){
+                switch (locationString) {
+                    case "PREVIOUS LOCATION":
 
-                    if (selectedMoodEvent.getLocation() != null) {
-                        newMoodEventLocation = new Location(selectedMoodEvent.getLocation().getGeopoint().getLatitude(), selectedMoodEvent.getLocation().getGeopoint().getLongitude());
-                    }
-                    else {
+                        if (selectedMoodEvent.getLocation() != null) {
+                            newMoodEventLocation = new Location(selectedMoodEvent.getLocation().getGeopoint().getLatitude(), selectedMoodEvent.getLocation().getGeopoint().getLongitude());
+                        } else {
+                            newMoodEventLocation = null;
+                        }
+                        break;
+                    case "REMOVE LOCATION":
                         newMoodEventLocation = null;
-                    }
-                }
-                else if (locationString.equals("REMOVE LOCATION")){
-                    newMoodEventLocation = null;
-                }
-                else if (locationString.equals("UPDATE LOCATION")){
-//                    newMoodEventLocation = new Location();
-                    getCurrentDeviceLocation();
+                        break;
+                    case "UPDATE LOCATION":
+                        getCurrentDeviceLocation();
+                        break;
                 }
             }
 
@@ -371,16 +441,23 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         });
     }
 
-    public void getCurrentDeviceLocation(){
-
-        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new LocationListener() {
+    /**
+     * Ask user for the permission of getting the current
+     * device location.
+     */
+    private void getCurrentDeviceLocation(){
+        includeLocation = true;
+        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(android.location.Location location) {
                 lat = location.getLatitude();
                 lon = location.getLongitude();
-                newMoodEventLocation = new Location(lat,lon);
-//                Toast.makeText(getContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
+                newMoodEventLocation = new Location(lat, lon);
+                if(includeLocation){
+                    Toast.makeText(getContext(), "Location Included", Toast.LENGTH_SHORT).show();
+                    includeLocation = false;
+                }
             }
 
 
@@ -411,7 +488,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     /**
      * Constructor like method, get the parameters passed in as Bundle
      * @param moodEvent - the MoodEvent selected in Mood History
-     * @return
+     * @return fragment
      */
 
     static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent, Boolean editable) {
@@ -424,25 +501,34 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         return fragment;
     }
 
-
-    private void showimage(String photoUrl){
-//        String url = "com.google.android.gms.tasks.zzu@3042b78";
+    /**
+     * display the image in the imageView.
+     * @param photoUrl - photo url
+     */
+    private void showImage(String photoUrl){
         Glide.with(this).load(photoUrl).into(imageView);
-        Toast.makeText(getContext(), photoUrl, Toast.LENGTH_LONG).show();
 
-//        Picasso.with(getContext()).load(photoUrl).into(imageView);
     }
 
+    /**
+     * open the activity for choosing file from folder, and waiting for return result
+     * to be received with request code.
+     */
     private void openFireChooser(){
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
-        Toast.makeText(getContext(),"after start act result",Toast.LENGTH_SHORT).show();
-
     }
 
-
+    /**
+     * callback method when the subsequent activity is done, and the result returns
+     * the intent carries the result data app can identify the result and determine
+     * how to handle it by request code.
+     * @param requestCode - The request code you passed to startActivityForResult()
+     * @param resultCode - A result code specified by the second activity
+     * @param data - an intent that carries the result data
+     */
     public void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -455,13 +541,10 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         //take a photo
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
-                Log.i("cam", "back photo file sucess");
+                Log.i("cam", "back photo file success");
                 Log.i("cam",String.valueOf(camPhotoURI));
 
-                //Get the photo
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                Bitmap bitmap = BitmapFactory.decodeFile(camImageStoragePath, options);
-                imageView.setImageBitmap(bitmap);
+                Picasso.with(getContext()).load(camPhotoURI).into(imageView);
 
                 //add to gallery
                 galleryAddPic(getActivity().getApplicationContext(), camImageStoragePath);
@@ -477,7 +560,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Log.i("cam", "photo clikck");
+        Log.i("cam", "photo click");
         File photoFile = null;
 
         try {
@@ -492,7 +575,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             camPhotoURI = FileProvider.getUriForFile(getActivity().getApplicationContext(), getActivity().getApplicationContext().getPackageName() + ".provider", photoFile);
 
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, camPhotoURI);
-            Log.i("cam", "photo file sucess");
+            Log.i("cam", "photo file success");
             startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 
         }
@@ -511,18 +594,18 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             }
         }
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CANADA).format(new Date());
         return new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_"+ timeStamp + ".jpg");
     }
 
     /**
      * Add camera photo to gallery
-     * @param context
-     * @param filePath
+     * @param context - application context
+     * @param filePath - path of file
      */
     private void galleryAddPic(Context context, String filePath) {
-        Log.i("cam", "photo gallery sucess");
+        Log.i("cam", "photo gallery success");
 
         MediaScannerConnection.scanFile(context,
                 new String[]{filePath}, null,
@@ -533,20 +616,23 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
     }
 
-
+    /**
+     * get the extension for the image file by photo uri.
+     * @param uri - image uri
+     * @return the extension of file type
+     */
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getActivity().getApplicationContext().getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    /**
+     * upload the image file to the firebase storage
+     * with its unique uri and file name.
+     * get and save the download url of specific picture to database
+     */
     private void uploadFile(){
-        
-        if(mImageUri == null){
-            if(camPhotoURI != null){
-                mImageUri = camPhotoURI;
-            }
-        }
 
         if(mImageUri == null){
             if(camPhotoURI != null){
@@ -557,63 +643,44 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         if (mImageUri != null){
             final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
-            mUploadTask = fileReference.putFile(mImageUri)
+            // getting image uri and converting into string
+            StorageTask mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-//                                photoTextView.setText(temp);
-
 
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     // getting image uri and converting into string
-                                    Uri downloadUrl = uri;
-                                    temp = downloadUrl.toString();
-                                    Toast.makeText(getContext(), temp, Toast.LENGTH_SHORT).show();
-                                    uploadDatabase(temp);
+                                    downloadUrlStr = uri.toString();
+                                    uploadDatabase(downloadUrlStr);
 
 
                                 }
                             });
-
-
-//                            Toast.makeText(AddActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-////                            photo.setmImageUrl(taskSnapshot.getStorage().getDownloadUrl().toString());
-////                            if(photo.getmImageUrl()!=null){
-////                                temp = photo.getmImageUrl();
-//                            temp=taskSnapshot.getStorage().getDownloadUrl().toString();
-//                                Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
-//                                uploadDatabase(temp);
-
-//                            }
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getContext(), temp, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "failed to upload", Toast.LENGTH_SHORT).show();
                         }
                     });
-//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-//                            mProgressBar.setProgress((int) progress);
-//                        }
-//                    });
 
-            if (mUploadTask.isComplete()){
-                Toast.makeText(getContext(), "123", Toast.LENGTH_SHORT).show();
-            }
+
         }
         else{
-            uploadDatabase(temp);
+            uploadDatabase(downloadUrlStr);
         }
 
 
     }
+
+    /**
+     * update the moodevent to database for fields
+     * @param imageUrl - image url
+     */
     private void uploadDatabase(String imageUrl){
         boolean valid = true;
 
@@ -628,14 +695,19 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             ((TextView) socialSituationSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
         }
 
-        commentString = commentEditText.getText().toString();
+        String commentString = commentEditText.getText().toString();
         if (!MoodEventValidator.checkComment(commentString)) {
             valid = false;
             commentEditText.setError(MoodEventValidator.getErrorMessage());
         }
 
+        //for photo
+        if(imageUrl == null){
+            imageUrl = selectedMoodEvent.getPhotoUrl();
+        }
+
         if (valid) {
-            // TODO: put actual location and photo
+            // put actual location and photo
             MoodEvent moodEvent = new MoodEvent(mood,
                     newMoodEventLocation,
                     socialSituation, commentString, selectedMoodEvent.getDatetime(),imageUrl);
@@ -643,9 +715,11 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             // push the MoodEvent to database
             User user = new User();
             user.pushMoodEvent(moodEvent);
-//                                moodArrayAdapter.notifyDataSetChanged();
             getDialog().dismiss();
         }
+
+
     }
 
 }
+

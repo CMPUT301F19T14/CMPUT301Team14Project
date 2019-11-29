@@ -1,9 +1,5 @@
 package com.cmput301t14.mooditude.activities;
 
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,18 +35,19 @@ import java.util.Map;
  */
 public class DisplayFollow extends AppCompatActivity {
 
-    ListView followList;
-    ArrayAdapter<Person> followAdapter;
-    ArrayList<Person> followDataList;
+    private ArrayAdapter<Person> followAdapter;
+    private ArrayList<Person> followDataList;
 
     private CollectionReference collectionReference;
 
-    FirebaseFirestore db;
-
     public enum ListMode {Followers, Followings}
 
-    ;
 
+
+    /**
+     * On create activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,12 +57,14 @@ public class DisplayFollow extends AppCompatActivity {
         final ListMode listMode = ListMode.valueOf(intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Mode));
 
 
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        followList = findViewById(R.id.followList);
+        ListView followList = findViewById(R.id.followList);
         followDataList = new ArrayList<>();
         followAdapter = new FollowerFollowingListAdapter(this, followDataList,listMode);
         followList.setAdapter(followAdapter);
+        String followers = "Followers";
+        String followings = "Followings";
 
        collectionReference = db.collection("Users").document(new User().getEmail())
                 .collection(listMode.toString());
@@ -109,21 +108,23 @@ public class DisplayFollow extends AppCompatActivity {
         });
 
         if (listMode == ListMode.Followers){
-            followList.setOnItemClickListener(new FollowFollowingListOnClickListener.Followers(followDataList));
+//            followList.setOnItemClickListener(new FollowFollowingListOnClickListener.Followers(followDataList));
         }
 
         TextView title=findViewById(R.id.followMode);
 
         if(listMode==ListMode.Followers){
-            title.setText("Followers");
+            title.setText(followers);
         }
         if(listMode==ListMode.Followings){
-            title.setText("You are following:");
+            title.setText(followings);
         }
 
     }
 
-
+    /**
+     * Refresh follow and following list.
+     */
     private void refreshList(){
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -132,6 +133,8 @@ public class DisplayFollow extends AppCompatActivity {
                     followDataList.clear();
                     for (QueryDocumentSnapshot doc : task.getResult()) {
                         followDataList.add(new Person(doc.getId(), doc.getString("user_name")));
+                        Log.i("refreshList",doc.getString("user_name"));
+                        Log.i("doc.getId()",doc.getId());
                     }
                     followAdapter.notifyDataSetChanged();
                 }

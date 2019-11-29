@@ -1,7 +1,6 @@
 package com.cmput301t14.mooditude.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,7 @@ import com.cmput301t14.mooditude.models.MoodEvent;
 import com.cmput301t14.mooditude.R;
 import com.cmput301t14.mooditude.services.MoodEventIconSetter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 
 /**
@@ -34,7 +31,7 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
     /**
      * Constructor for the adapter
      *
-     * @param context
+     * @param context the context
      * @param moodEventList - the data list of moodEvents
      */
     public SelfMoodEventAdapter(Context context, ArrayList<MoodEvent> moodEventList) {
@@ -46,10 +43,10 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
     /**
      * get the view for each item in the list
      *
-     * @param position
+     * @param position the moodevent position in list
      * @param convertView
-     * @param parent
-     * @return
+     * @param parent parent of the view
+     * @return the view
      */
     @NonNull
     @Override
@@ -61,19 +58,22 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         }
 
         final MoodEvent moodEvent = moodEventList.get(position);
-        final int colorGreyIcon = ContextCompat.getColor(context, R.color.colorGreyIcon);
 
         TextView timeTextView = view.findViewById(R.id.time_textview);
         TextView emoticonTextView = view.findViewById(R.id.emoticon_textview);
         ImageView locationImage = view.findViewById(R.id.locationImage);
         ImageView commentImage = view.findViewById(R.id.commentImage);
         ImageView socialSituationImage = view.findViewById(R.id.socialSituationImage);
+        ImageView photoImage = view.findViewById(R.id.imageView3);
+
 
         MoodEventIconSetter moodEventIconSetter = new MoodEventIconSetter(moodEvent);
         moodEventIconSetter.setTimeView(timeTextView);
         moodEventIconSetter.setLocationIcon(locationImage);
         moodEventIconSetter.setCommentIcon(commentImage);
         moodEventIconSetter.setSocialSituationIcon(socialSituationImage);
+        moodEventIconSetter.setPhotoIcon(photoImage);
+
 
 
         emoticonTextView.setText(moodEvent.getMood().getEmoticon());

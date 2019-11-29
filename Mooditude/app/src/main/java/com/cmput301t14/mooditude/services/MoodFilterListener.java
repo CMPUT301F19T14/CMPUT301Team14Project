@@ -6,10 +6,18 @@ import android.view.View;
 
 import com.cmput301t14.mooditude.models.Mood;
 
+/**
+ * Listener class for setting the filter in self activity
+ */
 public class MoodFilterListener implements View.OnClickListener {
-    String mood;
-    User user;
+    private String mood;
+    private User user;
 
+    /**
+     * constructor, pass in user and mood string
+     * @param user user class for connection to db
+     * @param mood string of mood filter
+     */
     public MoodFilterListener(User user, String mood) {
         this.mood = mood;
         this.user = user;
@@ -17,7 +25,7 @@ public class MoodFilterListener implements View.OnClickListener {
 
     /**
      * when onClick, set the flag in the user.FilterList, and display the correct color
-     * @param v
+     * @param v the filter icon onclick
      */
     @Override
     public void onClick(View v) {

@@ -1,5 +1,6 @@
 package com.cmput301t14.mooditude.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -9,13 +10,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
-import android.widget.Toast;
 
 
 import com.cmput301t14.mooditude.models.Mood;
@@ -27,11 +28,15 @@ import com.cmput301t14.mooditude.services.User;
 
 import com.cmput301t14.mooditude.adapters.SelfMoodEventAdapter;
 import com.cmput301t14.mooditude.models.MoodEvent;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,14 +53,8 @@ public class SelfActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE_Email = "com.cmput301t14.mooditude.email";
     public static final String EXTRA_MESSAGE_Mode = "com.cmput301t14.mooditude.mode";
 
-    ListView selfMoodEventList;
-    ArrayAdapter<MoodEvent> selfMoodEventAdapter;
-    ArrayList<MoodEvent> selfMoodEventDataList;
-    ArrayList<MoodEvent> filteredSelfMoodEventDataList;
+    private ListView selfMoodEventList;
 
-    private FirebaseUser user;
-    private FirebaseFirestore db;
-    private FirebaseAuth mAuth;
     private String messageEmail;
 
 
@@ -65,16 +64,20 @@ public class SelfActivity extends AppCompatActivity {
 
     private User userService;
 
-    ImageButton googleMapButton;
+    private ImageButton googleMapButton;
+    private ImageButton signOutButton;
 
-
+    /**
+     * On Creation
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_self);
 
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
 
         Intent intent = getIntent();
         messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
@@ -92,7 +95,6 @@ public class SelfActivity extends AppCompatActivity {
         setUpMoodEventList();
         setUpDeleteMoodEvent();
 
-        final String TAG = "Sample";
         final TextView followerTextView;
         final TextView followingTextView;
         final TextView numberFollowerTextView;
@@ -100,7 +102,7 @@ public class SelfActivity extends AppCompatActivity {
         final TextView userNameTextView;
         final TextView numberMoodEvents;
 
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         final CollectionReference collectionReference = db.collection("Users");
 
@@ -111,19 +113,11 @@ public class SelfActivity extends AppCompatActivity {
         userNameTextView = findViewById(R.id.userNametextView);
         numberMoodEvents = findViewById(R.id.number_of_mood_events);
         googleMapButton = findViewById(R.id.googleMapsImageButton);
+        signOutButton = findViewById(R.id.sign_out_button);
 
-        googleMapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Clicked Map Button",Toast.LENGTH_SHORT).show();
+        googleMapHandler();
+        setSignOutHandler();
 
-                Intent intent = new Intent(SelfActivity.this, MapsActivity.class);
-                intent.putExtra("displayOption", "self");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-//                finish();
-            }
-        });
 
         // Set up userName listener
         userService.listenUserName(userNameTextView);
@@ -131,69 +125,6 @@ public class SelfActivity extends AppCompatActivity {
         userService.listenFollowingNumber(numberFollowingTextView);
         userService.listenMoodHistoryNumber(numberMoodEvents);
 
-/**
- *  Moved to User Class with realtime listener
- *  Original functinality:
- *  Follower Number
- *  Following Number
- *  Number of Moodevents
- */
-//        final DocumentReference documentReference = collectionReference.document(messageEmail);
-        //get the total number of followers/following
-//        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
-//
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot doc = task.getResult();
-//
-//                    if(!doc.contains("MoodHistory")){
-//                        CollectionReference moodHistory = documentReference.collection("MoodHistory");
-//                        moodHistory.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                if (task.isSuccessful()) {
-//                                    Log.d("TAG", task.getResult().size() + "");
-//                                    numberMoodEvents.setText(String.valueOf(task.getResult().size()));
-//                                } else {
-//                                    Log.d(TAG, "Error getting documents: ", task.getException());
-//                                }
-//                            }
-//                        });
-//
-//                    }
-//                    else{
-//                        numberMoodEvents.setText("0");
-//
-//                    }
-//
-//                    userNameTextView.setText(String.valueOf(doc.get("user_name")));
-//
-//                    ArrayList<String> followerList = (ArrayList<String>) doc.get("followers");
-//                    if(followerList==null){
-//                        numberFollowerTextView.setText("0");
-//                    }
-//                    else{
-//                        numberFollowerTextView.setText(String.valueOf(followerList.size()));
-//                    }
-//
-//                    ArrayList<String> followingList = (ArrayList<String>) doc.get("following");
-//                    if(followerList==null){
-//                        numberFollowingTextView.setText("0");
-//                    }
-//                    else{
-//                        numberFollowingTextView.setText(String.valueOf(followingList.size()));
-//                    }
-//
-//                }
-//            }
-//        })
-//        .addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         //if click on item, go to DisplayFollow activity to show the summary list
         followerTextView.setOnClickListener(new View.OnClickListener() {
@@ -214,6 +145,34 @@ public class SelfActivity extends AppCompatActivity {
                 intent.putExtra(EXTRA_MESSAGE_Mode, DisplayFollow.ListMode.Followings.toString());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
+            }
+        });
+    }
+
+    /**
+     * Opens google map when user clicks map icon
+     */
+    public void googleMapHandler(){
+        googleMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(SelfActivity.this, MapsActivity.class);
+                intent.putExtra("displayOption", "self");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void setSignOutHandler(){
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(SelfActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -254,10 +213,10 @@ public class SelfActivity extends AppCompatActivity {
      */
     private void setUpMoodEventList() {
         selfMoodEventList = findViewById(R.id.self_mood_event_list);
-        selfMoodEventDataList = new ArrayList<>();
-        filteredSelfMoodEventDataList = new ArrayList<>();
+        ArrayList<MoodEvent> selfMoodEventDataList = new ArrayList<>();
+        ArrayList<MoodEvent> filteredSelfMoodEventDataList = new ArrayList<>();
 
-        selfMoodEventAdapter = new SelfMoodEventAdapter(this, filteredSelfMoodEventDataList);
+        ArrayAdapter<MoodEvent> selfMoodEventAdapter = new SelfMoodEventAdapter(this, filteredSelfMoodEventDataList);
 
         selfMoodEventList.setAdapter(selfMoodEventAdapter);
 
@@ -312,7 +271,31 @@ public class SelfActivity extends AppCompatActivity {
      * When delete is confirmed, remove the moodEvent from the list
      */
     public void onConfirmPressed(MoodEvent selectedMoodEvent) {
+        removeDatabaseURI(selectedMoodEvent.getPhotoUrl());
         userService.deleteMoodEvent(selectedMoodEvent);
+    }
+
+    public void removeDatabaseURI(String photoUrl){
+        if(photoUrl != null) {
+            String photoPath = photoUrl.substring(photoUrl.indexOf("%") + 3, photoUrl.indexOf("?"));
+
+            final StorageReference photoRef = FirebaseStorage.getInstance().getReference("photo").child(photoPath);
+
+            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    // File deleted successfully
+                    Log.d("Delete Photo", "onSuccess: deleted file");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Uh-oh, an error occurred!
+                    Log.d("Delete Photo", "onFailure: did not delete file");
+                }
+            });
+        }
+
     }
 
     @Override
@@ -330,5 +313,13 @@ public class SelfActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
     }
 }

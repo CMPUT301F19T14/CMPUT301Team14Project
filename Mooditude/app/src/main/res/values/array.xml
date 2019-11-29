@@ -10,7 +10,7 @@
 
     <string-array name="social_situation_string_array">
         <item>ALONE</item>
-        <item>ONE_PERSON</item>
+        <item>WITH_ANOTHER_PERSON</item>
         <item>SEVERAL</item>
         <item>CROWD</item>
         </string-array>
