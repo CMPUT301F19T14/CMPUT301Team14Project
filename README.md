@@ -18,6 +18,10 @@
 - `google-services.json`  is uploaded to CMPUT 301 Team 14 Slack Chanel (FOR TA and Team Members)
 - `google-services.json` needs to be put under `/Mooditude/App` folder for the APP to be correctly built. 
 
+### About Google Map Service
+
+- Only for emulators, users are required to provide a series of google map code to us to add on google map service console.
+
 ### Known Issues:
 
 - Firebase connection may be **Unstable** When Running on Android Emulators. If Login or Register Failed, please try **Uninstall** the APP and **Reinstall** APP 
