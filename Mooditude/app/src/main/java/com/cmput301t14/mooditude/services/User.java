@@ -51,7 +51,6 @@ import java.util.Map;
 public class User {
     static private FirebaseUser user;
     private FirebaseFirestore db;
-    private FirebaseAuth mAuth;
 
     static private DocumentReference userDocRef;
     static private CollectionReference followingCollRef;
@@ -74,13 +73,9 @@ public class User {
      */
     public User() {
         db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-//        Log.i("email","tag: "+getEmail());
         userDocRef = db.collection("Users").document(getEmail());
-        if (userDocRef == null) {
-            Log.i("email", "tag: " + getEmail());
-        }
         followingCollRef = db.collection("Users").document(user.getEmail()).collection("Followings");
         followerCollRef = db.collection("Users").document(user.getEmail()).collection("Followers");
         moodHistoryCollRef = db.collection("Users").document(user.getEmail()).collection("MoodHistory");
@@ -196,12 +191,6 @@ public class User {
                         if (!textComment.equals(document.getString("Comment"))) {
                             moodHash.put("Comment", textComment);
                         }
-//                        if (localDateTime != document.getTimestamp("DateTime")){
-////                            Log.i("TAG1B",document.getTimestamp("DateTime").toString());
-//                            moodHash.put("DateTime",localDateTime);
-////                            Log.i("TAG1",localDateTime.toString());
-////                            Log.i("TAG1B",document.getTimestamp("DateTime").toString());
-//                        }
                         if (!socialSituation.getSocialSituation().equals(document.getString("SocialSituation"))) {
                             moodHash.put("SocialSituation", socialSituation.getSocialSituation());
                         }
@@ -218,7 +207,6 @@ public class User {
                         Log.d("TAG", "Document does not exist!");
                         Location location = moodEvent.getLocation();
                         Timestamp localDateTime = moodEvent.getDatetime();
-//                        Integer author= moodEvent.getAuthor();
                         Mood mood = moodEvent.getMood();
 
                         SocialSituation socialSituation= moodEvent.getSocialSituation();
@@ -241,7 +229,6 @@ public class User {
                         else{
                             moodHash.put("Photograph", photoUrl);
                         }
-//                        Log.i("Timestamp.now()",String.valueOf(Timestamp.now().getSeconds()));
                         moodEntry.set(moodHash);
                     }
                     updateMostRecentMoodEvent();
@@ -293,7 +280,7 @@ public class User {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                    String followerEmail = doc.getId().toString();
+                    String followerEmail = doc.getId();
                     DocumentReference documentReference = db.collection("Users")
                             .document(followerEmail).collection("Followings").document(user.getEmail());
                     documentReference.set(followingHash);
@@ -556,8 +543,6 @@ public class User {
      * @param textView textview of username
      */
     public void listenUserName(final TextView textView){
-
-//        DocumentReference docRef = db.collection("Users").document(user.getEmail());
         userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {

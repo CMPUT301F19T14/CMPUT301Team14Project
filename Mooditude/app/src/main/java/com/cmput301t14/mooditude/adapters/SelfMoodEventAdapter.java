@@ -58,7 +58,6 @@ public class SelfMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         }
 
         final MoodEvent moodEvent = moodEventList.get(position);
-        final int colorGreyIcon = ContextCompat.getColor(context, R.color.colorGreyIcon);
 
         TextView timeTextView = view.findViewById(R.id.time_textview);
         TextView emoticonTextView = view.findViewById(R.id.emoticon_textview);
