@@ -78,7 +78,6 @@ public class MoodEventValidator {
     public static String getErrorMessage() {
         String result=errorMessage ;
         errorMessage="";
-//        errorMessage="Test";
         return result;
     }
 }
