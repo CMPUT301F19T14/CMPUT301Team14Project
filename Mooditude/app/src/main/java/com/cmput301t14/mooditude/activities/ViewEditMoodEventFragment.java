@@ -104,6 +104,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     private String camImageStoragePath;
 
     private Boolean deletePhotoFlag = false;
+    private boolean includeLocation;
 
 
 
@@ -445,7 +446,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
      * device location.
      */
     private void getCurrentDeviceLocation(){
-
+        includeLocation = true;
         LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
             @Override
@@ -453,6 +454,10 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                 lat = location.getLatitude();
                 lon = location.getLongitude();
                 newMoodEventLocation = new Location(lat, lon);
+                if(includeLocation){
+                    Toast.makeText(getContext(), "Location Included", Toast.LENGTH_SHORT).show();
+                    includeLocation = false;
+                }
             }
 
 

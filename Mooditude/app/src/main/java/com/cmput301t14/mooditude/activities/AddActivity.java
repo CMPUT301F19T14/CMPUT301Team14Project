@@ -106,6 +106,7 @@ public class AddActivity extends AppCompatActivity {
     private Double lat;
     private Double lon;
     private Location newMoodEventLocation;
+    private boolean includeLocation;
 
     /**
      * Ask permission to access GPS
@@ -174,7 +175,6 @@ public class AddActivity extends AppCompatActivity {
         setUpDeletePhoto();
 
 
-//        getCurrentDeviceLocation();
     }
 
     /**
@@ -589,6 +589,7 @@ public class AddActivity extends AppCompatActivity {
      * device location.
      */
     public void getCurrentDeviceLocation(){
+        includeLocation = true;
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -597,6 +598,10 @@ public class AddActivity extends AppCompatActivity {
                 lat = location.getLatitude();
                 lon = location.getLongitude();
                 newMoodEventLocation = new Location(lat,lon);
+                if(includeLocation){
+                    Toast.makeText(getApplicationContext(), "Location Included", Toast.LENGTH_SHORT).show();
+                    includeLocation = false;
+                }
             }
 
             @Override
