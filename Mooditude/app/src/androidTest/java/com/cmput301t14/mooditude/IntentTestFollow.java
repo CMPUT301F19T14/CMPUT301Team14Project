@@ -2,23 +2,20 @@ package com.cmput301t14.mooditude;
 
 import android.app.Activity;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import androidx.test.rule.ActivityTestRule;
+import com.cmput301t14.mooditude.activities.DisplayFollow;
+import com.cmput301t14.mooditude.activities.HomeActivity;
+import com.cmput301t14.mooditude.activities.MainActivity;
+import com.cmput301t14.mooditude.activities.SelfActivity;
+import com.cmput301t14.mooditude.activities.SignInActivity;
 import com.robotium.solo.Solo;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
@@ -43,8 +40,8 @@ public class IntentTestFollow {
         solo.assertCurrentActivity("Wrong Activity", SignInActivity.class);
 
 
-        String userName="xianda";
-        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text),userName+"@gmail.com");
+        String userName="ui";
+        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text),userName+"@test.com");
         solo.enterText((EditText) solo.getView(R.id.signin_password_edit_text),"123456");
 
         solo.clickOnButton("Sign In");
@@ -67,12 +64,15 @@ public class IntentTestFollow {
         solo.clickOnView(solo.getView(R.id.navigation_self));
 
         solo.waitForActivity(SelfActivity.class);
-        solo.waitForText("3");
+        solo.waitForText("2");
 
 
         solo.clickOnView(solo.getView(R.id.follower));
 
         solo.waitForActivity(DisplayFollow.class);
+
+        solo.waitForText("ui2@test.com");
+        solo.waitForText("wangye@warning.com");
 
     }
 
@@ -87,6 +87,9 @@ public class IntentTestFollow {
         solo.clickOnView(solo.getView(R.id.following));
 
         solo.waitForActivity(DisplayFollow.class);
+
+        solo.waitForText("ui2@test.com");
+        solo.waitForText("wangye@warning.com");
 
 
 

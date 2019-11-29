@@ -1,0 +1,201 @@
+﻿<mockup version="5.3" minAllowVersion="5.3" ID="C4173E57-7BF1-430F-8171-7916237C2F1A" platform="MtMobile" defaultW="360" defaultH="640" measureW="360" measureH="640" screenOrientation="MoPortrait" mobileScreenScale="1.77777779102325">
+  <controls controlCount="21">
+    <control controlID="F88460B6-B8F9-4245-827C-5CAC27FFDAA5" controlTypeID="Tabs" x="0" y="620" w="360" h="20" zOrder="0">
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Home%2CSearch%2CPost%2CNotification%2CMe</text>
+      <textColor>4284900966</textColor>
+      <textSize>14</textSize>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>1</selectedIndex>
+      <dividerColor>4293190884</dividerColor>
+      <selectedTextColor>4278242559</selectedTextColor>
+    </control>
+    <control controlID="4A12BA48-A122-489C-B953-031B02CB72B2" controlTypeID="Icon" x="95" y="596" w="24" h="24" zOrder="1">
+      <color>4278242559</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIcoFont</iconFontName>
+        <iconCode>59217</iconCode>
+      </icon>
+      <URL>5B42555577E2EDEFD5648F7EACF271B1.svg</URL>
+    </control>
+    <control controlID="69D77C2D-FC12-48CE-8A16-5F938B732DFE" controlTypeID="Icon" x="239" y="596" w="24" h="24" zOrder="2">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="8948A0DB-0DC4-4561-BBA7-3D6AC8D58F83" linkType="ltPageLink" isApplyIncludePage="False" title="Notification">
+          <area shape="0" alt="" ID="{8478B24B-5CD5-43D6-A3CA-E977204A0C30}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdFontAwesome</iconFontName>
+        <iconCode>61443</iconCode>
+      </icon>
+      <URL>B580EFDE757BFEFDFAE97C8770013819.svg</URL>
+    </control>
+    <control controlID="CB916E58-46DC-4BC1-82E1-DC673F920A7F" controlTypeID="Icon" x="23" y="596" w="24" h="24" zOrder="3">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="38381CBD-5D8A-4BB3-9C76-4F9FDC1E7441" linkType="ltPageLink" isApplyIncludePage="False" title="Home">
+          <area shape="0" alt="" ID="{25FFC346-2A86-4C19-AB3C-32B0469532E6}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62535</iconCode>
+      </icon>
+      <URL>CF75DBB601952B6BB4B151C544C1D2C8.svg</URL>
+    </control>
+    <control controlID="A9BC02B4-239B-4048-9C8B-29CC131F7351" controlTypeID="Icon" x="310" y="596" w="24" h="24" zOrder="4">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="99FBBEBF-5621-42D1-82F8-F5CFD925F04A" linkType="ltPageLink" isApplyIncludePage="False" title="About+Me">
+          <area shape="0" alt="" ID="{0A828A4C-8E6F-4431-83E8-4AC19333A0C6}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62168</iconCode>
+      </icon>
+      <URL>A4BBA5CCC7880CC1D7108AAE4A99AB6E.svg</URL>
+    </control>
+    <control controlID="E583FC56-8B7A-400F-A218-1AB66DEB8C15" controlTypeID="Icon" x="167" y="596" w="24" h="24" zOrder="5">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="7110ACB6-31F4-42A7-AB9F-33644F29A409" linkType="ltPageLink" isApplyIncludePage="False" title="Post">
+          <area shape="0" alt="" ID="{36F3ECB6-CE7C-4133-A6BF-6387CDCE4A06}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62151</iconCode>
+      </icon>
+      <URL>D08755C22A9B40B6BF65036DEC8B44B4.svg</URL>
+    </control>
+    <control controlID="65EBAA02-37CA-493C-B866-02AD9F79B528" controlTypeID="HRule" x="-1" y="584" w="361" h="12" zOrder="6">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="62729BFD-D1C5-41B9-96B1-FE9A4AF86EEE" controlTypeID="HRule" x="0" y="59" w="360" h="12" zOrder="7">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="9DB5B0C1-55B0-4FB1-923A-9CB0F44AD61F" controlTypeID="Search" x="20" y="20" w="243" h="40" zOrder="8">
+      <borderColor>4278242559</borderColor>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="822BE20E-9CC2-46AD-A1D6-6CA9050D3C28" linkType="ltPageLink" isApplyIncludePage="False" title="Search_keyboard">
+          <area shape="0" alt="" ID="{6E8440E5-4B69-4AFE-85C2-C6EEF727E38B}" coords="(0,0,243,40)"/>
+        </link>
+      </links>
+      <font family="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" displayName="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False"/>
+      <textSize>14</textSize>
+      <textVAlign>VaTop</textVAlign>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+      <radius>12</radius>
+    </control>
+    <control controlID="7065ADD1-9588-4B09-BF75-79B469036A21" controlTypeID="Button" x="273" y="20" w="61" h="40" zOrder="9">
+      <color>4284927231</color>
+      <borderVisible>False</borderVisible>
+      <font family="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" displayName="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False"/>
+      <textColor>4294967295</textColor>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+      <radius>2</radius>
+    </control>
+    <control controlID="9D9FAE3D-833F-4890-A1F2-1E6E8D02F5C5" controlTypeID="Icon" x="291" y="26" w="28" h="28" zOrder="10">
+      <color>4294967295</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62395</iconCode>
+      </icon>
+      <URL>2DC4046875679DEA4111B47AE9385427.svg</URL>
+    </control>
+    <control controlID="8DF677C2-95C0-4C0E-95D4-0C42980238BF" controlTypeID="HRule" x="0" y="121" w="360" h="12" zOrder="11">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="5DB5E294-2F7E-43C6-9984-EC4DEC0B3C66" controlTypeID="Image" x="21" y="76" w="50" h="50" zOrder="12">
+      <URL>CD616F9260210EA68075D5A705AADBEE.png</URL>
+    </control>
+    <control controlID="59721972-17C1-4C2F-8376-0E8919570047" controlTypeID="Label" x="80" y="74" w="103" h="24" zOrder="13">
+      <color>6710886</color>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>pierce_WANG</text>
+      <textColor>4284900966</textColor>
+      <textSize>18</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="D5AAF3CE-78AC-4E79-8B3E-D5AC3536CDD5" controlTypeID="Button" x="80" y="102" w="91" h="17" zOrder="14">
+      <color>4284927231</color>
+      <borderVisible>False</borderVisible>
+      <font family="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" displayName="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False"/>
+      <text>3%2C999+Followers</text>
+      <textColor>4294967295</textColor>
+      <textSize>10</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+      <radius>2</radius>
+    </control>
+    <control controlID="5BAE338C-1CB6-4D5D-8B65-EF93A79AC7DF" controlTypeID="Button" x="245" y="84" w="90" h="35" zOrder="15">
+      <borderColor>4284927231</borderColor>
+      <font family="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" displayName="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False"/>
+      <text>%2B+Follow</text>
+      <textColor>4284927231</textColor>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+      <radius>4</radius>
+    </control>
+    <control controlID="4CD7A1C7-D181-44EB-8F4F-556942B4D578" controlTypeID="Image" x="21" y="131" w="50" h="50" zOrder="16">
+      <URL>3A09DFA083517FC02D21EECAF673412D.png</URL>
+    </control>
+    <control controlID="8988F744-C7B6-4787-A9DA-B846434D4D55" controlTypeID="Label" x="80" y="129" w="71" h="24" zOrder="17">
+      <color>6710886</color>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>pierce_YE</text>
+      <textColor>4284900966</textColor>
+      <textSize>18</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="095096C7-C447-4147-870A-505359FF397B" controlTypeID="Button" x="80" y="159" w="71" h="17" zOrder="18">
+      <color>4284927231</color>
+      <borderVisible>False</borderVisible>
+      <font family="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" displayName="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False"/>
+      <text>12+Followers</text>
+      <textColor>4294967295</textColor>
+      <textSize>10</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+      <radius>2</radius>
+    </control>
+    <control controlID="CDDDC0E1-C094-4EB8-8C37-58FFA1ACA13D" controlTypeID="HRule" x="5" y="180" w="360" h="12" zOrder="19">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="9106DBBA-BB2A-4379-86CD-CF5AAF92EC3F" controlTypeID="Button" x="245" y="140" w="90" h="35" zOrder="20">
+      <borderColor>4284927231</borderColor>
+      <font family="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" displayName="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False"/>
+      <text>%2B+Follow</text>
+      <textColor>4284927231</textColor>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+      <radius>4</radius>
+    </control>
+  </controls>
+  <param>
+    <backgroundColor>4294967295</backgroundColor>
+    <fontSize>0</fontSize>
+    <fontFamily/>
+    <guideLines/>
+  </param>
+</mockup>

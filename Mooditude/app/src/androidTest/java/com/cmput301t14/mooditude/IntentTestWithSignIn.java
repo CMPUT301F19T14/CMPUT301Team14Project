@@ -2,7 +2,6 @@ package com.cmput301t14.mooditude;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -10,6 +9,10 @@ import android.widget.TextView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.cmput301t14.mooditude.activities.HomeActivity;
+import com.cmput301t14.mooditude.activities.MainActivity;
+import com.cmput301t14.mooditude.activities.SelfActivity;
+import com.cmput301t14.mooditude.activities.SignInActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -30,23 +33,6 @@ public class IntentTestWithSignIn {
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        solo.clickOnButton("Sign In");
-
-        solo.waitForText("Mooditude", 1, 2000);
-        solo.assertCurrentActivity("Wrong Activity", SignInActivity.class);
-
-
-        String userName = "testc";
-        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text), userName + "@test.com");
-        solo.enterText((EditText) solo.getView(R.id.signin_password_edit_text), "123456");
-
-        solo.clickOnButton("Sign In");
-
-//        solo.waitForText("Welcome to Moodtter",1,2000);
-        solo.waitForActivity(HomeActivity.class);
-
-        solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
-
     }
 
     @Test
@@ -55,62 +41,65 @@ public class IntentTestWithSignIn {
     }
 
     @Test
-    public void checkAdd(){
-//        solo.clickOnMenuItem("add");
-//        solo.clickOnMenuItem("add");
-//        solo.clickOnMenuItem("add",true);
-//        solo.clickOnButton(R.id.navigation_add);
-        solo.clickOnView(solo.getView(R.id.navigation_add));
-
-        solo.enterText((EditText) solo.getView(R.id.comment_edittext),"testing comment");
+    public void testSignIn(){
+        solo.clickOnButton("Sign In");
+        solo.waitForActivity(SignInActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", SignInActivity.class);
 
 
+        String email = "ui2@test.com";
+        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text), email);
+        solo.enterText((EditText) solo.getView(R.id.signin_password_edit_text), "123456");
 
+        solo.clickOnButton("Sign In");
+        solo.waitForActivity(HomeActivity.class);
 
-//        View view1 =
-        solo.clickOnView(solo.getView(Spinner.class, 0));
-        solo.scrollToTop();
-        solo.clickOnView(solo.getView(TextView.class, 2));
-
-        solo.clickOnView(solo.getView(Spinner.class, 1));
-        solo.scrollToTop();
-        solo.clickOnView(solo.getView(TextView.class, 2));
-
-        solo.clickOnView(solo.getView(R.id.submit_button));
-
-        solo.waitForActivity(SelfActivity.class,1000);
-
-        solo.clickInList(0);
-
-
-//        Fragment fragment = solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.frag_frame_add);
-
-        solo.waitForFragmentById(R.id.frag_frame_add,1000);
-
-        solo.waitForText("SAD");
-
-        solo.waitForText("ALONE");
-        solo.waitForText("testing comment");
-
-        solo.clickOnView(solo.getView(Spinner.class, 0));
-        solo.scrollToTop();
-        solo.clickOnText("HAPPY");
-
-        solo.clickOnView(solo.getView(Spinner.class, 1));
-        solo.scrollToTop();
-        solo.clickOnText("CROWD");
-
-        solo.clickOnText("OK");
+        solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
     }
 
     @Test
-    public void checkFind() {
+    public void testOpenMoodEventInHomeActivity(){
+        solo.clickOnButton("Sign In");
+        solo.waitForActivity(SignInActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", SignInActivity.class);
+        String email = "ui2@test.com";
+        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text), email);
+        solo.enterText((EditText) solo.getView(R.id.signin_password_edit_text), "123456");
+        solo.clickOnButton("Sign In");
+        solo.waitForActivity(HomeActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
 
-        solo.clickOnView(solo.getView(R.id.navigation_search));
+        solo.clickInList(0);
 
-        solo.enterText((EditText) solo.getView(R.id.search_edit_text), "ye");
+        Fragment fragment = solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.frag_frame_add);
+        solo.waitForFragmentById(R.id.frag_frame_add);
+        solo.waitForText("MoodEvent");
+    }
 
-        solo.waitForText("wangye");
+    @Test
+    public void testOpenMoodEventInMoodHistory(){
+        solo.clickOnButton("Sign In");
+        solo.waitForActivity(SignInActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", SignInActivity.class);
+        String email = "ui2@test.com";
+        solo.enterText((EditText) solo.getView(R.id.signin_email_edit_text), email);
+        solo.enterText((EditText) solo.getView(R.id.signin_password_edit_text), "123456");
+        solo.clickOnButton("Sign In");
+
+        solo.waitForActivity(HomeActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
+
+        solo.clickOnView(solo.getView(R.id.navigation_self));
+        solo.waitForActivity(SelfActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", SelfActivity.class);
+
+        solo.clickInList(0);
+
+        Fragment fragment = solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.frag_frame_add);
+        solo.waitForFragmentById(R.id.frag_frame_add);
+        solo.waitForText("MoodEvent");
+
 
     }
+
 }

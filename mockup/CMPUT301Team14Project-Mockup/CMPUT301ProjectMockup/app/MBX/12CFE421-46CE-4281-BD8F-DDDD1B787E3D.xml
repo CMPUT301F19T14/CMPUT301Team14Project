@@ -1,0 +1,113 @@
+﻿<mockup version="5.3" minAllowVersion="5.3" ID="12CFE421-46CE-4281-BD8F-DDDD1B787E3D" platform="MtMobile" defaultW="360" defaultH="640" measureW="360" measureH="640" screenOrientation="MoPortrait" mobileScreenScale="1.77777779102325" clipArea="(0,0,0,0)">
+  <controls controlCount="11">
+    <control controlID="081EE085-22B8-4291-BA14-00E51D7442D7" controlTypeID="Label" x="50" y="84" w="264" h="38" zOrder="0">
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Welcome+to+Moodtter!</text>
+      <textSize>28</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="07A8A7F9-BE3A-4A7B-81DF-361E255E6357" controlTypeID="TextInput" x="52" y="188" w="260" h="40" zOrder="1">
+      <borderColor>4278242559</borderColor>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <textAlign>HaCenter</textAlign>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+      <placeHolder>Enter+Your+Username+Here!</placeHolder>
+      <radius>12</radius>
+      <radiusIsPercent>True</radiusIsPercent>
+    </control>
+    <control controlID="1A098094-C57A-4BDA-9685-DBE2C0E2F23C" controlTypeID="TextInput" x="52" y="238" w="260" h="40" zOrder="2">
+      <borderColor>4278242559</borderColor>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <textAlign>HaCenter</textAlign>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+      <placeHolder>Enter+Your+Passwrod+Here!</placeHolder>
+      <inputModel>emPassword</inputModel>
+      <radius>12</radius>
+      <radiusIsPercent>True</radiusIsPercent>
+    </control>
+    <control controlID="00FD90A6-DA6F-43AA-AC8C-3656D578BC28" controlTypeID="TextInput" x="52" y="288" w="260" h="40" zOrder="3">
+      <borderColor>4278242559</borderColor>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <textAlign>HaCenter</textAlign>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+      <placeHolder>Enter+Your+Password+Again!</placeHolder>
+      <inputModel>emPassword</inputModel>
+      <radius>12</radius>
+      <radiusIsPercent>True</radiusIsPercent>
+    </control>
+    <control controlID="DCCB19A4-AA9F-41B6-ABB1-44D1158E9E4C" controlTypeID="Icon" x="61" y="192" w="32" h="32" zOrder="4">
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62368</iconCode>
+      </icon>
+      <URL>B91434690C5B5224D1CC6B1998F1178A.svg</URL>
+    </control>
+    <control controlID="89726150-2741-4B32-BA79-0EAE0D4FD66C" controlTypeID="Icon" x="61" y="241" w="32" h="32" zOrder="5">
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62354</iconCode>
+      </icon>
+      <URL>671B6BE607975A74FB470B2A24F33C46.svg</URL>
+    </control>
+    <control controlID="A5D36FA5-99B8-41EF-A94B-04A798017FA9" controlTypeID="Icon" x="61" y="290" w="32" h="32" zOrder="6">
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62354</iconCode>
+      </icon>
+      <URL>671B6BE607975A74FB470B2A24F33C46.svg</URL>
+    </control>
+    <control controlID="44F49210-A57E-4869-8B2A-ECC499E00723" controlTypeID="Button" x="52" y="338" w="260" h="40" zOrder="7">
+      <color>4284927231</color>
+      <borderColor>4278242559</borderColor>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="590BB407-6748-4D8C-A7F7-D608CB90500B" linkType="ltPageLink" isApplyIncludePage="False" title="Login">
+          <area shape="0" alt="" ID="{683BE353-6BD5-465B-8386-54FE03EDAF52}" coords="(0,0,260,40)"/>
+        </link>
+      </links>
+      <font family="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" displayName="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False"/>
+      <text>Join+Now</text>
+      <textColor>4294967295</textColor>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="6B1E7344-2BBB-41C8-8CF4-7891A523681B" controlTypeID="TextArea" x="52" y="388" w="260" h="56" zOrder="8">
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>By+clicking%2C+Join+Now%2C+you+agree+to+Moddtter's+User+Agreement%2C+Privacy+Policy%2C+and+Cookie+Policy</text>
+      <textColor>4291611852</textColor>
+      <textAlign>HaCenter</textAlign>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="015B60E4-EED9-4D90-9A3F-502D9BA3CF56" controlTypeID="TextInput" x="52" y="138" w="260" h="40" zOrder="9">
+      <borderColor>4278242559</borderColor>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <textAlign>HaCenter</textAlign>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+      <placeHolder>Enter+Your+Email+Here!</placeHolder>
+      <radius>12</radius>
+      <radiusIsPercent>True</radiusIsPercent>
+    </control>
+    <control controlID="CF7238B8-1143-4F35-BD46-364A6D2C44F7" controlTypeID="Icon" x="61" y="142" w="32" h="32" zOrder="10">
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62187</iconCode>
+      </icon>
+      <URL>B006535552ADCF3C660B10FA6D267D70.svg</URL>
+    </control>
+  </controls>
+  <param>
+    <backgroundColor>4294967295</backgroundColor>
+    <fontSize>0</fontSize>
+    <fontFamily/>
+    <guideLines/>
+  </param>
+</mockup>

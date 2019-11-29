@@ -1,0 +1,410 @@
+﻿<mockup version="5.3" minAllowVersion="5.3" ID="99FBBEBF-5621-42D1-82F8-F5CFD925F04A" platform="MtMobile" defaultW="360" defaultH="640" measureW="360" measureH="640" screenOrientation="MoPortrait" mobileScreenScale="1.77777779102325" clipArea="(0,0,0,0)">
+  <controls controlCount="40">
+    <control controlID="BE189EAE-3D0C-4642-8C70-33971A4D4469" controlTypeID="Tabs" x="0" y="620" w="360" h="20" zOrder="0">
+      <font family="Segoe+UI" displayName="Segoe+UI" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Home%2CSearch%2CPost%2CNotification%2CMe</text>
+      <textColor>4284900966</textColor>
+      <textSize>14</textSize>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>4</selectedIndex>
+      <dividerColor>4293190884</dividerColor>
+      <selectedTextColor>4278242559</selectedTextColor>
+    </control>
+    <control controlID="87EC82DC-2628-4BDA-AC2C-E8447EA8D4AD" controlTypeID="Icon" x="95" y="596" w="24" h="24" zOrder="1">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="3DA3CBBA-396A-4985-8A4A-FF31BB10ABBA" linkType="ltPageLink" isApplyIncludePage="False" title="Search">
+          <area shape="0" alt="" ID="{31A3E655-365B-4A87-90FC-1BF517A56BF6}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIcoFont</iconFontName>
+        <iconCode>59217</iconCode>
+      </icon>
+      <URL>5B42555577E2EDEFD5648F7EACF271B1.svg</URL>
+    </control>
+    <control controlID="8EFD710F-A806-4E21-A50B-55C9502993DE" controlTypeID="Icon" x="239" y="596" w="24" h="24" zOrder="2">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="8948A0DB-0DC4-4561-BBA7-3D6AC8D58F83" linkType="ltPageLink" isApplyIncludePage="False" title="Notification">
+          <area shape="0" alt="" ID="{7AC55646-CBC2-458B-9A24-4C37F24AA23D}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdFontAwesome</iconFontName>
+        <iconCode>61443</iconCode>
+      </icon>
+      <URL>B580EFDE757BFEFDFAE97C8770013819.svg</URL>
+    </control>
+    <control controlID="1E0EA363-9044-48C3-822E-F2C988C6E970" controlTypeID="Icon" x="23" y="596" w="24" h="24" zOrder="3">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="38381CBD-5D8A-4BB3-9C76-4F9FDC1E7441" linkType="ltPageLink" isApplyIncludePage="False" title="Home">
+          <area shape="0" alt="" ID="{FE53D499-6E67-46EE-9053-AAB657F35B67}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62535</iconCode>
+      </icon>
+      <URL>CF75DBB601952B6BB4B151C544C1D2C8.svg</URL>
+    </control>
+    <control controlID="45235B63-0141-41DA-89AA-06F382AA7E79" controlTypeID="Icon" x="310" y="596" w="24" h="24" zOrder="4">
+      <color>4278242559</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62168</iconCode>
+      </icon>
+      <URL>A4BBA5CCC7880CC1D7108AAE4A99AB6E.svg</URL>
+    </control>
+    <control controlID="FB54BCF4-CA2B-417B-9A32-46E0E1294F48" controlTypeID="Icon" x="167" y="596" w="24" h="24" zOrder="5">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="7110ACB6-31F4-42A7-AB9F-33644F29A409" linkType="ltPageLink" isApplyIncludePage="False" title="Post">
+          <area shape="0" alt="" ID="{C9146721-F025-468A-B3D1-E19A861E7179}" coords="(0,0,24,24)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62151</iconCode>
+      </icon>
+      <URL>D08755C22A9B40B6BF65036DEC8B44B4.svg</URL>
+    </control>
+    <control controlID="A9729C50-0DAD-4F8A-839F-FCCCEAA459CB" controlTypeID="HRule" x="-1" y="584" w="361" h="12" zOrder="6">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="D30F0832-96BB-4862-8C0C-77BF52C1B489" controlTypeID="HRule" x="0" y="76" w="360" h="12" zOrder="7">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="0E8A0022-7CD0-4481-BF0E-3B44340FFD3A" controlTypeID="Image" x="31" y="9" w="50" h="50" zOrder="8">
+      <URL>CD616F9260210EA68075D5A705AADBEE.png</URL>
+    </control>
+    <control controlID="1220C0B5-67DA-4317-9F8B-8D6471A91FA4" controlTypeID="Label" x="23" y="59" w="91" h="22" zOrder="9">
+      <color>6710886</color>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>pierce_WANG</text>
+      <textColor>4284900966</textColor>
+      <textSize>16</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="5872E961-A416-4176-913C-EE2A31542CC6" controlTypeID="Button" x="224" y="30" w="48" h="15" zOrder="10">
+      <color>4284927231</color>
+      <borderVisible>False</borderVisible>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>3%2C999</text>
+      <textColor>4294967295</textColor>
+      <textSize>12</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+      <radius>2</radius>
+    </control>
+    <control controlID="D0ABA22C-F502-4413-AAC3-84C738AB71CE" controlTypeID="Label" x="133" y="28" w="54" h="19" zOrder="11">
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Followers</text>
+      <textColor>4284900966</textColor>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="D5F71C6B-AC2E-4952-869A-2627E371A8E3" controlTypeID="Label" x="133" y="46" w="47" h="19" zOrder="12">
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Follwing</text>
+      <textColor>4284900966</textColor>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="AB847192-B74A-4592-B0E7-AFF13C643591" controlTypeID="Label" x="133" y="9" w="76" h="19" zOrder="13">
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>Mood+Events</text>
+      <textColor>4284900966</textColor>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="BAC2BFFB-EB65-452B-8EBC-AB3D3971A055" controlTypeID="Button" x="224" y="50" w="48" h="15" zOrder="14">
+      <color>4284927231</color>
+      <borderVisible>False</borderVisible>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="DAD693B5-0D92-4D4E-A710-DEF553CC639C" linkType="ltPageLink" isApplyIncludePage="False" title="My_Followings">
+          <area shape="0" alt="" ID="{6A828B79-B3AB-4F68-A77D-CBA47FD01F20}" coords="(0,0,48,15)"/>
+        </link>
+      </links>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>66</text>
+      <textColor>4294967295</textColor>
+      <textSize>12</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+      <radius>2</radius>
+    </control>
+    <control controlID="AC072489-365F-4C3E-8A6A-91375F112E88" controlTypeID="Button" x="224" y="10" w="48" h="15" zOrder="15">
+      <color>4284927231</color>
+      <borderVisible>False</borderVisible>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>2</text>
+      <textColor>4294967295</textColor>
+      <textSize>12</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+      <radius>2</radius>
+    </control>
+    <control controlID="D4A70D7B-63E8-470D-B946-92B6BB0262F2" controlTypeID="Icon" x="302" y="19" w="40" h="40" zOrder="16">
+      <color>4284927231</color>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="D4C0C9B3-1E3E-4E42-8B5F-568420CEB014" linkType="ltPageLink" isApplyIncludePage="False" title="Google+Maps">
+          <area shape="0" alt="" ID="{DBC13337-DA5E-4582-AFCA-26C1E29658E2}" coords="(0,0,40,40)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>61955</iconCode>
+      </icon>
+      <URL>CDEBBF7EBDD37DA54AC604792FCAECCA.svg</URL>
+    </control>
+    <control controlID="79488286-701A-41EE-B8F9-77BDCDEB7319" controlTypeID="HRule" x="0" y="153" w="360" h="12" zOrder="17">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="C24E581A-8EEA-47C9-A86B-EFA327A63609" controlTypeID="Image" x="34" y="91" w="45" h="45" zOrder="18">
+      <URL>3F77B22234EDDB48994560DDABECE656.png</URL>
+    </control>
+    <control controlID="F6A2A434-52E0-437C-9DCB-6D2D4E2E0231" controlTypeID="Label" x="26" y="136" w="131" h="22" zOrder="19">
+      <color>6710886</color>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>2019-10-16+09%3A56%3A59</text>
+      <textColor>4284900966</textColor>
+      <textSize>16</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="2A2EC0B5-9210-43A4-A588-53DB7C4D3B00" controlTypeID="Image" x="93" y="101" w="30" h="30" zOrder="20">
+      <URL>C3F54CC0DAA83EB09A3BC8D826191F5F.png</URL>
+    </control>
+    <control controlID="E3C23A07-9A8D-4D4B-A010-9E5DF4A0709F" controlTypeID="Icon" x="128" y="101" w="30" h="30" zOrder="21">
+      <color>4284927231</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62348</iconCode>
+      </icon>
+      <URL>C9A19AEA8333861081ABFD164D361FEF.svg</URL>
+    </control>
+    <control controlID="5CD649DC-2045-43C2-B54E-F0AD980B61B9" controlTypeID="Image" x="163" y="101" w="30" h="30" zOrder="22">
+      <URL>C93E5DB575CF3B81893ADD27F2CFFCC4.png</URL>
+    </control>
+    <control controlID="9CCFF981-4A47-477A-AEFF-8EDD80CA9239" controlTypeID="Icon" x="252" y="96" w="40" h="40" zOrder="23">
+      <color>4284927231</color>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="1468A4DD-1D8F-4371-8007-65626B131C9C" linkType="ltPageLink" isApplyIncludePage="False" title="Edit">
+          <area shape="0" alt="" ID="{2BF329DA-77B9-4891-B5D0-BD4A5EBD9861}" coords="(0,0,40,40)"/>
+        </link>
+      </links>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62334</iconCode>
+      </icon>
+      <URL>69A4D1E5CE13432C6A4F579026917C6A.svg</URL>
+    </control>
+    <control controlID="252E0D5C-F0A4-4BB9-85A8-CB77816B85F2" controlTypeID="Image" x="302" y="96" w="40" h="40" zOrder="24">
+      <radius>12</radius>
+      <URL>BE7009F047A9E69EC5A82A7D8122A8F5.png</URL>
+    </control>
+    <control controlID="26C199B9-44A7-4595-AF51-A1B5104528A3" controlTypeID="HRule" x="0" y="230" w="360" h="12" zOrder="25">
+      <color>4293190884</color>
+      <opacity>0.800000011920929</opacity>
+      <thickness>1</thickness>
+    </control>
+    <control controlID="F154C375-2AA8-4005-84A3-70A9B4225924" controlTypeID="Label" x="26" y="213" w="131" h="22" zOrder="26">
+      <color>6710886</color>
+      <font family="%E7%AD%89%E7%BA%BF+Light" displayName="%E7%AD%89%E7%BA%BF+Light" postScript="" weightStyle="Regular" weight="300" isBold="False" isItalic="False" useDefaultFontFamily="False"/>
+      <text>2019-10-16+09%3A45%3A59</text>
+      <textColor>4284900966</textColor>
+      <textSize>16</textSize>
+      <lineSpacing>0</lineSpacing>
+      <useDefaultTextSize>False</useDefaultTextSize>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="212430A4-42EB-4C5E-83D7-A98644DC452C" controlTypeID="Image" x="93" y="178" w="30" h="30" zOrder="27">
+      <URL>C3F54CC0DAA83EB09A3BC8D826191F5F.png</URL>
+    </control>
+    <control controlID="CD8F343D-5071-48EA-AA14-709EF658DEB1" controlTypeID="Icon" x="130" y="178" w="30" h="30" zOrder="28">
+      <color>4284927231</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62348</iconCode>
+      </icon>
+      <URL>C9A19AEA8333861081ABFD164D361FEF.svg</URL>
+    </control>
+    <control controlID="32F874F8-3E7E-46B0-AFD2-8D758C6B2E70" controlTypeID="Image" x="207" y="178" w="30" h="30" zOrder="29">
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="767D3B9C-059E-49BF-B43A-775BF133483B" linkType="ltPageLink" isApplyIncludePage="False" title="Angry_Mood_Detail">
+          <area shape="0" alt="" ID="{B21D4AAC-CA76-4AA6-AA90-074A5683053A}" coords="(0,0,30,30)"/>
+        </link>
+      </links>
+      <URL>C93E5DB575CF3B81893ADD27F2CFFCC4.png</URL>
+    </control>
+    <control controlID="AAB48A6F-D85D-451B-B4D4-55382EC95F0E" controlTypeID="Icon" x="252" y="173" w="40" h="40" zOrder="30">
+      <color>4284927231</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62334</iconCode>
+      </icon>
+      <URL>69A4D1E5CE13432C6A4F579026917C6A.svg</URL>
+    </control>
+    <control controlID="1800B7D9-1C42-4973-A446-3D0A2A3F6FE8" controlTypeID="Image" x="33" y="168" w="50" h="50" zOrder="31">
+      <URL>73FC889120652F85382D9B9A1D289CC7.png</URL>
+    </control>
+    <control controlID="FA7A84E0-7331-4A2A-95AD-346067D9E3DE" controlTypeID="Icon" x="167" y="178" w="30" h="30" zOrder="32">
+      <color>4284927231</color>
+      <icon>
+        <ID/>
+        <iconFontName>jdIonicons</iconFontName>
+        <iconCode>62353</iconCode>
+      </icon>
+      <URL>273F820FD8252835AA1E7927378AF485.svg</URL>
+    </control>
+    <control controlID="6257C3EB-4BB2-4F7A-8638-CC0CEA407D4D" controlTypeID="Image" x="302" y="173" w="40" h="40" zOrder="33">
+      <interactiveData>
+        <entry title="">
+          <area shape="0" alt="" ID="{83CC483D-8D45-4FB4-A2B2-D7C948B30ECD}" coords="(0,0,40,40)"/>
+          <events title="">
+            <event eventType="atClick" isChecked="True">
+              <behaviour title="" isChecked="True" isWait="False" isLoop="False" execMode="emParallel">
+                <target targetID="55B6C4CE-C262-4C48-A669-059C40AB6B07" isChecked="True" isAutoRecovery="False" isLoop="False" execMode="emSequence">
+                  <command name="Popup State Change" isChecked="True" descrition="">
+                    <param name="AniInterpolation" value="0" varType="3" description=""/>
+                    <param name="AniDuration" value="200" varType="3" description=""/>
+                    <param name="AniAutoReverse" value="False" varType="11" description=""/>
+                    <param name="AniLoop" value="False" varType="11" description=""/>
+                    <param name="AniInterpolationTypeOut" value="False" varType="11" description=""/>
+                    <param name="Delay" value="0" varType="3" description=""/>
+                    <param name="Value" value="2" varType="3" description=""/>
+                    <param name="AniType" value="0" varType="3" description=""/>
+                  </command>
+                </target>
+              </behaviour>
+            </event>
+          </events>
+        </entry>
+      </interactiveData>
+      <radius>12</radius>
+      <URL>BE7009F047A9E69EC5A82A7D8122A8F5.png</URL>
+    </control>
+    <control controlID="3DB6BBB9-4368-4EC3-A6B5-CF357EFCDC70" controlTypeID="Button" x="202" y="96" w="35" h="48" zOrder="34">
+      <borderColor>4293190884</borderColor>
+      <opacity>0.5</opacity>
+      <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+        <link targetPageID="68FB9C23-FD13-460B-A7DE-9DE460B749BE" linkType="ltPageLink" isApplyIncludePage="False" title="My_Mood_Detail">
+          <area shape="0" alt="" ID="{1B3BC9D3-6B21-4A97-9ABB-A6622C04FD48}" coords="(0,0,35,48)"/>
+        </link>
+      </links>
+      <font family="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" displayName="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False"/>
+      <lineSpacing>0</lineSpacing>
+      <selectedIndex>-1</selectedIndex>
+    </control>
+    <control controlID="55B6C4CE-C262-4C48-A669-059C40AB6B07" controlTypeID="AlertWindow" x="413" y="170" w="46" h="46" zOrder="35">
+      <caption>Delete+Mood+Event+Confirm</caption>
+      <groupChildrenDescriptors>
+        <control controlID="7D6D972C-D29D-4951-AF36-8F9402D60800" controlTypeID="Panel" x="0" y="0" w="360" h="640" zOrder="0">
+          <locked>True</locked>
+          <color>1879048192</color>
+          <borderVisible>False</borderVisible>
+          <canMove>False</canMove>
+          <alias>background</alias>
+          <groupChildrenDescriptors>
+            <control controlID="F44F999F-8F51-487D-9BF3-C4181C0D873B" controlTypeID="Border" x="0" y="0" w="360" h="640" zOrder="0">
+              <borderVisible>False</borderVisible>
+              <alias>borderLayer</alias>
+            </control>
+          </groupChildrenDescriptors>
+          <thinkness>1</thinkness>
+        </control>
+        <control controlID="3001A2AB-B986-4AB3-ACE7-197DEC6AFD8F" controlTypeID="PopupPanelContent" x="50" y="189" w="260" h="156" zOrder="1">
+          <color>16777215</color>
+          <alias>content</alias>
+          <groupChildrenDescriptors>
+            <control controlID="3D96C197-D25A-418B-BCA0-16B7CD15A9AB" controlTypeID="Alert" x="0" y="0" w="260" h="156" zOrder="0">
+              <alias>alert</alias>
+              <links eventType="AtClick" animate="AmNone" animateAutoDelay="0" animateDuration="500">
+                <link targetPageID="" linkType="ltPageLink" isApplyIncludePage="False" title="No">
+                  <area shape="0" alt="" ID="{6B783904-6C7E-43D0-9FD6-0479F536EE71}" coords="(4.5,120.5,125.5,151.5)"/>
+                </link>
+                <link targetPageID="1C7A34DF-AB2B-4389-9757-E8F32C1D7FE2" linkType="ltPageLink" isApplyIncludePage="False" title="Yes">
+                  <area shape="0" alt="" ID="{058F38BE-F5AB-472E-B2DF-6038041C0A48}" coords="(134.5,120.5,255.5,151.5)"/>
+                </link>
+              </links>
+              <interactiveData>
+                <entry title="No">
+                  <area shape="0" alt="" ID="{3DC0868B-B163-499E-A5CA-36AA207D294B}" coords="(4.5,120.5,125.5,151.5)"/>
+                  <events title="">
+                    <event eventType="atClick" isChecked="True">
+                      <behaviour title="" isChecked="True" isWait="False" isLoop="False" execMode="emParallel">
+                        <target targetID="55B6C4CE-C262-4C48-A669-059C40AB6B07" isChecked="True" isAutoRecovery="False" isLoop="False" execMode="emSequence">
+                          <command name="Popup State Change" isChecked="True" descrition="">
+                            <param name="AniInterpolation" value="0" varType="3" description=""/>
+                            <param name="AniDuration" value="200" varType="3" description=""/>
+                            <param name="AniAutoReverse" value="False" varType="11" description=""/>
+                            <param name="AniLoop" value="False" varType="11" description=""/>
+                            <param name="AniInterpolationTypeOut" value="False" varType="11" description=""/>
+                            <param name="Delay" value="0" varType="3" description=""/>
+                            <param name="Value" value="2" varType="3" description=""/>
+                            <param name="AniType" value="0" varType="3" description=""/>
+                          </command>
+                        </target>
+                      </behaviour>
+                    </event>
+                  </events>
+                </entry>
+                <entry title="Yes">
+                  <area shape="0" alt="" ID="{DB056BF5-11BD-4C62-A844-76908E73BD6F}" coords="(134.5,120.5,255.5,151.5)"/>
+                  <events title="">
+                    <event eventType="atClick" isChecked="True">
+                      <behaviour title="" isChecked="True" isWait="False" isLoop="False" execMode="emParallel">
+                        <target targetID="55B6C4CE-C262-4C48-A669-059C40AB6B07" isChecked="True" isAutoRecovery="False" isLoop="False" execMode="emSequence">
+                          <command name="Popup State Change" isChecked="True" descrition="">
+                            <param name="AniInterpolation" value="0" varType="3" description=""/>
+                            <param name="AniDuration" value="200" varType="3" description=""/>
+                            <param name="AniAutoReverse" value="False" varType="11" description=""/>
+                            <param name="AniLoop" value="False" varType="11" description=""/>
+                            <param name="AniInterpolationTypeOut" value="False" varType="11" description=""/>
+                            <param name="Delay" value="0" varType="3" description=""/>
+                            <param name="Value" value="2" varType="3" description=""/>
+                            <param name="AniType" value="0" varType="3" description=""/>
+                          </command>
+                        </target>
+                      </behaviour>
+                    </event>
+                  </events>
+                </entry>
+              </interactiveData>
+              <font family="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" displayName="%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91" postScript="" weightStyle="Regular" weight="400" isBold="False" isItalic="False"/>
+              <text>Do+you+want+to+DELETE%0D%0AThis+Mood+Event%3F%0D%0ANo%2CYes</text>
+              <textSize>14</textSize>
+              <lineSpacing>0</lineSpacing>
+            </control>
+          </groupChildrenDescriptors>
+        </control>
+      </groupChildrenDescriptors>
+    </control>
+  </controls>
+  <param>
+    <backgroundColor>4294967295</backgroundColor>
+    <fontSize>0</fontSize>
+    <fontFamily/>
+    <guideLines/>
+  </param>
+</mockup>
