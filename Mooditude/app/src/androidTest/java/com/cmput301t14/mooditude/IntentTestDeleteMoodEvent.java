@@ -2,11 +2,8 @@ package com.cmput301t14.mooditude;
 
 import android.app.Activity;
 import android.widget.EditText;
+import android.widget.Spinner;
 
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
-
-import com.cmput301t14.mooditude.activities.DisplayFollow;
 import com.cmput301t14.mooditude.activities.HomeActivity;
 import com.cmput301t14.mooditude.activities.MainActivity;
 import com.cmput301t14.mooditude.activities.SelfActivity;
@@ -17,12 +14,14 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
+
 import static junit.framework.TestCase.assertTrue;
 
-public class IntentTestFollow {
+public class IntentTestDeleteMoodEvent {
     private Solo solo;
+
 
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class,true,true);
@@ -46,12 +45,13 @@ public class IntentTestFollow {
 
         solo.clickOnButton("Sign In");
 
-//        solo.waitForText("Welcome to Moodtter",1,2000);
+
         solo.waitForActivity(HomeActivity.class);
 
         solo.assertCurrentActivity("Wrong Activity", HomeActivity.class);
 
     }
+
 
     @Test
     public void start() throws Exception{
@@ -60,39 +60,59 @@ public class IntentTestFollow {
     }
 
     @Test
-    public void getFollower(){
+    public void addMoodEvent(){
+
+        solo.clickOnView(solo.getView(R.id.navigation_add));
+
+        solo.clickOnView(solo.getView(Spinner.class, 0));
+        solo.scrollToTop();
+        solo.clickOnText("ANGRY");
+
+        solo.clickOnView(solo.getView(Spinner.class, 1));
+        solo.scrollToTop();
+        solo.clickOnText("WITH_ANOTHER_PERSON");
+
+        solo.enterText((EditText) solo.getView(R.id.comment_edittext),"ui@test.com ADD");
+
+
+        solo.clickOnView(solo.getView(Spinner.class, 2));
+        solo.scrollToTop();
+        solo.clickOnText("INCLUDE LOCATION");
+
+
+        solo.clickOnView(solo.getView(R.id.submit_button));
+    }
+
+
+    @Test
+    public void deleteMood(){
         solo.clickOnView(solo.getView(R.id.navigation_self));
 
         solo.waitForActivity(SelfActivity.class);
-        solo.waitForText("2");
+
+        solo.clickLongInList(0);
 
 
-        solo.clickOnView(solo.getView(R.id.follower));
+        solo.waitForText("Are you sure that you want to delete?",1,2000);
 
-        solo.waitForActivity(DisplayFollow.class);
-
-        solo.waitForText("ui2@test.com");
-        solo.waitForText("wangye@warning.com");
+        solo.clickOnText("Yes");
 
     }
 
     @Test
-    public void getFollowing(){
+    public void checkDelete(){
         solo.clickOnView(solo.getView(R.id.navigation_self));
 
         solo.waitForActivity(SelfActivity.class);
-        solo.waitForText("2");
+        solo.clickInList(0);
 
-
-        solo.clickOnView(solo.getView(R.id.following));
-
-        solo.waitForActivity(DisplayFollow.class);
-
-        solo.waitForText("ui2@test.com");
-        solo.waitForText("wangye@warning.com");
+        solo.waitForFragmentById(R.id.frag_frame_add,1000);
+        assertTrue(solo.waitForText("ANGRY"));
 
 
 
     }
+
+
 
 }
