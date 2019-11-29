@@ -29,8 +29,6 @@ public class Location implements Parcelable {
      * @param latitude, longtitude,addres
      */
     public Location(Double latitude, Double longtitude, String addres) {
-//        this.latitude = latitude;
-//        this.longtitude = longtitude;
         this.address = addres;
         geopoint= new GeoPoint(latitude,longtitude);
     }

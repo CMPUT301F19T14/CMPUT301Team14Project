@@ -29,7 +29,6 @@ public class SearchOnClickListener {
         @Override
         public void onClick(View view) {
             final String receiverEmail = ((TextView) view.findViewById(R.id.searchList_user_email_textView)).getText().toString();
-//                Toast.makeText(view.getContext(), receiverEmail, Toast.LENGTH_LONG).show();
             //creating a popup menu
             PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.END);
             //inflating menu from xml resource
@@ -64,7 +63,6 @@ public class SearchOnClickListener {
         @Override
         public void onClick(View view) {
             final String receiverEmail = ((TextView) view.findViewById(R.id.searchList_user_email_textView)).getText().toString();
-//                Toast.makeText(view.getContext(), receiverEmail, Toast.LENGTH_LONG).show();
             //creating a popup menu
             PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.END);
             //inflating menu from xml resource
@@ -76,7 +74,6 @@ public class SearchOnClickListener {
                     switch (item.getItemId()) {
                         case R.id.popmenu_follower_follow:
                             //handle menu1 click
-//                            new FollowRequestMessage(receiverEmail).invoke();
                             new FollowRequestMessage(receiverEmail).invoke();
                             Toast.makeText(context, "Follow request to \"" + receiverEmail + "\" sent", Toast.LENGTH_LONG).show();
                             return true;
@@ -106,7 +103,6 @@ public class SearchOnClickListener {
         @Override
         public void onClick(View view) {
             final String receiverEmail = ((TextView) view.findViewById(R.id.searchList_user_email_textView)).getText().toString();
-//                Toast.makeText(view.getContext(), receiverEmail, Toast.LENGTH_LONG).show();
             //creating a popup menu
             PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.END);
             //inflating menu from xml resource
@@ -141,7 +137,6 @@ public class SearchOnClickListener {
         @Override
         public void onClick(View view) {
             final String receiverEmail = ((TextView) view.findViewById(R.id.searchList_user_email_textView)).getText().toString();
-//                Toast.makeText(view.getContext(), receiverEmail, Toast.LENGTH_LONG).show();
             //creating a popup menu
             PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.END);
             //inflating menu from xml resource
@@ -153,7 +148,6 @@ public class SearchOnClickListener {
                     switch (item.getItemId()) {
                         case R.id.popmenu_friend_unfollow:
                             //handle menu1 click
-//                            new FollowRequestMessage(receiverEmail).invoke();
                             new User().unfollow(receiverEmail);
                             Toast.makeText(context, "Unfollow \"" + receiverEmail + "\"", Toast.LENGTH_LONG).show();
                             return true;
