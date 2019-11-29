@@ -20,7 +20,7 @@ import static java.lang.Boolean.TRUE;
 public class FollowRequestMessage extends Message {
     /**
      * Constructor
-     * @param receiver
+     * @param receiver id of receiver
      */
     public FollowRequestMessage(String receiver) {
         super(receiver);
@@ -29,10 +29,10 @@ public class FollowRequestMessage extends Message {
 
     /**
      * Constructor
-     * @param sender
-     * @param receiver
-     * @param datetime
-     * @param newMessage
+     * @param sender id of sender
+     * @param receiver id of receiver
+     * @param datetime datetime of the message
+     * @param newMessage message is new or not
      */
     public FollowRequestMessage(String sender, String receiver, Timestamp datetime, boolean newMessage) {
         super(sender, receiver, datetime, newMessage);

@@ -10,8 +10,8 @@ public class Person {
 
     /**
      * Constructor
-     * @param email
-     * @param name
+     * @param email user email
+     * @param name user name
      */
     public Person( String email, String name) {
         this.name = name;
@@ -20,7 +20,7 @@ public class Person {
 
     /**
      * get name
-     * @return
+     * @return user name
      */
     public String getName() {
         return name;
@@ -28,7 +28,7 @@ public class Person {
 
     /**
      * set name
-     * @param name
+     * @param name user name
      */
     public void setName(String name) {
         this.name = name;
@@ -36,7 +36,7 @@ public class Person {
 
     /**
      * get email
-     * @return
+     * @return user email
      */
     public String getEmail() {
         return email;
@@ -44,7 +44,7 @@ public class Person {
 
     /**
      * set email
-     * @param email
+     * @param email user email
      */
     public void setEmail(String email) {
         this.email = email;

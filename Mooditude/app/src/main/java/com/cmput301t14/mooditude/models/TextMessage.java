@@ -6,8 +6,6 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.HashMap;
 
-import static java.lang.Boolean.TRUE;
-
 /**
  * The Message class that only contains text to display
  */
