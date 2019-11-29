@@ -27,6 +27,7 @@
 
 - Firebase connection may be **Unstable** When Running on Android Emulators. If Login or Register Failed, please try **Uninstall** the APP and **Reinstall** APP 
 - IntentTest(UITest) sometimes failed to click the ListView to pop up the fragment resulting test failed, please rerun them
+- For the permissions of photo, camera and location, users have to allow the permissions in the ADD Activity. It will fail if users allow the permissions in the SELF Activity.
 
 ### Reference:
 
