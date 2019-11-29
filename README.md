@@ -5,7 +5,7 @@
 ### Android Requirement
 
 -  Android API Level 26 (Android 8 :Oreo) Required At Minimum
--  Android API level 29 will not support the camera feature
+-  Android API level 29 will not support the camera feature(cant create directory to save file)
 -  Google APIs are required for Emulators
 
 ### Register
@@ -26,6 +26,7 @@
 ### Known Issues:
 
 - Firebase connection may be **Unstable** When Running on Android Emulators. If Login or Register Failed, please try **Uninstall** the APP and **Reinstall** APP 
+- IntentTest(UITest) sometimes failed to click the ListView to pop up the fragment resulting test failed, please rerun them
 
 ### Reference:
 
