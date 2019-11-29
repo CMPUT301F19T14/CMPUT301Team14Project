@@ -122,7 +122,7 @@
                     android:padding="10dp"
                     android:scaleType="fitCenter"
 
-                    app:srcCompat="@drawable/comment_notebook" />
+                    android:src="@drawable/comment_notebook" />
 
 
                 <EditText

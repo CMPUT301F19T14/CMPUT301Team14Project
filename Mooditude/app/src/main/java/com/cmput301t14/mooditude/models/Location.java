@@ -1,17 +1,8 @@
 package com.cmput301t14.mooditude.models;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.content.Context;
-import android.location.LocationListener;
-import android.location.LocationManager;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.firebase.firestore.GeoPoint;
 /**
@@ -46,7 +37,7 @@ public class Location implements Parcelable {
 
     /**
      * Location Constructor
-     * @param geopoint
+     * @param geopoint geopoint of location
      */
     public Location(GeoPoint geopoint ) {
         address ="";
@@ -55,7 +46,7 @@ public class Location implements Parcelable {
 
     /**
      * get the getGeopoint for the mood
-     * @return
+     * @return geopoint of location
      */
     public GeoPoint getGeopoint() {
         return geopoint;
@@ -64,9 +55,8 @@ public class Location implements Parcelable {
 
     /**
      * get the getAddress for the mood
-     * @return
+     * @return the address of the location
      */
-
     public String getAddress() {
         return address;
     }
@@ -74,8 +64,7 @@ public class Location implements Parcelable {
 
     /**
      * get the setAddress for the mood
-     * @param address
-     * @return
+     * @param address passed address
      */
     public void setAddress(String address) {
         this.address = address;
@@ -86,10 +75,10 @@ public class Location implements Parcelable {
      * Location Constructor From Parcel
      * @param in
      */
-    protected Location(Parcel in) {
+    private Location(Parcel in) {
         address = in.readString();
-        Double lat = in.readDouble();
-        Double lng = in.readDouble();
+        double lat = in.readDouble();
+        double lng = in.readDouble();
         geopoint = new GeoPoint(lat, lng);
     }
 

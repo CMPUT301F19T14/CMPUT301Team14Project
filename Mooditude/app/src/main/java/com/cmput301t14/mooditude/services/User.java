@@ -34,7 +34,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-//import com.google.type.LatLng;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,11 +54,12 @@ public class User {
     private FirebaseAuth mAuth;
 
     static private DocumentReference userDocRef;
-    static CollectionReference followingCollRef;
-    static CollectionReference followerCollRef;
-    static CollectionReference moodHistoryCollRef;
+    static private CollectionReference followingCollRef;
+    static private CollectionReference followerCollRef;
+    static private CollectionReference moodHistoryCollRef;
 
     static public ArrayList<String> followerList = new ArrayList<>();
+
     static public ArrayList<String> followingList = new ArrayList<>();
 
     private Map<String, Boolean> filterList;
@@ -96,7 +96,7 @@ public class User {
 
     /**
      * Add followerID to followerList
-     * @param followerID
+     * @param followerID get the user id of follower
      */
     public void addFollower(String followerID) {
         // add sender to receiver's Followers collection
@@ -125,7 +125,7 @@ public class User {
 
     /**
      * Return userName     *
-     * @return
+     * @return the user's name
      */
     public static String getUserName() {
         return userName;
@@ -134,7 +134,7 @@ public class User {
     /**
      * refresh user name
      */
-    public static void refreshUserName() {
+    private static void refreshUserName() {
         userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -150,8 +150,8 @@ public class User {
     }
 
     /**
-     * return user email
-     * @return
+     * get the user email
+     * @return user email
      */
     public String getEmail() {
         return user.getEmail();
@@ -159,7 +159,7 @@ public class User {
 
     /**
      * push Mood Event to database.
-     * @param moodEvent
+     * @param moodEvent the moodevent
      */
     public void pushMoodEvent(final MoodEvent moodEvent) {
         CollectionReference moodHistory = db.collection("Users")
@@ -190,10 +190,10 @@ public class User {
                         } else if (location.getGeopoint() != document.getGeoPoint("Location")){
                             moodHash.put("Location",location.getGeopoint());
                         }
-                        if (mood.getMood() != document.getString("Mood")) {
+                        if (!mood.getMood().equals(document.getString("Mood"))) {
                             moodHash.put("Mood", mood.getMood());
                         }
-                        if (textComment != document.getString("Comment")) {
+                        if (!textComment.equals(document.getString("Comment"))) {
                             moodHash.put("Comment", textComment);
                         }
 //                        if (localDateTime != document.getTimestamp("DateTime")){
@@ -202,13 +202,13 @@ public class User {
 ////                            Log.i("TAG1",localDateTime.toString());
 ////                            Log.i("TAG1B",document.getTimestamp("DateTime").toString());
 //                        }
-                        if (socialSituation.getSocialSituation() != document.getString("SocialSituation")) {
+                        if (!socialSituation.getSocialSituation().equals(document.getString("SocialSituation"))) {
                             moodHash.put("SocialSituation", socialSituation.getSocialSituation());
                         }
 
                         if(photoUrl == null){
                             moodHash.put("Photograph",null);
-                        }else if(photoUrl !=document.getString("Photograph")){
+                        }else if(!photoUrl.equals(document.getString("Photograph"))){
                             moodHash.put("Photograph", photoUrl);
                         }
                         moodHash.put("DateTime",localDateTime);
@@ -255,7 +255,7 @@ public class User {
 
     /**
      * delete Mood Event from server.
-     * @param selectedMoodEvent
+     * @param selectedMoodEvent selected mood event from click
      */
     public void deleteMoodEvent(MoodEvent selectedMoodEvent) {
         CollectionReference moodHistory = db.collection("Users")
@@ -284,7 +284,7 @@ public class User {
     /**
      * call it to update all follower's following collection after delete/edit/add MoodEvent
      */
-    public void updateMostRecentMoodEvent(){
+    private void updateMostRecentMoodEvent(){
         final HashMap<String,Object> followingHash = new HashMap<>();
         // put receiver's user_name in no matter the most recent MoodEvent exist of not
         followingHash.put("user_name", User.getUserName());
@@ -332,9 +332,9 @@ public class User {
     }
 
     /**
-     * Connect Array Adapter to database to retrieve online information from database.     *
-     * @param moodEventDataList
-     * @param moodEventAdapter
+     * Connect Array Adapter to database to retrieve online information from database.
+     * @param moodEventDataList list stored the data
+     * @param moodEventAdapter mood event adapter
      */
     public void listenSelfMoodEvents(final ArrayList<MoodEvent> filteredSelfMoodEventDataList,
                                      final ArrayList<MoodEvent> moodEventDataList,
@@ -372,14 +372,14 @@ public class User {
     /**
      * Filter the input List of MoodEvent by the filterMap (Map<String, Boolean>)
      */
-    public void filterMoodEventList() {
+    void filterMoodEventList() {
         this.filteredSelfMoodEventDataList.clear();
         for (Map.Entry<String, Boolean> entry : filterList.entrySet()) {
             String mood = entry.getKey();
             Boolean filterOn = entry.getValue();
             if (filterOn) {
                 for (MoodEvent moodEvent : moodEventDataList) {
-                    if (moodEvent.getMood().getMood() == mood) {
+                    if (moodEvent.getMood().getMood().equals(mood)) {
                         this.filteredSelfMoodEventDataList.add(moodEvent);
                     }
                 }
@@ -392,7 +392,7 @@ public class User {
 
     /**
      * Listen moodEvents and reflects results on map.
-     * @param googleMap
+     * @param googleMap googlemap object
      */
     public void listenSelfMoodEventsOnMap(final GoogleMap googleMap){
         CollectionReference collectionReference = db.collection("Users")
@@ -450,8 +450,8 @@ public class User {
 
     /**
      * Listen mood events than update on Home Acticity
-     * @param moodEventDataList
-     * @param moodEventAdapter
+     * @param moodEventDataList list to store data of mood event
+     * @param moodEventAdapter mood event adapter
      */
     public void listenFollowingMoodEvents(final ArrayList<MoodEvent> moodEventDataList, final ArrayAdapter<MoodEvent> moodEventAdapter){
 
@@ -494,7 +494,7 @@ public class User {
 
     /**
      * Listen following moodEvents and reflects results on map.
-     * @param googleMap
+     * @param googleMap googlemap object
      */
     public void listenFollowingMoodEventsOnMap(final GoogleMap googleMap){
         CollectionReference collectionReference = db.collection("Users")
@@ -556,7 +556,7 @@ public class User {
 
     /**
      * Listen user name and reflect result on textView
-     * @param textView
+     * @param textView textview of username
      */
     public void listenUserName(final TextView textView){
 
@@ -576,7 +576,7 @@ public class User {
 
     /**
      * Listen number of followers and reflects results on textView.
-     * @param textView
+     * @param textView testview of follower number
      */
     public void listenFollowerNumber(final TextView textView) {
         followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -590,7 +590,7 @@ public class User {
 
     /**
      * Listen followers return result on arrayList.
-     * @param arrayList
+     * @param arrayList store follower
      */
     public void listenFollower(final ArrayList<String> arrayList) {
         followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -600,10 +600,6 @@ public class User {
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                     arrayList.add(doc.getId());
                 }
-//                if (searchAdapter != null){
-//                    Log.i("searchAdapter","searchAdapter");
-//                    searchAdapter.notifyDataSetChanged ();
-//                }
 
             }
         });
@@ -613,7 +609,7 @@ public class User {
     /**
      * Not decent function to notify the searchAdapter that following and follower list has been
      * changed.
-     * @param searchAdapter
+     * @param searchAdapter search adapter
      */
     public void notifyFollowFollowingDateChange(final SearchAdapter searchAdapter) {
         followerCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -640,7 +636,7 @@ public class User {
 
     /**
      * Listen to number of following people, reflect result on TextView
-     * @param textView
+     * @param textView testview to display the following number
      */
     public void listenFollowingNumber(final TextView textView) {
         followingCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -654,7 +650,7 @@ public class User {
 
     /**
      * Listen to following people, return result to one arrayList
-     * @param arrayList
+     * @param arrayList store following people
      */
     public void listenFollowing(final ArrayList<String> arrayList) {
         followingCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -670,7 +666,7 @@ public class User {
 
     /**
      * Listen to number of following people, reflect result on TextView
-     * @param textView
+     * @param textView textview of number of following people
      */
     public void listenMoodHistoryNumber(final TextView textView) {
         moodHistoryCollRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -684,7 +680,7 @@ public class User {
 
     /**
      * unfollow target people
-     * @param targetUserEmail
+     * @param targetUserEmail the email of selected following people
      */
     public void unfollow(String targetUserEmail) {
         followingCollRef.document(targetUserEmail).delete();
@@ -696,7 +692,7 @@ public class User {
 
     /**
      * remove follower
-     * @param targetUserEmail
+     * @param targetUserEmail the email of selected follower
      */
     public void remove(String targetUserEmail) {
         followerCollRef.document(targetUserEmail).delete();
@@ -707,7 +703,7 @@ public class User {
 
     /**
      * filter getter
-     * @return
+     * @return filter list
      */
     public Map<String, Boolean> getFilterList() {
         return filterList;

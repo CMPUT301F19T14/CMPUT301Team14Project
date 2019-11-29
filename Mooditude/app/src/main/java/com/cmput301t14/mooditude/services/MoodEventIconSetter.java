@@ -19,7 +19,7 @@ public class MoodEventIconSetter {
 
     /**
      * constructor
-     * @param moodEvent
+     * @param moodEvent the moodevents
      */
     public MoodEventIconSetter(MoodEvent moodEvent) {
         this.moodEvent = moodEvent;
@@ -27,7 +27,7 @@ public class MoodEventIconSetter {
 
     /**
      * set icon for image
-     * @param imageView
+     * @param imageView location icon image view
      */
     public  void setLocationIcon(ImageView imageView){
         if (moodEvent.getLocation() == null) {
@@ -39,7 +39,7 @@ public class MoodEventIconSetter {
 
     /**
      * set comment icon
-     * @param imageView
+     * @param imageView comment icon image
      */
     public  void setCommentIcon(ImageView imageView){
         if (moodEvent.getTextComment().isEmpty() || moodEvent.getTextComment() == null) {
@@ -53,7 +53,7 @@ public class MoodEventIconSetter {
 
     /**
      * set social situation icon
-     * @param imageView
+     * @param imageView socialsituation icon image view
      */
     public  void setSocialSituationIcon(ImageView imageView){
         if (moodEvent.getSocialSituation()== null) {
@@ -84,7 +84,7 @@ public class MoodEventIconSetter {
 
     /**
      * set time
-     * @param textView
+     * @param textView mood's time
      */
     public  void setTimeView(TextView textView){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -93,7 +93,7 @@ public class MoodEventIconSetter {
 
     /**
      * set time icon
-     * @param imageView
+     * @param imageView photo icon image view
      */
     public  void setPhotoIcon(ImageView imageView){
         if (moodEvent.getPhotoUrl() == null) {
