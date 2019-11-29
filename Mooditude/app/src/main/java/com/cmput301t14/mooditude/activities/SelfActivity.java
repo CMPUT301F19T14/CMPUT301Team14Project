@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
-import android.widget.Toast;
 
 
 import com.cmput301t14.mooditude.models.Mood;
@@ -54,14 +53,8 @@ public class SelfActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE_Email = "com.cmput301t14.mooditude.email";
     public static final String EXTRA_MESSAGE_Mode = "com.cmput301t14.mooditude.mode";
 
-    ListView selfMoodEventList;
-    ArrayAdapter<MoodEvent> selfMoodEventAdapter;
-    ArrayList<MoodEvent> selfMoodEventDataList;
-    ArrayList<MoodEvent> filteredSelfMoodEventDataList;
+    private ListView selfMoodEventList;
 
-    private FirebaseUser user;
-    private FirebaseFirestore db;
-    private FirebaseAuth mAuth;
     private String messageEmail;
 
 
@@ -71,8 +64,8 @@ public class SelfActivity extends AppCompatActivity {
 
     private User userService;
 
-    ImageButton googleMapButton;
-    ImageButton signOutButton;
+    private ImageButton googleMapButton;
+    private ImageButton signOutButton;
 
     /**
      * On Creation
@@ -83,8 +76,8 @@ public class SelfActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_self);
 
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
 
         Intent intent = getIntent();
         messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
@@ -102,7 +95,6 @@ public class SelfActivity extends AppCompatActivity {
         setUpMoodEventList();
         setUpDeleteMoodEvent();
 
-        final String TAG = "Sample";
         final TextView followerTextView;
         final TextView followingTextView;
         final TextView numberFollowerTextView;
@@ -110,7 +102,7 @@ public class SelfActivity extends AppCompatActivity {
         final TextView userNameTextView;
         final TextView numberMoodEvents;
 
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         final CollectionReference collectionReference = db.collection("Users");
 
@@ -221,10 +213,10 @@ public class SelfActivity extends AppCompatActivity {
      */
     private void setUpMoodEventList() {
         selfMoodEventList = findViewById(R.id.self_mood_event_list);
-        selfMoodEventDataList = new ArrayList<>();
-        filteredSelfMoodEventDataList = new ArrayList<>();
+        ArrayList<MoodEvent> selfMoodEventDataList = new ArrayList<>();
+        ArrayList<MoodEvent> filteredSelfMoodEventDataList = new ArrayList<>();
 
-        selfMoodEventAdapter = new SelfMoodEventAdapter(this, filteredSelfMoodEventDataList);
+        ArrayAdapter<MoodEvent> selfMoodEventAdapter = new SelfMoodEventAdapter(this, filteredSelfMoodEventDataList);
 
         selfMoodEventList.setAdapter(selfMoodEventAdapter);
 
@@ -325,7 +317,6 @@ public class SelfActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -58,6 +58,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -75,7 +76,6 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     private ImageButton photoButton;
     private ImageButton cameraButton;
 
-    private String commentString;
     private String moodString;
     private String socialSituationString;
     private String locationString;
@@ -83,15 +83,12 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     private MoodEvent selectedMoodEvent;
     private Boolean editable;
 
-    LocationManager locationManager;
-    LocationListener locationListener;
-
     private Double lat;
     private Double lon;
     private Location newMoodEventLocation;
 
 
-    ImageView imageView;
+    private ImageView imageView;
     private Uri mImageUri;
 
     private String downloadUrlStr;
@@ -99,15 +96,14 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     private StorageReference mStorageRef;
 
 
-    private StorageTask mUploadTask;
     private static final int PICK_IMAGE_REQUEST = 1;
 
     //variable for camera
-    static final int REQUEST_TAKE_PHOTO = 100;
-    Uri camPhotoURI = null;
-    String camImageStoragePath;
+    private static final int REQUEST_TAKE_PHOTO = 100;
+    private Uri camPhotoURI = null;
+    private String camImageStoragePath;
 
-    Boolean deletePhotoFlag = false;
+    private Boolean deletePhotoFlag = false;
 
 
 
@@ -153,7 +149,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         Bundle args = getArguments();
         if (args != null){
 
-            selectedMoodEvent = (MoodEvent) args.getParcelable("moodEvent");
+            selectedMoodEvent = args.getParcelable("moodEvent");
             editable = (Boolean) args.getSerializable("editable");
 
         }
@@ -164,7 +160,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             socialSituationString = selectedMoodEvent.getSocialSituation().getSocialSituation();
             commentEditText.setText(selectedMoodEvent.getTextComment());
 
-            showimage(selectedMoodEvent.getPhotoUrl());
+            showImage(selectedMoodEvent.getPhotoUrl());
 
             // set dropdown moodSpinner Adapter
             final ArrayAdapter<CharSequence> moodArrayAdapter = ArrayAdapter.createFromResource(getContext(),
@@ -210,7 +206,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             int positionOfItem = moodArrayAdapter.getPosition(
                     selectedMoodEvent.getMood().getEmoticon()+selectedMoodEvent.getMood().getMood());
             moodSpinner.setSelection(positionOfItem, true);
-            View itemView = (View) moodSpinner.getChildAt(positionOfItem);
+            View itemView = moodSpinner.getChildAt(positionOfItem);
             long itemId = moodSpinner.getAdapter().getItemId(positionOfItem);
             moodSpinner.performItemClick(itemView, positionOfItem, itemId);
 
@@ -298,7 +294,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
                         @Override
                         public void onClick(View view) {
                             // validate the input fields
-                            if(deletePhotoFlag == true){
+                            if(deletePhotoFlag){
                                 selectedMoodEvent.setPhotoUrl(null);
                             }
 
@@ -318,13 +314,12 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
 
 
-    public void clearPhotoView() {
+    private void clearPhotoView() {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        //imageView.setImageDrawable(null);
                         imageView.setImageBitmap(null);
 
                         removeDatabaseURI(selectedMoodEvent.getPhotoUrl());
@@ -370,9 +365,9 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
     /**
      * Request permission from user
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
+     * @param requestCode - The request code passed in requestPermissions
+     * @param permissions - The requested permissions
+     * @param grantResults - The grant results for the corresponding permissions
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -403,12 +398,15 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         locationSpinner.setFocusable(false);
 
         photoButton.setEnabled(false);
-//        photoButton.setInputType(InputType.TYPE_NULL);
         photoButton.setFocusable(false);
         cameraButton.setEnabled(false);
         cameraButton.setFocusable(false);
     }
 
+    /**
+     * Create the location spinner that allows user to
+     * change, keep or remove location of mood event.
+     */
     private void setUpLocationSpinner(){
         ArrayAdapter<CharSequence> locationArrayAdapter = ArrayAdapter.createFromResource(getContext(),R.array.edit_mood_event_location_string_array, android.R.layout.simple_spinner_item);
         locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -417,21 +415,21 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 locationString = parent.getItemAtPosition(position).toString();
-                if (locationString.equals("PREVIOUS LOCATION")){
+                switch (locationString) {
+                    case "PREVIOUS LOCATION":
 
-                    if (selectedMoodEvent.getLocation() != null) {
-                        newMoodEventLocation = new Location(selectedMoodEvent.getLocation().getGeopoint().getLatitude(), selectedMoodEvent.getLocation().getGeopoint().getLongitude());
-                    }
-                    else {
+                        if (selectedMoodEvent.getLocation() != null) {
+                            newMoodEventLocation = new Location(selectedMoodEvent.getLocation().getGeopoint().getLatitude(), selectedMoodEvent.getLocation().getGeopoint().getLongitude());
+                        } else {
+                            newMoodEventLocation = null;
+                        }
+                        break;
+                    case "REMOVE LOCATION":
                         newMoodEventLocation = null;
-                    }
-                }
-                else if (locationString.equals("REMOVE LOCATION")){
-                    newMoodEventLocation = null;
-                }
-                else if (locationString.equals("UPDATE LOCATION")){
-//                    newMoodEventLocation = new Location();
-                    getCurrentDeviceLocation();
+                        break;
+                    case "UPDATE LOCATION":
+                        getCurrentDeviceLocation();
+                        break;
                 }
             }
 
@@ -446,16 +444,15 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
      * Ask user for the permission of getting the current
      * device location.
      */
-    public void getCurrentDeviceLocation(){
+    private void getCurrentDeviceLocation(){
 
-        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new LocationListener() {
+        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(android.location.Location location) {
                 lat = location.getLatitude();
                 lon = location.getLongitude();
-                newMoodEventLocation = new Location(lat,lon);
-//                Toast.makeText(getContext(),"lat:"+lat.toString()+"lon:"+lon.toString(),Toast.LENGTH_SHORT).show();
+                newMoodEventLocation = new Location(lat, lon);
             }
 
 
@@ -486,7 +483,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
     /**
      * Constructor like method, get the parameters passed in as Bundle
      * @param moodEvent - the MoodEvent selected in Mood History
-     * @return
+     * @return fragment
      */
 
     static ViewEditMoodEventFragment newInstance(MoodEvent moodEvent, Boolean editable) {
@@ -501,9 +498,9 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
     /**
      * display the image in the imageView.
-     * @param photoUrl
+     * @param photoUrl - photo url
      */
-    private void showimage(String photoUrl){
+    private void showImage(String photoUrl){
         Glide.with(this).load(photoUrl).into(imageView);
 
     }
@@ -523,9 +520,9 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
      * callback method when the subsequent activity is done, and the result returns
      * the intent carries the result data app can identify the result and determine
      * how to handle it by request code.
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode - The request code you passed to startActivityForResult()
+     * @param resultCode - A result code specified by the second activity
+     * @param data - an intent that carries the result data
      */
     public void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -539,7 +536,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
         //take a photo
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
-                Log.i("cam", "back photo file sucess");
+                Log.i("cam", "back photo file success");
                 Log.i("cam",String.valueOf(camPhotoURI));
 
                 Picasso.with(getContext()).load(camPhotoURI).into(imageView);
@@ -558,7 +555,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Log.i("cam", "photo clikck");
+        Log.i("cam", "photo click");
         File photoFile = null;
 
         try {
@@ -573,7 +570,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             camPhotoURI = FileProvider.getUriForFile(getActivity().getApplicationContext(), getActivity().getApplicationContext().getPackageName() + ".provider", photoFile);
 
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, camPhotoURI);
-            Log.i("cam", "photo file sucess");
+            Log.i("cam", "photo file success");
             startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 
         }
@@ -592,18 +589,18 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             }
         }
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CANADA).format(new Date());
         return new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_"+ timeStamp + ".jpg");
     }
 
     /**
      * Add camera photo to gallery
-     * @param context
-     * @param filePath
+     * @param context - application context
+     * @param filePath - path of file
      */
     private void galleryAddPic(Context context, String filePath) {
-        Log.i("cam", "photo gallery sucess");
+        Log.i("cam", "photo gallery success");
 
         MediaScannerConnection.scanFile(context,
                 new String[]{filePath}, null,
@@ -616,7 +613,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
     /**
      * get the extension for the image file by photo uri.
-     * @param uri
+     * @param uri - image uri
      * @return the extension of file type
      */
     private String getFileExtension(Uri uri) {
@@ -638,29 +635,20 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             }
         }
 
-        if(mImageUri == null){
-            if(camPhotoURI != null){
-                mImageUri = camPhotoURI;
-            }
-        }
-
         if (mImageUri != null){
             final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
-            mUploadTask = fileReference.putFile(mImageUri)
+            // getting image uri and converting into string
+            StorageTask mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-//                                photoTextView.setText(downloadUrlStr);
-
 
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     // getting image uri and converting into string
-                                    Uri downloadUrl = uri;
-                                    downloadUrlStr = downloadUrl.toString();
+                                    downloadUrlStr = uri.toString();
                                     uploadDatabase(downloadUrlStr);
 
 
@@ -686,7 +674,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
 
     /**
      * update the moodevent to database for fields
-     * @param imageUrl
+     * @param imageUrl - image url
      */
     private void uploadDatabase(String imageUrl){
         boolean valid = true;
@@ -702,7 +690,7 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             ((TextView) socialSituationSpinner.getSelectedView()).setError(MoodEventValidator.getErrorMessage());
         }
 
-        commentString = commentEditText.getText().toString();
+        String commentString = commentEditText.getText().toString();
         if (!MoodEventValidator.checkComment(commentString)) {
             valid = false;
             commentEditText.setError(MoodEventValidator.getErrorMessage());
@@ -722,7 +710,6 @@ public class ViewEditMoodEventFragment extends DialogFragment implements Seriali
             // push the MoodEvent to database
             User user = new User();
             user.pushMoodEvent(moodEvent);
-//                                moodArrayAdapter.notifyDataSetChanged();
             getDialog().dismiss();
         }
 

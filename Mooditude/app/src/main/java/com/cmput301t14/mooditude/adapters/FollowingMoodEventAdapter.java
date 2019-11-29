@@ -15,10 +15,7 @@ import androidx.annotation.Nullable;
 import com.cmput301t14.mooditude.models.MoodEvent;
 import com.cmput301t14.mooditude.R;
 import com.cmput301t14.mooditude.services.MoodEventIconSetter;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * adapter class for following's MoodEvent list in home activity
@@ -41,9 +38,9 @@ public class FollowingMoodEventAdapter extends ArrayAdapter<MoodEvent> {
 
     /**
      * getView for each item in the list
-     * @param position
-     * @param convertView
-     * @param parent
+     * @param position position in list
+     * @param convertView ListView item cache
+     * @param parent parent of the view
      * @return view created
      */
     @NonNull
@@ -56,7 +53,6 @@ public class FollowingMoodEventAdapter extends ArrayAdapter<MoodEvent> {
         }
 
         final MoodEvent moodEvent = moodEventList.get(position);
-//        final int colorGreyIcon = ContextCompat.getColor(context, R.color.colorGreyIcon);
 
         TextView timeTextView = view.findViewById(R.id.time_textview);
         TextView emoticonTextView = view.findViewById(R.id.emoticon_textview);

@@ -51,7 +51,7 @@ public abstract class Message {
 
     /**
      * return type of message
-     * @return
+     * @return message type
      */
     public String getType() {
         return type;
@@ -84,7 +84,7 @@ public abstract class Message {
 
     /**
      * get formatted timestamp String
-     * @return
+     * @return string of date time
      */
     public String toStringDatetime() {
         return sdf.format(new Date(this.datetime.getSeconds() * 1000));

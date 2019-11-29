@@ -13,9 +13,8 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.cmput301t14.mooditude.activities.SelfActivity;
 import com.cmput301t14.mooditude.models.FollowRequestMessage;
 import com.cmput301t14.mooditude.models.Message;
 import com.cmput301t14.mooditude.R;
@@ -26,8 +25,8 @@ import java.util.ArrayList;
  * Adapter for message in notification activity
  */
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
-    Context context;
-    ArrayList<Message> messageArrayList;
+    private Context context;
+    private ArrayList<Message> messageArrayList;
 
     /**
      * Inner data class to hold message view info
@@ -48,38 +47,38 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     /**
      * Constructor
-     * @param context
-     * @param messageArrayList
+     * @param context context
+     * @param messageArrayList ArrayList stores messages
      */
     public MessageAdapter(Context context, ArrayList<Message> messageArrayList) {
         this.context = context;
         this.messageArrayList = messageArrayList;
-        Log.i("LOGB", "MessageAdapter: " + String.valueOf(messageArrayList.size()));
+        Log.i("LOGB", "MessageAdapter: " + messageArrayList.size());
     }
 
     /**
      * Create View
-     * @param parent
-     * @param viewType
-     * @return
+     * @param parent parent of the view
+     * @param viewType type of the view
+     * @return MessageAdapter.MessageViewHolder(view);
      */
+    @NonNull
     @Override
-    public MessageAdapter.MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MessageAdapter.MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(context).inflate(R.layout.message_content, parent, false);
         return new MessageAdapter.MessageViewHolder(view);
     }
 
     /**
      * Bind View with data
-     * @param holder
-     * @param position
+     * @param holder view holder
+     * @param position position to query
      */
     @Override
-    public void onBindViewHolder(MessageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-//        holder.textView.setText("test");
-        Log.i("LOGB", "MessageAdapter position: " + String.valueOf(position));
+        Log.i("LOGB", "MessageAdapter position: " + position);
         final MessageViewHolder messageViewHolder = holder;
         final Message message = messageArrayList.get(position);
         final int positionFinal = position;
@@ -87,13 +86,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         messageViewHolder.view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-//                Log.i("LOGBBB", message.getDatetime().toString());
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-//                                onConfirmPressed(selectedMoodEvent);
                                 message.delete();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -118,18 +115,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 @Override
                 public void onClick(View view) {
                     messageArrayList.get(positionFinal).setNewMessage();
-
-//                    if(message.isNewMessage()){
-//                        Log.i("LOGA","new");
-//                    }
-//                    else{
-//                        Log.i("LOGA","old");
-//                    }
                     message.setNewMessage();
                     messageViewHolder.messageContentTextView.setTypeface(null, Typeface.NORMAL);
                     Log.i("LOGA", "HERE2");
 
-                    PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.RIGHT);
+                    PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.END);
                     //inflating menu from xml resource
                     popup.inflate(R.menu.popmenu_follow_request);
                     //adding click listener
@@ -139,8 +129,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                             switch (item.getItemId()) {
                                 case R.id.popmenu_accept_follow:
                                     //handle menu1 click
-//                                    new FollowRequestMessage(receiverEmail).invoke();
-//                                    Toast.makeText(context, "Follow request to \""+receiverEmail+"\" sent", Toast.LENGTH_LONG).show();
                                     followRequestMessage.accept();
                                     return true;
                                 case R.id.popmenu_reject_follow:
@@ -177,7 +165,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     }
 
-    // Return the size of  dataset (invoked by the layout manager)
+    // Return the size of data set (invoked by the layout manager)
     @Override
     public int getItemCount() {
 //        return 1;
