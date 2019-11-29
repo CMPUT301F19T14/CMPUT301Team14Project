@@ -9,7 +9,7 @@ public class MoodEventValidatorUnitTest {
     @Test
     public void creation(){
         String s="1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0";
-        assertEquals(MoodEventValidator.checkComment(s),true);
+        assertEquals(MoodEventValidator.checkComment(s), false);
 
         s="1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1";
         assertEquals(MoodEventValidator.checkComment(s),false);
@@ -18,7 +18,8 @@ public class MoodEventValidatorUnitTest {
         assertEquals(MoodEventValidator.checkComment(s),true);
 
 
-        assertEquals(MoodEventValidator.getErrorMessage(),"Message is longer than 20\n");
+        assertEquals(MoodEventValidator.getErrorMessage(),"Comment Longer than 3 words\n" +
+                "Comment Longer than 3 words\n");
 
         assertEquals(MoodEventValidator.getErrorMessage(),"");
 
@@ -36,11 +37,6 @@ public class MoodEventValidatorUnitTest {
         assertEquals(MoodEventValidator.getErrorMessage(),"Invalid Social Situation\n");
 
         assertEquals(MoodEventValidator.getErrorMessage(),"");
-
-
-
-
-
 
     }
 }
