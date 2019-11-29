@@ -48,20 +48,20 @@ public class SignInActivity extends AppCompatActivity {
 
 
 // Bypass Sign in for testing
-      mFirebaseAuth.signInWithEmailAndPassword("wangye@warning.com","123456")
-                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"Please Login Failed!",Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
-                            Intent intentHomeActivity = new Intent(getApplicationContext(), HomeActivity.class);
-                            startActivity(intentHomeActivity);
-                        }
-                    }
-                });
+//      mFirebaseAuth.signInWithEmailAndPassword("wangye@warning.com","123456")
+//                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (!task.isSuccessful()){
+//                            Toast.makeText(getApplicationContext(),"Please Login Failed!",Toast.LENGTH_SHORT).show();
+//                        }
+//                        else {
+//                            Toast.makeText(getApplicationContext(), "Please Login Success!", Toast.LENGTH_SHORT).show();
+//                            Intent intentHomeActivity = new Intent(getApplicationContext(), HomeActivity.class);
+//                            startActivity(intentHomeActivity);
+//                        }
+//                    }
+//                });
 
 // End bypass sign in for testing
 
