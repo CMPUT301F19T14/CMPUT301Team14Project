@@ -108,7 +108,7 @@ public class DisplayFollow extends AppCompatActivity {
         });
 
         if (listMode == ListMode.Followers){
-            followList.setOnItemClickListener(new FollowFollowingListOnClickListener.Followers(followDataList));
+//            followList.setOnItemClickListener(new FollowFollowingListOnClickListener.Followers(followDataList));
         }
 
         TextView title=findViewById(R.id.followMode);
