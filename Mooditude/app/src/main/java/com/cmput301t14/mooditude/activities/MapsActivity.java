@@ -74,10 +74,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
                 MoodEvent selectedMoodEvent = (MoodEvent) marker.getTag();
-                Boolean editable = false;
+                boolean editable;
                 if (displayOption.equals("self")){
                     editable = true;
-                } else if(displayOption.equals("following")){
+                } else {
                     editable = false;
                 }
                 ViewEditMoodEventFragment.newInstance(selectedMoodEvent, editable).show(getSupportFragmentManager(), "MoodEvent");

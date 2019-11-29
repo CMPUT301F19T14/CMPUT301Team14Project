@@ -34,31 +34,27 @@ import java.util.ArrayList;
 public class NotificationActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    CollectionReference messageBoxRef;
-    User user;
-    ArrayList<Message> messageArrayList;
-    MessageAdapter messageAdapter;
+    private ArrayList<Message> messageArrayList;
+    private MessageAdapter messageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
-        user = new User();
+        User user = new User();
         messageArrayList = new ArrayList<>();
 
         Intent intent = getIntent();
         final String messageEmail = intent.getStringExtra(SelfActivity.EXTRA_MESSAGE_Email);
         MenuBar menuBar = new MenuBar(NotificationActivity.this, messageEmail, 3);
 
-//        TextView title = (TextView) findViewById(R.id.activityTitle3);
-//        title.setText("Notification Activity");
         recyclerView = findViewById(R.id.message_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        messageBoxRef = FirebaseFirestore.getInstance().collection("Users").document(user.getEmail()).collection("MessageBox");
+        CollectionReference messageBoxRef = FirebaseFirestore.getInstance().collection("Users").document(user.getEmail()).collection("MessageBox");
         messageBoxRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -70,7 +66,6 @@ public class NotificationActivity extends AppCompatActivity {
                     Timestamp datetime = doc.getTimestamp("datetime");
                     Boolean newMessage = doc.getBoolean("newMessage");
 
-//                    Log.i("LOGA", typeStr);
                     if (typeStr.equals("followRequest")) {
                         FollowRequestMessage followRequestMessage = new FollowRequestMessage(sender, receiver, datetime, newMessage);
                         messageArrayList.add(followRequestMessage);
@@ -82,7 +77,6 @@ public class NotificationActivity extends AppCompatActivity {
                 }
                 Log.i("LOGB",String.valueOf(queryDocumentSnapshots.size()));
                 Log.i("LOGB",String.valueOf(messageArrayList.size()));
-//                searchAdapter = new SearchAdapter(SearchActivity.this, userNameList, userEmailList);
                 messageAdapter = new MessageAdapter(NotificationActivity.this, messageArrayList);
                 recyclerView.setAdapter(messageAdapter);
             }
@@ -92,7 +86,6 @@ public class NotificationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +35,6 @@ import java.util.ArrayList;
 public class SearchActivity extends AppCompatActivity {
 
 
-    private EditText searchEditTextView;
     private RecyclerView recyclerView;
     private ArrayList<String> userNameList;
     private ArrayList<String> userEmailList;
@@ -44,7 +42,6 @@ public class SearchActivity extends AppCompatActivity {
 
     private User user;
     private CollectionReference usersCollection;
-    private ArrayList<String> followerList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +60,7 @@ public class SearchActivity extends AppCompatActivity {
         user.listenFollower(User.followerList);
         user.listenFollowing(User.followingList);
 
-        searchEditTextView = findViewById(R.id.search_edit_text);
+        EditText searchEditTextView = findViewById(R.id.search_edit_text);
         recyclerView = findViewById(R.id.search_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -82,7 +79,7 @@ public class SearchActivity extends AppCompatActivity {
             /**
              * check the search text field whether is changed,
              * and clear the lists after finishing every search.
-             * @param editable
+             * @param editable - check whether the mood event can be edited
              */
             @Override
             public void afterTextChanged(Editable editable) {
@@ -106,8 +103,8 @@ public class SearchActivity extends AppCompatActivity {
      * searched string. And the maximum size for the adapter is
      * 15.
      *
-     * @param searchedString
-     * @param collectionReference
+     * @param searchedString - the string user wants to search
+     * @param collectionReference -
      */
     private void setAdapter(final String searchedString, CollectionReference collectionReference) {
         userNameList.clear();
@@ -130,7 +127,6 @@ public class SearchActivity extends AppCompatActivity {
                         userEmailList.add(user_email);
                         counter++;
                     }
-                    // Why?   -- Enson
                     if (counter == 15) {
                         break;
                     }
@@ -145,7 +141,6 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
