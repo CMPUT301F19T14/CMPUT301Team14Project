@@ -37,7 +37,7 @@ public class FollowFollowingListOnClickListener {
 //                Toast.makeText(view.getContext(), receiverEmail, Toast.LENGTH_LONG).show();
             //creating a popup menu
             final Context context = view.getContext();
-            PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.RIGHT);
+            PopupMenu popup = new PopupMenu(view.getContext(), view.findViewById(R.id.messageViewButton), Gravity.END);
             //inflating menu from xml resource
             popup.inflate(R.menu.popmenu_follower);
             //adding click listener

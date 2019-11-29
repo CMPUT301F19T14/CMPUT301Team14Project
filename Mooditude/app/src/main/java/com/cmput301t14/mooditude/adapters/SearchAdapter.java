@@ -19,12 +19,12 @@ import java.util.ArrayList;
  * SearchAdapter is used to create a recycler view.
  */
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
-    Context context;
-    ArrayList<String> userNameList;
-    ArrayList<String> userEmailList;
-    ArrayList<String> followerList;
-    ArrayList<String> followingList;
-    User user;
+    private Context context;
+    private ArrayList<String> userNameList;
+    private ArrayList<String> userEmailList;
+    private ArrayList<String> followerList;
+    private ArrayList<String> followingList;
+    private User user;
 
     /**
      *
@@ -45,9 +45,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     /**
      * The constructor for SearchAdapter class.
      *
-     * @param context
-     * @param userNameList
-     * @param userEmailList
+     * @param context -
+     * @param userNameList - the search result list of user names
+     * @param userEmailList - the search result list of user emails
      */
     public SearchAdapter(Context context, ArrayList<String> userNameList, ArrayList<String> userEmailList, ArrayList<String> followerList, ArrayList<String> followingList) {
         this.context = context;
@@ -62,8 +62,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
      * Called when RecyclerView needs a new RecyclerView.ViewHolder of the
      * given type to represent an item.
      *
-     * @param parent
-     * @param viewType
+     * @param parent -
+     * @param viewType -
      * @return SearchAdapter.SearchViewHolder
      */
     @NonNull
@@ -80,28 +80,33 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     /**
      * Called by RecyclerView to display the data at the specified position.
      *
-     * @param holder
-     * @param position
+     * @param holder - search view holder
+     * @param position - the position of the user in the adapter
      */
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
 
+        String you = userNameList.get(position) + " (You)";
+        String friend = userNameList.get(position) + " (Friend)";
+        String follower = userNameList.get(position) + " (Follower)";
+        String following = userNameList.get(position) + " (Following)";
+
         holder.user_email.setText(userEmailList.get(position));
         if(userEmailList.get(position).equals(user.getEmail())){
-            holder.user_name.setText(userNameList.get(position)+" (You)");
+            holder.user_name.setText(you);
             holder.itemView.setOnClickListener( new SearchOnClickListener.Self(context));
             holder.itemView.findViewById(R.id.messageViewButton).setVisibility(View.INVISIBLE);
         }
         else if(followerList.contains(userEmailList.get(position))&&followingList.contains(userEmailList.get(position))){
-            holder.user_name.setText(userNameList.get(position)+" (Friend)");
+            holder.user_name.setText(friend);
             holder.itemView.setOnClickListener( new SearchOnClickListener.Friend(context));
         }
         else if(followerList.contains(userEmailList.get(position))){
-            holder.user_name.setText(userNameList.get(position)+" (Follower)");
+            holder.user_name.setText(follower);
             holder.itemView.setOnClickListener( new SearchOnClickListener.Follower(context));
         }
         else if(followingList.contains(userEmailList.get(position))){
-            holder.user_name.setText(userNameList.get(position)+" (Following)");
+            holder.user_name.setText(following);
             holder.itemView.setOnClickListener( new SearchOnClickListener.Following(context));
         }
         else{

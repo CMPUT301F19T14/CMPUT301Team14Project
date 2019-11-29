@@ -27,8 +27,8 @@ public class FollowerFollowingListAdapter extends ArrayAdapter<Person> {
 
     /**
      * The constructor for FollowerFollowingListAdapter
-     * @param context
-     * @param people
+     * @param context -
+     * @param people - the array list of person
      */
     public FollowerFollowingListAdapter(Context context, ArrayList<Person> people, DisplayFollow.ListMode listMode){
         super(context,0, people);
@@ -43,15 +43,14 @@ public class FollowerFollowingListAdapter extends ArrayAdapter<Person> {
     /**
      * Link the list view with followerListContent
      * show the followerListContent of the list view
-     * @param position
-     * @param convertView
-     * @param parent
+     * @param position -
+     * @param convertView -
+     * @param parent -
      * @return View view
      */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//        return super.getView(position, convertView, parent);
         View view = convertView;
 
         if(view == null){

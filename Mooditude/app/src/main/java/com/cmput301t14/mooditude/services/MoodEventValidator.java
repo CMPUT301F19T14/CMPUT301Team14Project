@@ -15,8 +15,8 @@ public class MoodEventValidator {
 
     /**
      * validate mood
-     * @param moodStr
-     * @return
+     * @param moodStr mood object
+     * @return mood
      */
     public static Mood checkMood (String moodStr) { //static method
         //block of code to be executed
@@ -33,8 +33,8 @@ public class MoodEventValidator {
 
     /**
      * validate SocialSituation
-     * @param socialSituationStr
-     * @return
+     * @param socialSituationStr socialsituation object
+     * @return socialsituation
      */
     public static SocialSituation checkSocialSituation (String socialSituationStr) { //static method
         //block of code to be executed
@@ -50,8 +50,8 @@ public class MoodEventValidator {
 
     /**
      * validate Comment
-     * @param Comment
-     * @return
+     * @param Comment a string of comment
+     * @return  validity of comment
      */
     public static boolean checkComment(String Comment){
 
@@ -73,7 +73,7 @@ public class MoodEventValidator {
 
     /**
      * Return error message
-     * @return
+     * @return error message
      */
     public static String getErrorMessage() {
         String result=errorMessage ;
